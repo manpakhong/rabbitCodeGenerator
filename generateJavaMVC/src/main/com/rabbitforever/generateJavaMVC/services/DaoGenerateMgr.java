@@ -229,7 +229,7 @@ public class DaoGenerateMgr {
 			
 			sb.append("\t\t\t" + daoClassName + "So " + daoObjectName + "So = (" + daoClassName + "So) so;\n");
 			
-			sb.append("\t\t\twhereSql = new StringBuilder(\"where \");\n");
+			sb.append("\t\t\twhereSql = new StringBuilder();\n");
 			sb.append("\t\t\tint wcount = 0;\n");
 			
 			// loop wcount field name
@@ -243,7 +243,10 @@ public class DaoGenerateMgr {
 										.getColumnName())
 						));
 				sb.append("() != null){\n");
-				sb.append("\t\t\t\tif (wcount > 0) {\n");
+				sb.append("\t\t\t\tif (wcount == 0) {\n");
+				sb.append("\t\t\t\t\twhereSql.append(\"where \");\n");
+				sb.append("\t\t\t\t}\n");
+				sb.append("\t\t\t\t else if (wcount > 0) {\n");
 				sb.append("\t\t\t\t\twhereSql.append(\"and \");\n");
 				sb.append("\t\t\t\t}\n");
 				sb.append("\t\t\t\twhereSql.append(\"" + metaDataField.getColumnName() + " = ? \");\n");
