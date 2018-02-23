@@ -21,7 +21,7 @@ public class PropGenMainConsole {
 			
 			FileUtils fileUtils = new FileUtils();
 			String path = new File(".").getCanonicalPath();
-			final String FILE_NAME_ROOT = "d:/universe_git/MfmsReport/properties";
+			final String FILE_NAME_ROOT = "d:/universe_git/MfmsReports/properties";
 			String fileNamesString = null;
 			List<String> fileNameStringList = null;
 			boolean isUsingFileNameRoot = false;
