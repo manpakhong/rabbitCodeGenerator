@@ -57,7 +57,7 @@
 					<a href="PatrolMonitor.do">
 						<div class=" well">
 							<img class="img-responsive"
-								src="import/img2/pm/patrol_monitor.png" " alt="">
+								src="import/img2/pm/patrol_monitor.png" alt="">
 							<h2 class="iconName">
 								<spring:message code="menu.patrolMgt.monitor" />
 							</h2>

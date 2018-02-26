@@ -17,39 +17,55 @@
 	<section class="content">
 
 		<div class="row">
-			<c:if
-				test="${currRole.grantedPrivilegeCodeList.contains(patrolMonitor)}">
+<%-- 			<c:if
+				test="${currRole.grantedPrivilegeCodeList.contains(patrolMonitor)}"> --%>
 				<div class="col-lg-4  col-sm-6 iconStyle">
 					<a href="PatrolMonitor.do">
 						<div class=" well">
 							<img class="img-responsive"
-								src="import/img2/pm/patrol_monitor.png" " alt="">
+								src="import/img2/pcm/clock_in.png" alt="">
 							<h2 class="iconName">
-								<spring:message code="menu.patrolMgt.monitor" />
+								<spring:message code="menu.punchcardMgt.clockin" />
 							</h2>
 						</div>
 					</a>
 				</div>
-			</c:if>
+<%-- 			</c:if> --%>
 
-			<c:if
+<%-- 			<c:if
 				test="${currRole.grantedPrivilegeCodeList.contains(modifyPatrolSchedule)
 					   || currRole.grantedPrivilegeCodeList.contains(createPatrolSchedule)
 					   || currRole.grantedPrivilegeCodeList.contains(searchPatrolSchedule)
-			           || currRole.grantedPrivilegeCodeList.contains(removePatrolSchedule)}">
+			           || currRole.grantedPrivilegeCodeList.contains(removePatrolSchedule)}"> --%>
 
 				<div class="col-lg-4  col-sm-6 iconStyle">
 					<a href="PatrolAssign.do">
 						<div class=" well">
 							<img class="img-responsive"
-								src="import/img2/pm/patrol_schedule.png" alt="">
+								src="import/img2/pcm/clock_out.png" alt="">
 							<h2 class="iconName">
-								<spring:message code="menu.patrolMgt.schedule" />
+								<spring:message code="menu.punchcardMgt.clockout" />
 							</h2>
 						</div>
 					</a>
 				</div>
-			</c:if>
+<%-- 			</c:if> --%>
+
+				<div class="col-lg-4  col-sm-6 iconStyle">
+					<a href="PatrolAssign.do">
+						<div class=" well">
+							<img class="img-responsive"
+								src="import/img2/pcm/skip.png" alt="">
+							<h2 class="iconName">
+								<spring:message code="menu.punchcardMgt.skip" />
+							</h2>
+						</div>
+					</a>
+				</div>
 
 	</section>
 </div>
+
+<script>
+	menu_toggle("sub_pm", 1);
+</script>

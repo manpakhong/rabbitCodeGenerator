@@ -28,7 +28,7 @@ public class PunchCardController {
 //			return "main/site_select";
 //		}
 		PunchCard punchCard = new PunchCard();
-		punchCard.setKey(1);
+//		punchCard.setKey(1);
 		punchCard.setName("Test3");
 		
 		punchCardManager.save(punchCard);
