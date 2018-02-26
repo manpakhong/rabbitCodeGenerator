@@ -1,0 +1,632 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/tx 
+		http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+
+	<!-- Property Config -->
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+		<property name="locations">
+			<list>
+				<value>WEB-INF/config/mfms2.properties</value>
+				<value>WEB-INF/config/scheduler.properties</value>
+			</list>
+		</property>
+		<property name="singleton" value="true" />
+	</bean>
+
+
+	<context:property-placeholder
+		properties-ref="propertyConfigurer" />
+
+	<!-- to expose all privileges code for checking, please refer to InternalResourceViewResolver -->
+	<bean id="privilegeMap"
+		class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+		<property name="locations">
+			<list>
+				<value>WEB-INF/config/privileges.properties</value>
+			</list>
+		</property>
+		<property name="singleton" value="true" />
+		<!-- <property name="properties"> <props> <prop key="privilege.code.modifyAccountRole">ModifyAccountRole</prop> 
+			</props> </property> -->
+	</bean>
+
+
+	<!-- <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"> 
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" /> <property 
+		name="url" value="jdbc:mysql://10.8.8.204:3306/mfms_dev?characterEncoding=UTF-8" 
+		/> <property name="username" value="mfms_dev_user" /> <property name="password" 
+		value="1qaz@WSX3edc" /> </bean> -->
+
+
+	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource"
+		destroy-method="close">
+		<constructor-arg>
+			<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+				<property name="poolName" value="springHikariCP" />
+				<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+
+				<!-- Development -->
+				<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/mfms_cp_dev2?characterEncoding=utf8" />
+				<property name="username" value="root" />
+				<property name="password" value="PeppaPig0513" />
+
+				<!-- Production/Testing
+				<property name="jdbcUrl" value="jdbc:mysql://127.0.0.1:3306/mfms_prod?characterEncoding=UTF-8" />
+				<property name="username" value="mfms2_user" />
+				<property name="password" value="P@ssw0rd" />
+				-->
+				
+				<property name="maximumPoolSize" value="50" />
+				<property name="dataSourceProperties">
+					<props>
+					</props>
+				</property>
+				<property name="leakDetectionThreshold" value="120000" />
+			</bean>
+		</constructor-arg>
+	</bean>
+
+
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="packagesToScan" value="hk.ebsl.mfms.dto" />
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.hbm2ddl.auto">none</prop>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+				<prop key="hibernate.show_sql">false</prop>
+				<prop key="hibernate.connection.pool.size">10</prop>
+				<prop key="hibernate.cache.use_query_cache">false</prop>
+				<prop key="hibernate.cache.use_second_level_cache">false</prop>
+				<prop key="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- Transaction manager for a single Hibernate SessionFactory (alternative 
+		to JTA) -->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<!-- Dao -->
+	<bean id="userAccountDao" class="hk.ebsl.mfms.dao.UserAccountDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="accountGroupAccountDao" class="hk.ebsl.mfms.dao.AccountGroupAccountDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="accountGroupResponsibleDao" class="hk.ebsl.mfms.dao.AccountGroupResponsibleDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="accountGroupDao" class="hk.ebsl.mfms.dao.AccountGroupDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="roleDao" class="hk.ebsl.mfms.dao.RoleDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="siteDao" class="hk.ebsl.mfms.dao.SiteDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="locationDao" class="hk.ebsl.mfms.dao.LocationDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="locationPrivilegeDao" class="hk.ebsl.mfms.dao.LocationPrivilegeDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+		<property name="locationManager" ref="locationManager" />
+	</bean>
+	<bean id="rolePrivilegeDao" class="hk.ebsl.mfms.dao.RolePrivilegeDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="privilegeDao" class="hk.ebsl.mfms.dao.PrivilegeDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="privilegeCategoryDao" class="hk.ebsl.mfms.dao.PrivilegeCategoryDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="causeCodeDao" class="hk.ebsl.mfms.dao.CauseCodeDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="failureClassDao" class="hk.ebsl.mfms.dao.FailureClassDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="problemCodeDao" class="hk.ebsl.mfms.dao.ProblemCodeDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="toolDao" class="hk.ebsl.mfms.dao.ToolDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="equipmentDao" class="hk.ebsl.mfms.dao.EquipmentDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="defectDao" class="hk.ebsl.mfms.dao.DefectDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+		<property name="locationManager" ref="locationManager" />
+		<property name="problemCodeManager" ref="problemCodeManager" />
+		<property name="failureClassManager" ref="failureClassManager" />
+		<property name="statusManager" ref="statusManager" />
+		<property name="userAccountManager" ref="userAccountManager" />
+	</bean>
+	<bean id="defectActionLogDao" class="hk.ebsl.mfms.dao.DefectActionLogDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="defectEmailDao" class="hk.ebsl.mfms.dao.DefectEmailDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="defectScheduleActionLogDao" class="hk.ebsl.mfms.dao.DefectScheduleActionLogDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="accountActionLogDao" class="hk.ebsl.mfms.dao.AccountActionLogDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="routeDefActionLogDao" class="hk.ebsl.mfms.dao.RouteDefActionLogDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="priorityDao" class="hk.ebsl.mfms.dao.PriorityDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="statusDao" class="hk.ebsl.mfms.dao.StatusDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="statusFlowDao" class="hk.ebsl.mfms.dao.StatusFlowDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="routeDefDao" class="hk.ebsl.mfms.dao.RouteDefDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="routeLocationDao" class="hk.ebsl.mfms.dao.RouteLocationDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="userAccountRoleDao" class="hk.ebsl.mfms.dao.UserAccountRoleDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="systemParamDao" class="hk.ebsl.mfms.dao.SystemParamDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="patrolScheduleDao" class="hk.ebsl.mfms.dao.PatrolScheduleDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="patrolScheduleAccountDao" class="hk.ebsl.mfms.dao.PatrolScheduleAccountDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="defectScheduleDao" class="hk.ebsl.mfms.dao.DefectScheduleDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="defectScheduleAccountDao" class="hk.ebsl.mfms.dao.DefectScheduleAccountDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="defectScheduleHistoryDao" class="hk.ebsl.mfms.dao.DefectScheduleHistoryDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="patrolScheduleActionLogDao" class="hk.ebsl.mfms.dao.PatrolScheduleActionLogDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="patrolResultDao" class="hk.ebsl.mfms.dao.PatrolResultDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="statusAccessModeDao" class="hk.ebsl.mfms.dao.StatusAccessModeDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="defectFileDao" class="hk.ebsl.mfms.dao.DefectFileDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+		<property name="systemParamManager" ref="systemParamManager" />
+	</bean>
+	<bean id="patrolPhotoDao" class="hk.ebsl.mfms.dao.PatrolPhotoDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="sequenceNumberDao" class="hk.ebsl.mfms.dao.SequenceNumberDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="alarmConsoleDao" class="hk.ebsl.mfms.dao.AlarmConsoleDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="patrolRouteActionLogDao" class="hk.ebsl.mfms.dao.PatrolRouteActionLogDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<!-- Manager -->
+	<bean id="systemParamManager" class="hk.ebsl.mfms.manager.impl.SystemParamManagerImpl">
+		<property name="systemParamDao" ref="systemParamDao" />
+	</bean>
+	<bean id="userAccountManager" class="hk.ebsl.mfms.manager.impl.UserAccountManagerImpl">
+		<property name="userAccountDao" ref="userAccountDao" />
+		<property name="userAccountRoleDao" ref="userAccountRoleDao" />
+	</bean>
+	
+	<bean id="privilegeManager" class="hk.ebsl.mfms.manager.impl.PrivilegeManagerImpl">
+		<property name="privilegeDao" ref="privilegeDao" />
+	</bean>
+	
+	<bean id="roleManager" class="hk.ebsl.mfms.manager.impl.RoleManagerImpl">
+		<property name="roleDao" ref="roleDao" />
+		<property name="rolePrivilegeDao" ref="rolePrivilegeDao" />
+		<property name="privilegeCategoryDao" ref="privilegeCategoryDao" />
+	</bean>
+	<bean id="siteManager" class="hk.ebsl.mfms.manager.impl.SiteManagerImpl">
+		<property name="siteDao" ref="siteDao" />
+		<property name="userAccountManager" ref="userAccountManager" />
+		<property name="roleManager" ref="roleManager" />
+	</bean>
+	<bean id="locationManager" class="hk.ebsl.mfms.manager.impl.LocationManagerImpl">
+		<property name="locationDao" ref="locationDao" />
+		<property name="locationPrivilegeDao" ref="locationPrivilegeDao" />
+	</bean>
+	<bean id="failureClassManager" class="hk.ebsl.mfms.manager.impl.FailureClassManagerImpl">
+		<property name="failureClassDao" ref="failureClassDao" />
+	</bean>
+	<bean id="problemCodeManager" class="hk.ebsl.mfms.manager.impl.ProblemCodeManagerImpl">
+		<property name="problemCodeDao" ref="problemCodeDao" />
+	</bean>
+	<bean id="statusAccessModeManager" class="hk.ebsl.mfms.manager.impl.StatusAccessModeManagerImpl">
+		<property name="statusAccessModeDao" ref="statusAccessModeDao" />
+	</bean>
+	<bean id="causeCodeManager" class="hk.ebsl.mfms.manager.impl.CauseCodeManagerImpl">
+		<property name="causeCodeDao" ref="causeCodeDao" />
+	</bean>
+	<bean id="toolManager" class="hk.ebsl.mfms.manager.impl.ToolManagerImpl">
+		<property name="toolDao" ref="toolDao" />
+	</bean>
+	<bean id="equipmentManager" class="hk.ebsl.mfms.manager.impl.EquipmentManagerImpl">
+		<property name="equipmentDao" ref="equipmentDao" />
+	</bean>
+	<bean id="defectManager" class="hk.ebsl.mfms.manager.impl.DefectManagerImpl">
+		<property name="defectDao" ref="defectDao" />
+		<property name="userAccountDao" ref="userAccountDao" />
+		<property name="userAccountRoleDao" ref="userAccountRoleDao" />
+		<property name="accountGroupAccountDao" ref="accountGroupAccountDao" />
+	</bean>
+	<bean id="defectActionLogManager" class="hk.ebsl.mfms.manager.impl.DefectActionLogManagerImpl">
+		<property name="defectActionLogDao" ref="defectActionLogDao" />
+		<property name="userAccountDao" ref="userAccountDao" />
+		<property name="accountGroupAccountDao" ref="accountGroupAccountDao" />
+	</bean>
+	<bean id="defectEmailManager" class="hk.ebsl.mfms.manager.impl.DefectEmailManagerImpl">
+		<property name="defectEmailDao" ref="defectEmailDao" />
+	</bean>
+	<bean id="defectScheduleActionLogManager"
+		class="hk.ebsl.mfms.manager.impl.DefectScheduleActionLogManagerImpl">
+		<property name="defectScheduleActionLogDao" ref="defectScheduleActionLogDao" />
+		<property name="userAccountDao" ref="userAccountDao" />
+		<property name="accountGroupAccountDao" ref="accountGroupAccountDao" />
+	</bean>
+	<bean id="accountActionLogManager" class="hk.ebsl.mfms.manager.impl.AccountActionLogManagerImpl">
+		<property name="accountActionLogDao" ref="accountActionLogDao" />
+		<property name="userAccountDao" ref="userAccountDao" />
+		<property name="accountGroupAccountDao" ref="accountGroupAccountDao" />
+	</bean>
+	<bean id="routeDefActionLogManager" class="hk.ebsl.mfms.manager.impl.RouteDefActionLogManagerImpl">
+		<property name="routeDefActionLogDao" ref="routeDefActionLogDao" />
+	</bean>
+	<bean id="patrolScheduleActionLogManager"
+		class="hk.ebsl.mfms.manager.impl.PatrolScheduleActionLogManagerImpl">
+		<property name="patrolScheduleActionLogDao" ref="patrolScheduleActionLogDao" />
+	</bean>
+	<bean id="priorityManager" class="hk.ebsl.mfms.manager.impl.PriorityManagerImpl">
+		<property name="priorityDao" ref="priorityDao" />
+	</bean>
+	<bean id="statusManager" class="hk.ebsl.mfms.manager.impl.StatusManagerImpl">
+		<property name="statusDao" ref="statusDao" />
+	</bean>
+
+	<bean id="statusFlowManager" class="hk.ebsl.mfms.manager.impl.StatusFlowManagerImpl">
+		<property name="statusFlowDao" ref="statusFlowDao" />
+	</bean>
+	<bean id="emailManager" class="hk.ebsl.mfms.manager.impl.EmailManagerImpl"
+		init-method="postInit">
+		<property name="systemParamManager" ref="systemParamManager" />
+		<property name="debug" value="true" />
+		<property name="interval" value="60000" />
+		<property name="emailTemplates">
+			<map>
+				<entry key="testTemplate">
+					<bean class="hk.ebsl.mfms.email.EmailTemplate">
+						<property name="cc" value="tlau@ebsl.hk,support@ebsl.hk" />
+						<property name="path" value="classpath:emailTemplate/testTemplate.txt" />
+					</bean>
+				</entry>
+				<entry key="expiringWorkOrder">
+					<bean class="hk.ebsl.mfms.email.EmailTemplate">
+						<property name="path"
+							value="classpath:emailTemplate/EmailTemplate_OnDemandDefectReminder.txt" />
+					</bean>
+				</entry>
+				<entry key="expiringGroupWorkOrder">
+					<bean class="hk.ebsl.mfms.email.EmailTemplate">
+						<property name="path"
+							value="classpath:emailTemplate/EmailTemplate_OnDemandDefectMgrReminder.txt" />
+					</bean>
+				</entry>
+				<entry key="dailyWorkOrder">
+					<bean class="hk.ebsl.mfms.email.EmailTemplate">
+						<property name="path"
+							value="classpath:emailTemplate/EmailTemplate_DailyDefectReminder.txt" />
+					</bean>
+				</entry>
+				<entry key="dailyWorkOrderSub">
+					<bean class="hk.ebsl.mfms.email.EmailTemplate">
+						<property name="path"
+							value="classpath:emailTemplate/EmailSubTemplate_DailyDefectReminder.txt" />
+					</bean>
+				</entry>
+				<entry key="dailyGroupWorkOrder">
+					<bean class="hk.ebsl.mfms.email.EmailTemplate">
+						<property name="path"
+							value="classpath:emailTemplate/EmailTemplate_DailyDefectMgrReminder.txt" />
+					</bean>
+				</entry>
+				<entry key="dailyGroupWorkOrderSub">
+					<bean class="hk.ebsl.mfms.email.EmailTemplate">
+						<property name="path"
+							value="classpath:emailTemplate/EmailSubTemplate_DailyDefectMgrReminder.txt" />
+					</bean>
+				</entry>
+				<entry key="dailyMaintenanceSchedule">
+					<bean class="hk.ebsl.mfms.email.EmailTemplate">
+						<property name="path"
+							value="classpath:emailTemplate/EmailTemplate_DailyMSReminder.txt" />
+					</bean>
+				</entry>
+				<entry key="dailyMaintenanceScheduleSub">
+					<bean class="hk.ebsl.mfms.email.EmailTemplate">
+						<property name="path"
+							value="classpath:emailTemplate/EmailSubTemplate_DailyMSReminder.txt" />
+					</bean>
+				</entry>
+				<entry key="dailyExpiredMaintenanceSchedule">
+					<bean class="hk.ebsl.mfms.email.EmailTemplate">
+						<property name="path"
+							value="classpath:emailTemplate/EmailTemplate_DailyExpMSReminder.txt" />
+					</bean>
+				</entry>
+				<entry key="dailyExpiredMaintenanceScheduleSub">
+					<bean class="hk.ebsl.mfms.email.EmailTemplate">
+						<property name="path"
+							value="classpath:emailTemplate/EmailSubTemplate_DailyExpMSReminder.txt" />
+					</bean>
+				</entry>
+
+				<entry key="forgetPasswordScheduleSub">
+					<bean class="hk.ebsl.mfms.email.EmailTemplate">
+						<property name="path"
+							value="classpath:emailTemplate/EmailSubTemplate_ForgetPasswordReminder.txt" />
+					</bean>
+				</entry>
+				<entry key="expiredPatrolSchedule">
+					<bean class="hk.ebsl.mfms.email.EmailTemplate">
+						<property name="path"
+							value="classpath:emailTemplate/EmailTemplate_ExpiredPatrolSchedule.txt" />
+					</bean>
+				</entry>
+				<entry key="dailyPatrolSchedule">
+					<bean class="hk.ebsl.mfms.email.EmailTemplate">
+						<property name="path"
+							value="classpath:emailTemplate/EmailTemplate_DailyPatrolSchedule.txt" />
+					</bean>
+				</entry>
+
+
+			</map>
+		</property>
+	</bean>
+	<bean id="routeDefManager" class="hk.ebsl.mfms.manager.impl.RouteDefManagerImpl">
+		<property name="routeDefDao" ref="routeDefDao" />
+		<property name="routeLocationDao" ref="routeLocationDao" />
+	</bean>
+	<bean id="accountGroupManager" class="hk.ebsl.mfms.manager.impl.AccountGroupManagerImpl">
+		<property name="accountGroupDao" ref="accountGroupDao" />
+	</bean>
+	<bean id="accountGroupAccountManager"
+		class="hk.ebsl.mfms.manager.impl.AccountGroupAccountManagerImpl">
+		<property name="accountGroupAccountDao" ref="accountGroupAccountDao" />
+	</bean>
+	<bean id="accountGroupResponsibleManager"
+		class="hk.ebsl.mfms.manager.impl.AccountGroupResponsibleManagerImpl">
+		<property name="accountGroupResponsibleDao" ref="accountGroupResponsibleDao" />
+	</bean>
+	<bean id="patrolScheduleManager" class="hk.ebsl.mfms.manager.impl.PatrolScheduleManagerImpl">
+		<property name="patrolScheduleDao" ref="patrolScheduleDao" />
+		<property name="patrolScheduleAccountDao" ref="patrolScheduleAccountDao" />
+	</bean>
+	<bean id="defectScheduleManager" class="hk.ebsl.mfms.manager.impl.DefectScheduleManagerImpl">
+		<property name="defectScheduleDao" ref="defectScheduleDao" />
+		<property name="defectScheduleHistoryDao" ref="defectScheduleHistoryDao" />
+		<property name="defectScheduleAccountDao" ref="defectScheduleAccountDao" />
+	</bean>
+	<bean id="patrolResultManager" class="hk.ebsl.mfms.manager.impl.PatrolResultManagerImpl">
+		<property name="patrolResultDao" ref="patrolResultDao" />
+	</bean>
+	<bean id="defectFileManager" class="hk.ebsl.mfms.manager.impl.DefectFileManagerImpl">
+		<property name="defectFileDao" ref="defectFileDao" />
+	</bean>
+	<bean id="patrolPhotoManager" class="hk.ebsl.mfms.manager.impl.PatrolPhotoManagerImpl">
+		<property name="patrolPhotoDao" ref="patrolPhotoDao" />
+	</bean>
+	<bean id="sequenceNumberManager" class="hk.ebsl.mfms.manager.impl.SequenceNumberManagerImpl">
+		<property name="sequenceNumberDao" ref="sequenceNumberDao" />
+	</bean>
+
+	<bean id="alarmConsoleManager" class="hk.ebsl.mfms.manager.impl.AlarmConsoleManagerImpl">
+		<property name="alarmConsoleDao" ref="alarmConsoleDao" />
+	</bean>
+	
+	<bean id="patrolRouteActionLogManager" class="hk.ebsl.mfms.manager.impl.PatrolRouteActionLogManagerImpl">
+		<property name="patrolRouteActionLogDao" ref="patrolRouteActionLogDao" />
+	</bean>
+
+	<!-- Form Validators -->
+
+	<bean id="siteFormValidator" class="hk.ebsl.mfms.web.form.validator.SiteFormValidator">
+		<property name="userAccountManager" ref="userAccountManager" />
+		<property name="siteManager" ref="siteManager" />
+		<property name="maxNameLength" value="${site.name.length.max}" />
+		<property name="maxAddressLength" value="${site.address.length.max}" />
+		<property name="maxDefaultAdminIdLength" value="${account.loginId.length.max}" />
+		<property name="maxDefaultAdminNameLength" value="${account.name.length.max}" />
+		<property name="maxDefaultAdminPassLength" value="${account.password.length.max}" />
+
+	</bean>
+	<bean id="patrolCreateFormValidator"
+		class="hk.ebsl.mfms.web.form.validator.PatrolCreateFormValidator">
+		<property name="routeDefManager" ref="routeDefManager" />
+		<property name="maxCodeLength" value="${patrol.code.length}" />
+		<property name="maxNameLength" value="${patrol.name.length}" />
+	</bean>
+	<bean id="patrolAssignFormValidator"
+		class="hk.ebsl.mfms.web.form.validator.PatrolAssignFormValidator">
+	</bean>
+
+	<bean id="roleFormValidator" class="hk.ebsl.mfms.web.form.validator.RoleFormValidator">
+		<property name="roleManager" ref="roleManager" />
+		<property name="maxNameLength" value="${role.name.length.max}" />
+		<property name="maxDescriptionLength" value="${role.desc.length.max}" />
+		<property name="statusAccessModeManager" ref="statusAccessModeManager" />
+		<property name="defaultSiteAdminRoleName" value="${site.admin.role.name}" />
+	</bean>
+
+
+
+	<bean id="toolFormValidator" class="hk.ebsl.mfms.web.form.validator.ToolFormValidator">
+		<property name="toolManager" ref="toolManager" />
+		<property name="maxLength" value="${defect.length.max}" />
+		<property name="codeMaxLength" value="${defect.code.length.max}" />
+		<property name="nameMaxLength" value="${defect.name.length.max}" />
+		<property name="descMaxLength" value="${defect.desc.length.max}" />
+	</bean>
+	<bean id="causeCodeFormValidator" class="hk.ebsl.mfms.web.form.validator.CauseCodeFormValidator">
+		<property name="causeCodeManager" ref="causeCodeManager" />
+		<property name="maxLength" value="${defect.length.max}" />
+		<property name="codeMaxLength" value="${defect.code.length.max}" />
+		<property name="nameMaxLength" value="${defect.name.length.max}" />
+		<property name="descMaxLength" value="${defect.desc.length.max}" />
+	</bean>
+	<bean id="defectScheduleFormValidator"
+		class="hk.ebsl.mfms.web.form.validator.DefectScheduleFormValidator">
+		<property name="maxLength" value="${defect.length.max}" />
+		<property name="codeMaxLength" value="${defect.code.length.max}" />
+		<property name="nameMaxLength" value="${defect.name.length.max}" />
+		<property name="descMaxLength" value="${defect.desc.length.max}" />
+	</bean>
+	<bean id="equipmentFormValidator" class="hk.ebsl.mfms.web.form.validator.EquipmentFormValidator">
+		<property name="equipmentManager" ref="equipmentManager" />
+		<property name="maxLength" value="${defect.length.max}" />
+		<property name="codeMaxLength" value="${defect.code.length.max}" />
+		<property name="nameMaxLength" value="${defect.name.length.max}" />
+		<property name="descMaxLength" value="${defect.desc.length.max}" />
+	</bean>
+	<bean id="failureClassFormValidator"
+		class="hk.ebsl.mfms.web.form.validator.FailureClassFormValidator">
+		<property name="failureClassManager" ref="failureClassManager" />
+		<property name="maxLength" value="${defect.length.max}" />
+		<property name="codeMaxLength" value="${defect.code.length.max}" />
+		<property name="nameMaxLength" value="${defect.name.length.max}" />
+		<property name="descMaxLength" value="${defect.desc.length.max}" />
+	</bean>
+	<bean id="problemCodeFormValidator"
+		class="hk.ebsl.mfms.web.form.validator.ProblemCodeFormValidator">
+		<property name="problemCodeManager" ref="problemCodeManager" />
+		<property name="maxLength" value="${defect.length.max}" />
+		<property name="codeMaxLength" value="${defect.code.length.max}" />
+		<property name="nameMaxLength" value="${defect.name.length.max}" />
+		<property name="descMaxLength" value="${defect.desc.length.max}" />
+	</bean>
+	<bean id="defectFormValidator" class="hk.ebsl.mfms.web.form.validator.DefectFormValidator">
+		<property name="defectManager" ref="defectManager" />
+		<property name="maxPictureSize" value="${defect.pictureNumber.max}" />
+		<property name="maxVideoSize" value="${defect.videoSize.max}" />
+		<property name="maxLength" value="${defect.length.max}" />
+		<property name="codeMaxLength" value="${defect.code.length.max}" />
+		<property name="nameMaxLength" value="${defect.name.length.max}" />
+		<property name="descMaxLength" value="${defect.desc.length.max}" />
+	</bean>
+
+	<bean id="defectSearchFormValidator"
+		class="hk.ebsl.mfms.web.form.validator.DefectSearchFormValidator">
+		<property name="defectManager" ref="defectManager" />
+		<property name="codeMaxLength" value="${defect.code.length.max}" />
+		<property name="nameMaxLength" value="${defect.name.length.max}" />
+		<property name="descMaxLength" value="${defect.desc.length.max}" />
+	</bean>
+
+	<bean id="locationFormValidator" class="hk.ebsl.mfms.web.form.validator.LocationFormValidator">
+		<property name="locationManager" ref="locationManager" />
+		<property name="maxLength" value="${defect.length.max}" />
+		<property name="messageSource" ref="messageSource" />
+		<property name="codeMaxLength" value="${defect.code.length.max}" />
+		<property name="nameMaxLength" value="${defect.name.length.max}" />
+		<property name="descMaxLength" value="${defect.desc.length.max}" />
+	</bean>
+	<bean id="defectListFormValidator" class="hk.ebsl.mfms.web.form.validator.DefectListFormValidator">
+		<property name="maxLength" value="${defect.length.max}" />
+		<property name="codeMaxLength" value="${defect.code.length.max}" />
+		<property name="nameMaxLength" value="${defect.name.length.max}" />
+		<property name="descMaxLength" value="${defect.desc.length.max}" />
+	</bean>
+	<bean id="defectSummaryFormValidator"
+		class="hk.ebsl.mfms.web.form.validator.DefectSummaryFormValidator">
+	</bean>
+	<bean id="accountGroupFormValidator"
+		class="hk.ebsl.mfms.web.form.validator.AccountGroupFormValidator">
+		<property name="accountGroupManager" ref="accountGroupManager" />
+		<property name="nameMaxLength" value="${defect.name.length.max}" />
+		<property name="descMaxLength" value="${defect.desc.length.max}" />
+	</bean>
+	<bean id="userAccountFormValidator"
+		class="hk.ebsl.mfms.web.form.validator.UserAccountFormValidator">
+		<property name="userAccountManager" ref="userAccountManager" />
+		<property name="maxNameLength" value="${account.name.length.max}" />
+		<property name="maxLoginIdLength" value="${account.loginId.length.max}" />
+		<property name="maxEmailLength" value="${account.email.length.max}" />
+		<property name="maxPasswordLength" value="${account.password.length.max}" />
+		<property name="maxTagIdLength" value="${account.tagId.length.max}" />
+	</bean>
+
+	<bean id="forgetPasswordFormValidator"
+		class="hk.ebsl.mfms.web.form.validator.ForgetPasswordFormValidator">
+		<property name="userAccountManager" ref="userAccountManager" />
+	</bean>
+
+	<bean id="pagination" class="hk.ebsl.mfms.utility.Pagination">
+		<property name="rowsOnEachPage" value="${pagination.max.row.number}" />
+		<property name="pageSize" value="${pagination.page.size}" />
+	</bean>
+	<bean id="calendarEvent" class="hk.ebsl.mfms.utility.CalendarEvent">
+		<property name="patrolScheduleManager" ref="patrolScheduleManager" />
+	</bean>
+	<bean id="jasperReportService" class="hk.ebsl.mfms.report.JasperReportService">
+		<property name="propertyConfigurer" ref="propertyConfigurer" />
+	</bean>
+
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<!-- setting maximum upload size -->
+		<property name="maxUploadSize" value="99999999" />
+	</bean>
+
+	<!-- Define for WebService (Json) -->
+	<bean id="jsonProvider" class="com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider" />
+	<bean id="patroljsonservice" class="hk.ebsl.mfms.webservice.impl.PatrolWebService_JsonImpl" />
+	<bean id="accountjsonservice" class="hk.ebsl.mfms.webservice.impl.AccountWebService_JsonImpl" />
+	<bean id="sitejsonservice" class="hk.ebsl.mfms.webservice.impl.SiteWebService_JsonImpl" />
+	<bean id="statusjsonservice" class="hk.ebsl.mfms.webservice.impl.StatusWebService_JsonImpl" />
+	<bean id="rolejsonservice" class="hk.ebsl.mfms.webservice.impl.RoleWebService_JsonImpl" />
+	<bean id="locationjsonservice" class="hk.ebsl.mfms.webservice.impl.LocationWebService_JsonImpl" />
+	<bean id="defectjsonservice" class="hk.ebsl.mfms.webservice.impl.DefectWebService_JsonImpl" />
+	<bean id="priorityjsonservice" class="hk.ebsl.mfms.webservice.impl.PriorityWebService_JsonImpl" />
+	<bean id="routejsonservice" class="hk.ebsl.mfms.webservice.impl.RouteWebService_JsonImpl" />
+	<bean id="schedulejsonservice" class="hk.ebsl.mfms.webservice.impl.MaintenanceScheduleWebService_JsonImpl" />
+	<bean id="stpocservice" class="hk.ebsl.mfms.webservice.impl.ShunTakPOCWebServiceImpl" />
+</beans>
+

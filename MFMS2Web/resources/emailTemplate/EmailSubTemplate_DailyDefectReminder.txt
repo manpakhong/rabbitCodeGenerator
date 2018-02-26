@@ -1,0 +1,15 @@
+場地 Site:              {13}
+碼 WO Code:          {0}
+發佈日期 Issued Date:           {1}
+問題類別 Failure Class:         {2}
+問題碼 Problem Code:            {3}
+描述 Description:               {4}
+地點 Location:                  {5}
+聯絡人 Contact:                 {6}
+聯絡電話 Phone:                 {7}
+已分配予人 Assigned To:         {8}
+優先權 Priority:                {9}
+目標開始日期 Target Start Date: {10}
+目標進行日期 Target End Date:   {11}
+備註 Remarks:                   {12}
+====================================

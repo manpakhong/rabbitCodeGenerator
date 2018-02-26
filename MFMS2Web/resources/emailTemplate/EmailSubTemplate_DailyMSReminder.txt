@@ -1,0 +1,8 @@
+場地 Site:              {6}
+描述 Description:       {0}
+設備 Equipment:         {1}
+地點 Location:          {2}
+開始日期 Start Date:    {3}
+已分配予人 Assigned To: {4}
+備註 Remarks:           {5}
+====================================

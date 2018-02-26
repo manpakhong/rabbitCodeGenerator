@@ -1,0 +1,2 @@
+MFMS2 : [Group: {2}] 你的組別已經到期的工作指令 (總數: {0}) Defect Orders of Your Group Already Expired (Total: {0})
+{1}

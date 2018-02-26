@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+  xmlns:beans="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+           http://www.springframework.org/schema/security
+           http://www.springframework.org/schema/security/spring-security.xsd">
+  <!-- 
+  <http pattern="/css/**" security="none"/>
+  <http pattern="/js/**" security="none"/>
+  <http pattern="/img/**" security="none"/>
+   -->
+  <http pattern="/import/**" security="none"/>
+  <http pattern="/webservices/**" security="none"/>
+  <http use-expressions="true" pattern="/Login.do*" security="none"/>
+  <http use-expressions="true" pattern="/ForgetPassword.do*" security="none"/>
+    <http use-expressions="true" pattern="/DoForgetPassword.do*" security="none"/>
+  
+  <!-- 
+  <http use-expressions="true" pattern="/About.do*" security="none"/>
+   -->
+
+  <http use-expressions="true">
+    <intercept-url pattern="/**" access="authenticated" />
+    <form-login login-page="/Login.do" 
+      authentication-failure-handler-ref="loginFailureHandler" 
+      authentication-success-handler-ref="loginSuccessHandler" />
+    <logout delete-cookies="JSESSIONID" success-handler-ref="logoutSuccessHandler" />
+  </http>
+  
+  <beans:bean id="customUserService" class="hk.ebsl.mfms.authentication.CustomUserService">
+    <beans:property name="maxLogonAttemptCount" value="3"/>
+    <beans:property name="userManager" ref="userAccountManager" />
+    <beans:property name="accountActionLogManager" ref="accountActionLogManager" />
+  </beans:bean>
+
+  <authentication-manager>
+       <authentication-provider user-service-ref="customUserService" >
+            <password-encoder hash="bcrypt" />
+        </authentication-provider>
+  </authentication-manager>
+  
+  <!-- Handleres -->
+  
+  <beans:bean id="logoutSuccessHandler"
+    class="hk.ebsl.mfms.web.handler.LogoutSuccessHandlerImpl">
+  </beans:bean>
+  
+  <beans:bean id="loginSuccessHandler"
+    class="hk.ebsl.mfms.web.handler.AuthenticationSuccessHandlerImpl">
+    <beans:property name="userManager" ref="userAccountManager" />
+    <beans:property name="accountActionLogManager" ref="accountActionLogManager" />
+  </beans:bean>
+  
+  <beans:bean id="loginFailureHandler"
+    class="hk.ebsl.mfms.web.handler.AuthenticationFailureHandlerImpl">
+	<beans:property name="accountActionLogManager" ref="accountActionLogManager" />
+    <beans:property name="userManager" ref="userAccountManager" />
+  </beans:bean>
+    
+    
+</beans:beans>

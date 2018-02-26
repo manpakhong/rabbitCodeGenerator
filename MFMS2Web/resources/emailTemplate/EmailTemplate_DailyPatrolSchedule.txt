@@ -1,0 +1,4 @@
+MFMS2 : 每日巡邏日程 Daily Patrol Schedule
+場地 Site : {0}
+時間 Time  : {1}
+路線 Route : {2}

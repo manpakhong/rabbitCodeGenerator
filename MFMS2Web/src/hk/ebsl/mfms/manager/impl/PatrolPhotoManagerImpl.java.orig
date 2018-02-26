@@ -1,0 +1,110 @@
+<<<<<<< HEAD
+package hk.ebsl.mfms.manager.impl;
+
+import java.sql.Timestamp;
+import java.util.Calendar;
+import java.util.List;
+
+import hk.ebsl.mfms.dao.PatrolPhotoDao;
+import hk.ebsl.mfms.dto.PatrolPhoto;
+import hk.ebsl.mfms.manager.PatrolPhotoManager;
+
+import org.apache.log4j.Logger;
+import org.springframework.transaction.annotation.Transactional;
+
+public class PatrolPhotoManagerImpl implements PatrolPhotoManager{
+
+	public static final Logger logger = Logger
+			.getLogger(PatrolPhotoManagerImpl.class);
+
+	private PatrolPhotoDao patrolPhotoDao;
+	
+	
+	@Override
+	@Transactional
+	public int savePatrolPhoto(PatrolPhoto pp) {
+		// TODO Auto-generated method stub
+		return patrolPhotoDao.save(pp);
+	}
+
+	@Override
+	@Transactional
+	public List<PatrolPhoto> searchPatrolPhoto(int routeDefKey, Calendar calendar) {
+		// TODO Auto-generated method stub
+		
+		Calendar from = (Calendar) calendar.clone();
+		from.set(Calendar.HOUR_OF_DAY, 0);
+		from.set(Calendar.MINUTE, 0);
+		from.set(Calendar.SECOND, 0);
+		from.set(Calendar.MILLISECOND, 0);
+		
+		Calendar to = (Calendar) calendar.clone();
+		to.set(Calendar.HOUR_OF_DAY, 23);
+		to.set(Calendar.MINUTE, 59);
+		to.set(Calendar.SECOND, 59);
+		to.set(Calendar.MILLISECOND, 999);
+		
+		Timestamp tmpFrom = new Timestamp(from.getTimeInMillis());
+		Timestamp tmpTo = new Timestamp(to.getTimeInMillis()); 
+		
+		return patrolPhotoDao.searchPatrolPhoto(routeDefKey, tmpFrom, tmpTo);
+	}
+	
+
+	public PatrolPhotoDao getPatrolPhotoDao() {
+		return patrolPhotoDao;
+	}
+
+
+	public void setPatrolPhotoDao(PatrolPhotoDao patrolPhotoDao) {
+		this.patrolPhotoDao = patrolPhotoDao;
+	}	
+
+}
+=======
+package hk.ebsl.mfms.manager.impl;
+
+import java.util.List;
+
+import hk.ebsl.mfms.dao.PatrolPhotoDao;
+import hk.ebsl.mfms.dto.PatrolPhoto;
+import hk.ebsl.mfms.exception.MFMSException;
+import hk.ebsl.mfms.manager.PatrolPhotoManager;
+
+import org.apache.log4j.Logger;
+import org.springframework.transaction.annotation.Transactional;
+
+public class PatrolPhotoManagerImpl implements PatrolPhotoManager{
+
+	public static final Logger logger = Logger
+			.getLogger(PatrolPhotoManagerImpl.class);
+
+	private PatrolPhotoDao patrolPhotoDao;
+	
+	
+	@Override
+	@Transactional(rollbackFor = { MFMSException.class })
+	public int savePatrolPhoto(PatrolPhoto pp) {
+		// TODO Auto-generated method stub
+		return patrolPhotoDao.save(pp);
+	}
+
+	@Override
+	@Transactional(rollbackFor = { MFMSException.class })
+	public List<PatrolPhoto> searchPatrolPhoto() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+
+	public PatrolPhotoDao getPatrolPhotoDao() {
+		return patrolPhotoDao;
+	}
+
+
+	public void setPatrolPhotoDao(PatrolPhotoDao patrolPhotoDao) {
+		this.patrolPhotoDao = patrolPhotoDao;
+	}	
+
+}
+>>>>>>> 8e0f0a991834f6c0ed19bf157b0df4973a8acede

@@ -1,0 +1,2 @@
+MFMS2 : 今天的工作指令 (總數: {0}) Today Defect Orders (Total: {0})
+{1}

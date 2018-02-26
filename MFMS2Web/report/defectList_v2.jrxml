@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="defectList" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" whenResourceMissingType="Empty" uuid="fdc81559-28c6-49d4-a6d4-a3a5f6ea0581">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<parameter name="labelDefectList" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="labelDefectNo" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="labelIssuedDate" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="labelFailureClass" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="labelProblemCode" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="labelLcationDescription" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="labelDefectDescription" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="labelCallFrom" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="labelContactPhone" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="labelAssignedTo" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="labelPriority" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="labelTargetAttendanceDate" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="labelActualFinishDate" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="labelRemarks" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="labelTotal" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="labelPrintDate" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="labelPage" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="labelMeetKPI" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="labelDeviation" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="labelStatus" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="labelOf" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="siteKey" class="java.lang.Integer" isForPrompting="false"/>
+	<parameter name="accKey" class="java.lang.Integer" isForPrompting="false"/>
+	<parameter name="locale" class="java.lang.String" isForPrompting="false"/>
+	<field name="fieldCode" class="java.lang.String">
+		<fieldDescription><![CDATA[fieldCode]]></fieldDescription>
+	</field>
+	<field name="fieldIssueDate" class="java.lang.String">
+		<fieldDescription><![CDATA[fieldIssueDate]]></fieldDescription>
+	</field>
+	<field name="fieldFailureClass" class="java.lang.String">
+		<fieldDescription><![CDATA[fieldFailureClass]]></fieldDescription>
+	</field>
+	<field name="fieldProblemCode" class="java.lang.String">
+		<fieldDescription><![CDATA[fieldProblemCode]]></fieldDescription>
+	</field>
+	<field name="fieldLocation" class="java.lang.String">
+		<fieldDescription><![CDATA[fieldLocation]]></fieldDescription>
+	</field>
+	<field name="fieldDesc" class="java.lang.String">
+		<fieldDescription><![CDATA[fieldDesc]]></fieldDescription>
+	</field>
+	<field name="fieldCallFrom" class="java.lang.String">
+		<fieldDescription><![CDATA[fieldCallFrom]]></fieldDescription>
+	</field>
+	<field name="fieldContactNumber" class="java.lang.String">
+		<fieldDescription><![CDATA[fieldContactNumber]]></fieldDescription>
+	</field>
+	<field name="fieldAssignedAccount" class="java.lang.String">
+		<fieldDescription><![CDATA[fieldAssignedAccount]]></fieldDescription>
+	</field>
+	<field name="fieldPriority" class="java.lang.String">
+		<fieldDescription><![CDATA[fieldPriority]]></fieldDescription>
+	</field>
+	<field name="fieldTargetFinishDate" class="java.lang.String">
+		<fieldDescription><![CDATA[fieldTargetFinishDate]]></fieldDescription>
+	</field>
+	<field name="fieldActualFinishDate" class="java.lang.String">
+		<fieldDescription><![CDATA[fieldActualFinishDate]]></fieldDescription>
+	</field>
+	<field name="fieldMeetKpi" class="java.lang.String">
+		<fieldDescription><![CDATA[fieldMeetKpi]]></fieldDescription>
+	</field>
+	<field name="fieldDeviation" class="java.lang.String">
+		<fieldDescription><![CDATA[fieldDeviation]]></fieldDescription>
+	</field>
+	<field name="fieldRemark" class="java.lang.String">
+		<fieldDescription><![CDATA[fieldRemark]]></fieldDescription>
+	</field>
+	<field name="fieldStatus" class="java.lang.String">
+		<fieldDescription><![CDATA[fieldStatus]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="53" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="802" height="35" isPrintWhenDetailOverflows="true" uuid="b439c27f-2499-46ed-b39b-9732d041883a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="20" isBold="true" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{labelDefectList}]]></textFieldExpression>
+			</textField>
+			<textField pattern="yyyy-MM-dd HH:mm:ss">
+				<reportElement x="522" y="35" width="280" height="18" isPrintWhenDetailOverflows="true" uuid="415fd50d-3a88-4925-a03f-c90a383ead6d"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{labelPrintDate} + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date())]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="19" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="522" y="2" width="80" height="16" isPrintWhenDetailOverflows="true" uuid="4b72b8a4-aa84-4969-9809-b6e763860814"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="true" isUnderline="false" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="false"/>
+					<paragraph spacingBefore="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{labelTargetAttendanceDate}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="492" y="2" width="30" height="16" isPrintWhenDetailOverflows="true" uuid="0d3fad8f-8b17-4a7b-bd6d-5db3569bbc84"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="true" isUnderline="false" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="false"/>
+					<paragraph spacingBefore="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{labelPriority}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="420" y="2" width="72" height="16" isPrintWhenDetailOverflows="true" uuid="141d3c5b-3fc8-410c-b0cc-421a4151544c"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="true" isUnderline="false" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="false"/>
+					<paragraph spacingBefore="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{labelAssignedTo}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="375" y="2" width="45" height="16" isPrintWhenDetailOverflows="true" uuid="05082c04-1b28-427b-8bbb-240f7112afaa"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="true" isUnderline="false" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="false"/>
+					<paragraph spacingBefore="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{labelCallFrom}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="310" y="2" width="65" height="16" isPrintWhenDetailOverflows="true" uuid="11f35266-c3f6-4067-9e42-829cdda385d5"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="true" isUnderline="false" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="false"/>
+					<paragraph spacingBefore="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{labelDefectDescription}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="90" y="2" width="50" height="16" isPrintWhenDetailOverflows="true" uuid="76d43375-743c-4f55-8322-fcc2d05647d9"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="true" isUnderline="false" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="false"/>
+					<paragraph spacingBefore="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{labelIssuedDate}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="140" y="2" width="60" height="16" isPrintWhenDetailOverflows="true" uuid="228837ac-a681-4a89-a39c-a20b2ea850ba"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="true" isUnderline="false" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="false"/>
+					<paragraph spacingBefore="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{labelFailureClass}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="200" y="2" width="60" height="16" isPrintWhenDetailOverflows="true" uuid="84398136-2928-45dc-b7a1-1c7abd982bfc"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="true" isUnderline="false" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="false"/>
+					<paragraph spacingBefore="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{labelProblemCode}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="260" y="2" width="50" height="16" isPrintWhenDetailOverflows="true" uuid="9f08f409-270b-4ac2-aaaa-24ff37cca039"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="true" isUnderline="false" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="false"/>
+					<paragraph spacingBefore="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{labelLcationDescription}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="602" y="2" width="80" height="16" isPrintWhenDetailOverflows="true" uuid="3ed6343c-60f2-4d57-a3a0-dc5399474d1a"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="true" isUnderline="false" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="false"/>
+					<paragraph spacingBefore="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{labelActualFinishDate}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="737" y="2" width="65" height="16" isPrintWhenDetailOverflows="true" uuid="597c54f4-c8af-43b4-a720-5a6e91dc8c0a"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="true" isUnderline="false" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="false"/>
+					<paragraph spacingBefore="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{labelDeviation}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="2" width="45" height="16" isPrintWhenDetailOverflows="true" uuid="5d5cfc72-b284-4fbb-b72a-54a2c8dd7825"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="true" isUnderline="false" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="false"/>
+					<paragraph spacingBefore="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{labelDefectNo}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="682" y="2" width="55" height="16" isPrintWhenDetailOverflows="true" uuid="731da9a1-f8b6-40da-ba49-7d00cbe7b274"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="true" isUnderline="false" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="false"/>
+					<paragraph spacingBefore="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{labelMeetKPI}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="45" y="2" width="45" height="16" isPrintWhenDetailOverflows="true" uuid="f32cb704-bda5-4e91-a234-6c22cb3eeba8"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="true" isUnderline="false" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="false"/>
+					<paragraph spacingBefore="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{labelStatus}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="1" width="801" height="1" uuid="214c339a-c50c-4256-8a37-3568d2d8acbb"/>
+			</line>
+			<line>
+				<reportElement x="1" y="18" width="801" height="1" uuid="bb14fd0b-2331-4db4-a0f4-ca49d638d0a8"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="17" splitType="Stretch">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="1" width="45" height="16" uuid="d3d06a0d-0153-4b8c-aeb8-828df46b3a1d">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font fontName="SansSerif" size="8" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="false"/>
+					<paragraph spacingBefore="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fieldCode}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="yyyy-MM-dd HH:mm:ss" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="90" y="1" width="50" height="16" uuid="f41f1c2c-fd91-4914-b0ad-d78b5b4d8ad1"/>
+				<textElement>
+					<font fontName="SansSerif" size="8" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="false"/>
+					<paragraph spacingBefore="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fieldIssueDate}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="310" y="1" width="65" height="16" uuid="f9df2572-2171-47ba-98ca-27354bc07add"/>
+				<textElement>
+					<font fontName="SansSerif" size="8" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="false"/>
+					<paragraph spacingBefore="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fieldDesc}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="420" y="1" width="72" height="16" uuid="b041155d-496e-4d3d-9e7a-440492f2af00"/>
+				<textElement>
+					<font fontName="SansSerif" size="8" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="false"/>
+					<paragraph spacingBefore="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fieldAssignedAccount}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="492" y="1" width="30" height="16" uuid="e593c5f2-9b63-4184-8f54-06588807e91b"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="8" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="false"/>
+					<paragraph spacingBefore="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fieldPriority}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="140" y="1" width="60" height="16" uuid="fadc1173-f16f-49a0-b164-64e5fbac0a9e"/>
+				<textElement>
+					<font fontName="SansSerif" size="8" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="false"/>
+					<paragraph spacingBefore="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fieldFailureClass}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="260" y="1" width="50" height="16" uuid="3da56e52-d76e-41c6-82db-2858986615d4"/>
+				<textElement>
+					<font fontName="SansSerif" size="8" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="false"/>
+					<paragraph spacingBefore="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fieldLocation}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="yyyy-MM-dd HH:mm:ss" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="682" y="1" width="55" height="16" uuid="6daaaa23-3667-4488-b423-f6dc20d07646"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="8" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="false"/>
+					<paragraph spacingBefore="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fieldMeetKpi}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="" positionType="Float" stretchType="RelativeToTallestObject" x="200" y="1" width="60" height="16" uuid="41f7ae38-e328-4e71-b53c-ffd3e211c747"/>
+				<box leftPadding="2" rightPadding="2">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="SansSerif" size="8" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="false"/>
+					<paragraph spacingBefore="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fieldProblemCode}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="yyyy-MM-dd HH:mm:ss" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="737" y="1" width="65" height="16" uuid="7b4c131e-a65f-4d64-be3f-de8bd8b51cf2"/>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif" size="8" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="false"/>
+					<paragraph spacingBefore="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[( $F{fieldMeetKpi}.equals( "Y" ) ? "-" : $F{fieldDeviation} )]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="yyyy-MM-dd HH:mm:ss" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="522" y="1" width="80" height="16" uuid="dd6d6aa7-e410-4130-9a16-38777f3bffc5"/>
+				<textElement>
+					<font fontName="SansSerif" size="8" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="false"/>
+					<paragraph spacingBefore="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fieldTargetFinishDate}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="yyyy-MM-dd HH:mm:ss" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="602" y="1" width="80" height="16" uuid="7f7e3e62-17ae-447d-902f-260f106689fd"/>
+				<textElement>
+					<font fontName="SansSerif" size="8" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="false"/>
+					<paragraph spacingBefore="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fieldActualFinishDate}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="45" y="1" width="45" height="16" uuid="877cabb6-5c61-45de-a55a-a0c4bc57d9a7"/>
+				<textElement>
+					<font fontName="SansSerif" size="8" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H"/>
+					<paragraph spacingBefore="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fieldStatus}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="375" y="1" width="45" height="16" uuid="c1e690c2-2b74-46e0-94f1-e55e4d20220a"/>
+				<textElement>
+					<font fontName="SansSerif" size="8" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="false"/>
+					<paragraph spacingBefore="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fieldCallFrom}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="17" splitType="Immediate">
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToTallestObject" x="0" y="1" width="45" height="16" uuid="1bfbb281-25f5-475c-b24c-b5c6bb731e71"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="SansSerif" size="8" isBold="true" isUnderline="true" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="false"/>
+					<paragraph spacingBefore="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{labelRemarks} + " : "]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="45" y="1" width="757" height="16" uuid="3775e13f-5c2f-43f8-ada1-0c32ad21f89e"/>
+				<textElement>
+					<font fontName="SansSerif" size="8" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H"/>
+					<paragraph spacingBefore="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fieldRemark}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="2">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" stretchType="RelativeToBandHeight" x="0" y="1" width="802" height="1" isPrintWhenDetailOverflows="true" uuid="ee0c4152-f142-4499-b764-0583ee843eed">
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.75" lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="17">
+			<line>
+				<reportElement x="0" y="0" width="801" height="1" uuid="7c92f745-42f2-484e-bf16-61f5cfb748a3"/>
+			</line>
+			<textField>
+				<reportElement x="0" y="1" width="375" height="16" isPrintWhenDetailOverflows="true" uuid="1d3a0d7f-980d-41d8-bd0e-434a6cc63d22"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{labelPage} + " " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="375" y="1" width="427" height="16" isPrintWhenDetailOverflows="true" uuid="494bd23f-e88b-4a87-9618-b07c64ec8f56"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $P{labelOf} + " " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnFooter>
+	<summary>
+		<band height="12">
+			<textField>
+				<reportElement x="0" y="0" width="140" height="12" isPrintWhenDetailOverflows="true" uuid="c41a3188-023a-439a-919c-bce0d5b04fa2"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="false" isUnderline="false" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{labelTotal}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

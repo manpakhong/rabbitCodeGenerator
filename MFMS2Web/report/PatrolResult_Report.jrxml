@@ -1,0 +1,756 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="PatrolResult_Report" pageWidth="595" pageHeight="842" columnWidth="515" leftMargin="40" rightMargin="40" topMargin="25" bottomMargin="28" whenResourceMissingType="Empty" uuid="e2da0562-1880-4201-9dc5-5b3a7fb8910c">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="Report_Title" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[Report Title]]></parameterDescription>
+	</parameter>
+	<parameter name="RowCount" class="java.lang.Integer" isForPrompting="false"/>
+	<parameter name="Msg" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="Label_StartTime" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[Label_StartTime]]></parameterDescription>
+	</parameter>
+	<parameter name="Label_PersonAttended" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[Label_PersonAttended]]></parameterDescription>
+	</parameter>
+	<parameter name="Label_RouteCode" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[Label_RouteCode]]></parameterDescription>
+	</parameter>
+	<parameter name="Label_RouteName" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[Label_RouteName]]></parameterDescription>
+	</parameter>
+	<parameter name="Column_TimeAttended" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[Column_TimeAttended]]></parameterDescription>
+	</parameter>
+	<parameter name="Column_SeqNum" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[Column_SeqNum]]></parameterDescription>
+	</parameter>
+	<parameter name="Column_LocationCode" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[Column_LocationCode]]></parameterDescription>
+	</parameter>
+	<parameter name="Column_LocationName" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[Column_LocationName]]></parameterDescription>
+	</parameter>
+	<parameter name="Column_Result" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[Column_Result]]></parameterDescription>
+	</parameter>
+	<parameter name="Label_TotalTime" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[Label_TotalTime]]></parameterDescription>
+	</parameter>
+	<parameter name="Column_Speed" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[Column_Speed]]></parameterDescription>
+	</parameter>
+	<parameter name="FreeRoute" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[FreeRoute]]></parameterDescription>
+	</parameter>
+	<parameter name="TotalRouteNumber" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[TotalRouteNumber]]></parameterDescription>
+	</parameter>
+	<parameter name="TotalCorrectRouteNumber" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[TotalCorrectRouteNumber]]></parameterDescription>
+	</parameter>
+	<parameter name="TotalIncorrectRouteNumber" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[TotalIncorrectRouteNumber]]></parameterDescription>
+	</parameter>
+	<parameter name="Column_Duration" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[Column_Duration]]></parameterDescription>
+	</parameter>
+	<parameter name="TotalManagerRouteNumber" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[TotalManagerRouteNumber]]></parameterDescription>
+	</parameter>
+	<parameter name="labelPage" class="java.lang.String"/>
+	<parameter name="labelOf" class="java.lang.String"/>
+	<parameter name="labelPrintDate" class="java.lang.String"/>
+	<field name="startTime" class="java.lang.String">
+		<fieldDescription><![CDATA[startTime]]></fieldDescription>
+	</field>
+	<field name="accountNameEN" class="java.lang.String">
+		<fieldDescription><![CDATA[accountNameEN]]></fieldDescription>
+	</field>
+	<field name="routeCode" class="java.lang.String">
+		<fieldDescription><![CDATA[routeCode]]></fieldDescription>
+	</field>
+	<field name="routeNameEN" class="java.lang.String">
+		<fieldDescription><![CDATA[routeNameEN]]></fieldDescription>
+	</field>
+	<field name="timeAttended" class="java.lang.String">
+		<fieldDescription><![CDATA[timeAttended]]></fieldDescription>
+	</field>
+	<field name="seqNum" class="java.lang.Integer">
+		<fieldDescription><![CDATA[seqNum]]></fieldDescription>
+	</field>
+	<field name="result" class="java.lang.String">
+		<fieldDescription><![CDATA[result]]></fieldDescription>
+	</field>
+	<field name="speed" class="java.lang.String">
+		<fieldDescription><![CDATA[speed]]></fieldDescription>
+	</field>
+	<field name="totalTimeUsed" class="java.lang.String">
+		<fieldDescription><![CDATA[totalTimeUsed]]></fieldDescription>
+	</field>
+	<field name="groupNum" class="java.lang.Integer">
+		<fieldDescription><![CDATA[groupNum]]></fieldDescription>
+	</field>
+	<field name="displayLocationCode" class="java.lang.String">
+		<fieldDescription><![CDATA[displayLocationCode]]></fieldDescription>
+	</field>
+	<field name="displayLocationNameEN" class="java.lang.String">
+		<fieldDescription><![CDATA[displayLocationNameEN]]></fieldDescription>
+	</field>
+	<field name="totalRouteNum" class="java.lang.Integer">
+		<fieldDescription><![CDATA[totalRouteNum]]></fieldDescription>
+	</field>
+	<field name="totalCorrectRouteNum" class="java.lang.Integer">
+		<fieldDescription><![CDATA[totalCorrectRouteNum]]></fieldDescription>
+	</field>
+	<field name="totalIncorrectRouteNum" class="java.lang.Integer">
+		<fieldDescription><![CDATA[totalIncorrectRouteNum]]></fieldDescription>
+	</field>
+	<field name="duration" class="java.lang.String">
+		<fieldDescription><![CDATA[duration]]></fieldDescription>
+	</field>
+	<field name="totalManagerRouteNum" class="java.lang.Integer">
+		<fieldDescription><![CDATA[totalManagerRouteNum]]></fieldDescription>
+	</field>
+	<field name="reason" class="java.lang.String">
+		<fieldDescription><![CDATA[reason]]></fieldDescription>
+	</field>
+	<variable name="SUM_groupNum_1" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{groupNum}]]></variableExpression>
+	</variable>
+	<variable name="SUM_totalTimeUsed_1" class="java.lang.String" calculation="Sum">
+		<variableExpression><![CDATA[$F{totalTimeUsed}]]></variableExpression>
+	</variable>
+	<group name="RouteResult_Group" isStartNewPage="true">
+		<groupExpression><![CDATA[$F{groupNum}]]></groupExpression>
+		<groupHeader>
+			<band height="59" splitType="Prevent">
+				<rectangle>
+					<reportElement key="rectangle-1" mode="Transparent" x="0" y="0" width="515" height="59" isPrintWhenDetailOverflows="true" uuid="2b951602-9fd0-43c4-998e-f946a28b2fb3"/>
+				</rectangle>
+				<textField pattern="" isBlankWhenNull="true">
+					<reportElement key="textField" x="0" y="0" width="100" height="18" uuid="8f4797ea-b000-4a6d-899d-1024f6f098f0"/>
+					<box leftPadding="2" rightPadding="2">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement>
+						<font fontName="Noto Sans CJK TC Regular" isBold="true" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="true"/>
+						<paragraph leftIndent="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{Label_StartTime}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField" x="0" y="18" width="100" height="23" uuid="aa0e0696-7756-4d06-9ed2-41836b2346c4"/>
+					<box leftPadding="2" rightPadding="2">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement>
+						<font fontName="Noto Sans CJK TC Regular" isBold="true" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="true"/>
+						<paragraph leftIndent="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{Label_RouteCode}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField" x="244" y="0" width="100" height="18" uuid="9448303c-7f2b-458b-9ed2-d899aef44094"/>
+					<box leftPadding="2" rightPadding="2">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement>
+						<font fontName="Noto Sans CJK TC Regular" isBold="true" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{Label_PersonAttended}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField" x="244" y="18" width="100" height="23" uuid="7f09f358-fd02-4464-b0da-142036642ed2"/>
+					<box leftPadding="2" rightPadding="2">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement>
+						<font fontName="Noto Sans CJK TC Regular" isBold="true" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{Label_RouteName}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField" stretchType="RelativeToTallestObject" x="0" y="41" width="65" height="18" isPrintInFirstWholeBand="true" uuid="ca63f554-d8d1-4051-9240-f3fbea3b02c8"/>
+					<box leftPadding="2" rightPadding="2">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Left">
+						<font fontName="Noto Sans CJK TC Regular" isBold="true" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="true"/>
+						<paragraph leftIndent="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{Column_TimeAttended}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField" stretchType="RelativeToTallestObject" x="115" y="41" width="40" height="18" uuid="d7ee55a7-b342-45fe-848c-57573b76fcfd"/>
+					<box leftPadding="2" rightPadding="2">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center">
+						<font fontName="Noto Sans CJK TC Regular" isBold="true" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{Column_SeqNum}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField" stretchType="RelativeToTallestObject" x="155" y="41" width="89" height="18" uuid="d055676e-9312-4c8b-8e78-77034def3871"/>
+					<box leftPadding="2" rightPadding="2">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement>
+						<font fontName="Noto Sans CJK TC Regular" isBold="true" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{Column_LocationCode}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField" stretchType="RelativeToTallestObject" x="244" y="41" width="165" height="18" uuid="69b763ee-6bea-400f-ab9b-fcf928692cda"/>
+					<box leftPadding="2" rightPadding="2">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement>
+						<font fontName="Noto Sans CJK TC Regular" isBold="true" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{Column_LocationName}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField" stretchType="RelativeToTallestObject" x="409" y="41" width="50" height="18" uuid="81b29a17-0721-491f-ad58-199dedb7efde"/>
+					<box leftPadding="2" rightPadding="2">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement>
+						<font fontName="Noto Sans CJK TC Regular" isBold="true" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{Column_Result}]]></textFieldExpression>
+				</textField>
+				<textField pattern="" isBlankWhenNull="true">
+					<reportElement key="textField" x="115" y="0" width="129" height="18" uuid="aee49beb-4d6b-4ed1-846d-73ccfb844eff"/>
+					<box leftPadding="2" rightPadding="2">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement>
+						<font fontName="Noto Sans CJK TC Regular" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{startTime}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField" x="115" y="18" width="129" height="23" uuid="b6e1d74d-46ab-4436-a76a-6a95d2c98568"/>
+					<box leftPadding="2" rightPadding="2">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement>
+						<font fontName="Noto Sans CJK TC Regular" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[( null ==$F{routeCode} && null==$P{Msg} ? $P{FreeRoute} : $F{routeCode} )]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField" x="359" y="18" width="156" height="23" uuid="2662ae14-87aa-4f2a-8393-98860d07e2fc"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement>
+						<font fontName="Noto Sans CJK TC Regular" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[( null==$F{routeNameEN} && null==$P{Msg} ? $P{FreeRoute} : $F{routeNameEN} )]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField" x="359" y="0" width="156" height="18" uuid="eafa1d5c-ef6b-4cbd-b83d-cdad20d6da1b"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement>
+						<font fontName="Noto Sans CJK TC Regular" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{accountNameEN}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField" stretchType="RelativeToTallestObject" x="459" y="41" width="56" height="18" uuid="dd4422e3-baca-4812-822c-6e6a7d3cbb4f"/>
+					<box leftPadding="2" rightPadding="2">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement>
+						<font fontName="Noto Sans CJK TC Regular" isBold="true" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{Column_Speed}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-1" x="100" y="0" width="15" height="18" uuid="0240f942-2545-4fa8-ba9f-2a7ff625c4a4"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Top">
+						<font fontName="Noto Sans CJK TC Regular" isBold="true" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-2" x="100" y="18" width="15" height="23" uuid="ff265524-b61b-4035-baa3-775d30fc387d"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Top">
+						<font fontName="Noto Sans CJK TC Regular" isBold="true" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-3" x="344" y="18" width="15" height="23" uuid="a3ade296-a477-436f-81fc-1416afdc6cb6"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Top">
+						<font fontName="Noto Sans CJK TC Regular" isBold="true" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-4" x="344" y="0" width="15" height="18" uuid="bb961bca-15bb-45bf-9690-c9a4aa3578e5"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Top">
+						<font fontName="Noto Sans CJK TC Regular" isBold="true" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[:]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField" stretchType="RelativeToTallestObject" x="65" y="41" width="50" height="18" uuid="33f0811e-b912-47f0-8c1e-cd971052ac33"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center">
+						<font fontName="Noto Sans CJK TC Regular" isBold="true" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{Column_Duration}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="20" splitType="Prevent">
+				<line>
+					<reportElement key="line-1" positionType="Float" x="0" y="0" width="515" height="1" uuid="b3227e6a-f381-4328-a985-58e9aa84e1f1"/>
+					<graphicElement>
+						<pen lineWidth="1.0" lineStyle="Solid"/>
+					</graphicElement>
+				</line>
+				<textField pattern="" isBlankWhenNull="true">
+					<reportElement key="textField" positionType="Float" x="65" y="1" width="50" height="16" uuid="cb220a8f-04db-4dfd-852b-d8fdb7496c49"/>
+					<box leftPadding="2" rightPadding="2">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center">
+						<font fontName="Noto Sans CJK TC Regular" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{totalTimeUsed}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField" positionType="Float" x="0" y="1" width="65" height="16" uuid="da85f6c5-4a51-4d39-acb5-773852ef9a4d"/>
+					<box leftPadding="2" rightPadding="2">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement>
+						<font fontName="Noto Sans CJK TC Regular" isBold="true" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="true"/>
+						<paragraph leftIndent="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{Label_TotalTime}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement key="line-2" x="65" y="19" width="50" height="1" uuid="0fd343be-a448-478d-892d-84f282647704"/>
+				</line>
+				<line>
+					<reportElement key="line-3" x="65" y="17" width="50" height="1" uuid="600ce288-e102-4e59-b257-61667643960f"/>
+				</line>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="60" splitType="Stretch">
+			<textField isBlankWhenNull="false">
+				<reportElement key="Title" x="0" y="0" width="515" height="35" uuid="84d0e550-28c9-465b-8025-7ca14eb44e5b"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Noto Sans CJK TC Regular" size="20" isBold="true" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{Report_Title}]]></textFieldExpression>
+			</textField>
+			<textField pattern="yyyy-MM-dd HH:mm:ss">
+				<reportElement x="244" y="35" width="271" height="18" uuid="cb3a3e49-0f95-4824-8d66-125fce84f0b1"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="10" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{labelPrintDate} + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date())]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<detail>
+		<band height="18" splitType="Prevent">
+			<textField isBlankWhenNull="true">
+				<reportElement key="Msg" x="0" y="0" width="409" height="18" uuid="aeccf8ed-3eee-4f71-a900-117203ada2e4"/>
+				<box leftPadding="2" rightPadding="2">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="Noto Sans CJK TC Regular" isItalic="true" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="true"/>
+					<paragraph lineSpacing="Single" leftIndent="10" spacingBefore="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{Msg}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+				<reportElement key="TimeAttended" positionType="Float" stretchType="RelativeToTallestObject" x="0" y="0" width="65" height="18" uuid="dd4b00d4-c016-48eb-b83d-c53eba3d697b"/>
+				<box leftPadding="2" rightPadding="2">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left">
+					<font fontName="Noto Sans CJK TC Regular" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="true"/>
+					<paragraph lineSpacing="Single" leftIndent="10" spacingBefore="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{timeAttended}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="SeqNum" positionType="Float" stretchType="RelativeToTallestObject" x="115" y="0" width="40" height="18" uuid="c56bc2c3-fbb6-4622-ba96-1c1370cdcdd3"/>
+				<box leftPadding="2" rightPadding="2">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Noto Sans CJK TC Regular" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="true"/>
+					<paragraph lineSpacing="Single" spacingBefore="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{seqNum}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="LocationCode" positionType="Float" stretchType="RelativeToTallestObject" x="155" y="0" width="89" height="18" uuid="c6392062-6c0a-4fdf-9c38-be2ac1bfd401"/>
+				<box leftPadding="2" rightPadding="2">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="Noto Sans CJK TC Regular" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="true"/>
+					<paragraph lineSpacing="Single" spacingBefore="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{displayLocationCode}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="LocationName" positionType="Float" stretchType="RelativeToTallestObject" x="244" y="0" width="165" height="18" uuid="9867763b-d975-49b8-a35b-f6ef763dbbb2"/>
+				<box leftPadding="2" rightPadding="2">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="Noto Sans CJK TC Regular" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="true"/>
+					<paragraph lineSpacing="Single" spacingBefore="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{displayLocationNameEN}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="Result" positionType="Float" stretchType="RelativeToTallestObject" x="409" y="0" width="50" height="18" uuid="01e07117-7b9d-4bef-8147-a0400a152bb9"/>
+				<box leftPadding="2" rightPadding="2">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="Noto Sans CJK TC Regular" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="true"/>
+					<paragraph lineSpacing="Single" spacingBefore="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{result}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="Speed" positionType="Float" stretchType="RelativeToTallestObject" x="459" y="0" width="56" height="18" uuid="18f99cdb-568a-499f-8de9-06161c0d9f28"/>
+				<box leftPadding="2" rightPadding="2">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="Noto Sans CJK TC Regular" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="true"/>
+					<paragraph lineSpacing="Single" spacingBefore="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{reason}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="Dur" positionType="Float" stretchType="RelativeToTallestObject" x="65" y="0" width="50" height="18" uuid="c7d09c81-6b13-4364-ac11-bcc63c7c37c5"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Noto Sans CJK TC Regular" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="true"/>
+					<paragraph lineSpacing="Single" spacingBefore="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{duration}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="19" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="0" width="515" height="1" uuid="e4437895-b0f3-4866-8359-4763eb179e33">
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+			<textField evaluationTime="Report">
+				<reportElement x="244" y="1" width="271" height="18" uuid="06a044b0-24d4-4f90-9088-e58fb13d070f"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Noto Sans CJK TC Regular" size="10" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $P{labelOf} + " " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="1" width="244" height="18" uuid="a7210308-a125-4343-9ca7-44ea00b03fd9"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Noto Sans CJK TC Regular" size="10" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{labelPage} + " " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<lastPageFooter>
+		<band height="19" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="0" width="515" height="1" uuid="24a6b2d4-a062-4adf-84d8-e9952616144e">
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement x="0" y="1" width="244" height="18" uuid="6772d267-58bb-48ff-8c62-581e94b756ae"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Noto Sans CJK TC Regular" size="10" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{labelPage} + " " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="244" y="1" width="271" height="18" uuid="e49fa85d-0f02-4bd8-8f18-90d148574458"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Noto Sans CJK TC Regular" size="10" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $P{labelOf} + " " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</lastPageFooter>
+	<summary>
+		<band height="75" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" positionType="Float" x="0" y="0" width="515" height="18" uuid="6cdf0bc0-d519-4644-be30-67080ad6f603">
+					<printWhenExpression><![CDATA[new Boolean(!$F{totalCorrectRouteNum}.equals(new Integer("-1")) && !$F{totalIncorrectRouteNum}.equals(new Integer("-1")))]]></printWhenExpression>
+				</reportElement>
+				<box leftPadding="2" rightPadding="2">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="Noto Sans CJK TC Regular" isBold="true" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="true"/>
+					<paragraph leftIndent="30"/>
+				</textElement>
+			</textField>
+			<line>
+				<reportElement key="line-4" positionType="Float" x="155" y="18" width="204" height="1" uuid="7afcd929-95ba-4db2-bc0a-69149f769d8e"/>
+				<graphicElement>
+					<pen lineWidth="1.5" lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" positionType="Float" x="155" y="57" width="150" height="18" uuid="d247cf02-cfcb-4d2d-88de-520299b3f6cd">
+					<printWhenExpression><![CDATA[new Boolean(!$F{totalCorrectRouteNum}.equals(new Integer("-1")) && !$F{totalIncorrectRouteNum}.equals(new Integer("-1")))]]></printWhenExpression>
+				</reportElement>
+				<box leftPadding="2" rightPadding="2">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="Noto Sans CJK TC Regular" isBold="true" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="true"/>
+					<paragraph leftIndent="20"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{TotalRouteNumber}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" positionType="Float" x="305" y="57" width="54" height="18" uuid="e91b75d9-7221-428d-a595-871298e05fbb">
+					<printWhenExpression><![CDATA[new Boolean(!$F{totalCorrectRouteNum}.equals(new Integer("-1")) && !$F{totalIncorrectRouteNum}.equals(new Integer("-1")))]]></printWhenExpression>
+				</reportElement>
+				<box leftPadding="2" rightPadding="2">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font fontName="Noto Sans CJK TC Regular" isBold="true" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="true"/>
+					<paragraph rightIndent="24"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{totalRouteNum}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" positionType="Float" x="305" y="19" width="54" height="18" uuid="c807c66d-2241-439b-963e-83f8ef7227d1"/>
+				<box leftPadding="2" rightPadding="2">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font fontName="Noto Sans CJK TC Regular" isBold="true" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="true"/>
+					<paragraph rightIndent="24"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{totalCorrectRouteNum}.equals(new Integer("-1")) && $F{totalIncorrectRouteNum}.equals(new Integer("-1"))) ? $F{totalRouteNum} : $F{totalCorrectRouteNum}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" positionType="Float" x="305" y="37" width="54" height="18" uuid="d71585b9-1127-4ad1-93b2-c64d079e4eaa">
+					<printWhenExpression><![CDATA[new Boolean(!$F{totalCorrectRouteNum}.equals(new Integer("-1")) && !$F{totalIncorrectRouteNum}.equals(new Integer("-1")))]]></printWhenExpression>
+				</reportElement>
+				<box leftPadding="2" rightPadding="2">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font fontName="Noto Sans CJK TC Regular" isBold="true" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="true"/>
+					<paragraph rightIndent="24"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{totalIncorrectRouteNum}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" positionType="Float" x="155" y="19" width="150" height="18" uuid="ee251cab-eeb3-45fc-a0c5-01d86739cea5"/>
+				<box leftPadding="2" rightPadding="2">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="Noto Sans CJK TC Regular" isBold="true" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="true"/>
+					<paragraph leftIndent="20"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{TotalCorrectRouteNumber}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" positionType="Float" x="155" y="37" width="150" height="18" uuid="1b5d4c41-5cc5-4864-8940-8973f2fe2e20">
+					<printWhenExpression><![CDATA[new Boolean(!$F{totalCorrectRouteNum}.equals(new Integer("-1")) && !$F{totalIncorrectRouteNum}.equals(new Integer("-1")))]]></printWhenExpression>
+				</reportElement>
+				<box leftPadding="2" rightPadding="2">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="Noto Sans CJK TC Regular" isBold="true" pdfFontName="MHei-Medium" pdfEncoding="UniCNS-UCS2-H" isPdfEmbedded="true"/>
+					<paragraph leftIndent="20"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{TotalIncorrectRouteNumber}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement key="line-6" positionType="Float" x="155" y="56" width="204" height="1" uuid="d8fd8e17-5866-4165-ba8e-3dfeb3b77c69">
+					<printWhenExpression><![CDATA[new Boolean(!$F{totalCorrectRouteNum}.equals(new Integer("-1")) && !$F{totalIncorrectRouteNum}.equals(new Integer("-1")))]]></printWhenExpression>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="1.5" lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+		</band>
+	</summary>
+</jasperReport>

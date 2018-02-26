@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://www.springframework.org/schema/beans"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+    
+    <bean id="view_fileTable" class="org.springframework.web.servlet.view.JstlView">
+		<property name="url"
+			value="/WEB-INF/pages/defect/view_fileTable.jsp" />
+	</bean>
+    
+	<bean id="view_showChildren" class="org.springframework.web.servlet.view.JstlView">
+		<property name="url" value="/WEB-INF/pages/patrol/view_showChildren.jsp" />
+	</bean>
+	<bean id="view_showSelectedLocation" class="org.springframework.web.servlet.view.JstlView">
+		<property name="url"
+			value="/WEB-INF/pages/patrol/view_showSelectedLocation.jsp" />
+	</bean>
+	<bean id="view_showErrorMsg" class="org.springframework.web.servlet.view.JstlView">
+		<property name="url" value="/WEB-INF/pages/patrol/view_errorMsg.jsp" />
+	</bean>
+	<bean id="view_showSuccessMsg" class="org.springframework.web.servlet.view.JstlView">
+		<property name="url" value="/WEB-INF/pages/patrol/view_successMsg.jsp" />
+	</bean>
+	<bean id="view_startingLocation" class="org.springframework.web.servlet.view.JstlView">
+		<property name="url"
+			value="/WEB-INF/pages/patrol/view_startingLocation.jsp" />
+	</bean>
+	<bean id="view_searchTable" class="org.springframework.web.servlet.view.JstlView">
+		<property name="url" value="/WEB-INF/pages/patrol/view_searchTable.jsp" />
+	</bean>
+	<bean id="view_assign_selectRoute" class="org.springframework.web.servlet.view.JstlView">
+		<property name="url"
+			value="/WEB-INF/pages/patrol/assignSchedule/view_assign_selectRoute.jsp" />
+	</bean>
+	<bean id="view_assign_selectLocation" class="org.springframework.web.servlet.view.JstlView">
+		<property name="url"
+			value="/WEB-INF/pages/maintenance/view_assign_selectLocation.jsp" />
+	</bean>
+	<bean id="view_assign_selectStaff" class="org.springframework.web.servlet.view.JstlView">
+		<property name="url"
+			value="/WEB-INF/pages/patrol/assignSchedule/view_assign_selectStaff.jsp" />
+	</bean>
+	<bean id="view_calendar" class="org.springframework.web.servlet.view.JstlView">
+		<property name="url"
+			value="/WEB-INF/pages/patrol/assignSchedule/view_calendar.jsp" />
+	</bean>
+	<bean id="view_assign_route_searched" class="org.springframework.web.servlet.view.JstlView">
+		<property name="url"
+			value="/WEB-INF/pages/patrol/assignSchedule/view_assign_route_searched.jsp" />
+	</bean>
+	<bean id="view_assign_route_selected" class="org.springframework.web.servlet.view.JstlView">
+		<property name="url"
+			value="/WEB-INF/pages/patrol/assignSchedule/view_assign_route_selected.jsp" />
+	</bean>
+	<bean id="view_assign_account_selected" class="org.springframework.web.servlet.view.JstlView">
+		<property name="url"
+			value="/WEB-INF/pages/patrol/assignSchedule/view_assign_account_selected.jsp" />
+	</bean>
+	<bean id="view_assign_account_searched" class="org.springframework.web.servlet.view.JstlView">
+		<property name="url"
+			value="/WEB-INF/pages/patrol/assignSchedule/view_assign_account_searched.jsp" />
+	</bean>
+	<bean id="view_assign_schedule_form" class="org.springframework.web.servlet.view.JstlView">
+		<property name="url"
+			value="/WEB-INF/pages/patrol/assignSchedule/view_assign_schedule_form.jsp" />
+	</bean>
+	<bean id="view_calendar_eventModal" class="org.springframework.web.servlet.view.JstlView">
+		<property name="url"
+			value="/WEB-INF/pages/patrol/assignSchedule/view_calendar_eventModal.jsp" />
+	</bean>
+	<bean id="view_selectReportDate" class="org.springframework.web.servlet.view.JstlView">
+		<property name="url"
+			value="/WEB-INF/pages/patrol/report/view_selectReportDate.jsp" />
+	</bean>
+
+	<bean id="view_currentPatrol" class="org.springframework.web.servlet.view.JstlView">
+		<property name="url"
+			value="/WEB-INF/pages/patrol/monitor/view_currentPatrol.jsp" />
+	</bean>
+	<bean id="view_futurePatrol" class="org.springframework.web.servlet.view.JstlView">
+		<property name="url"
+			value="/WEB-INF/pages/patrol/monitor/view_futurePatrol.jsp" />
+	</bean>
+	<bean id="view_currentPatrolResult" class="org.springframework.web.servlet.view.JstlView">
+		<property name="url"
+			value="/WEB-INF/pages/patrol/monitor/view_currentPatrolResult.jsp" />
+	</bean>
+	<bean id="view_updateCurrentPatrol" class="org.springframework.web.servlet.view.JstlView">
+		<property name="url"
+			value="/WEB-INF/pages/patrol/monitor/view_updateCurrentPatrol.jsp" />
+	</bean>
+<bean id="view_updateCurrentPatrolResult" class="org.springframework.web.servlet.view.JstlView">
+		<property name="url"
+			value="/WEB-INF/pages/patrol/monitor/view_updateCurrentPatrolResult.jsp" />
+	</bean>
+	<bean id="view_alert" class="org.springframework.web.servlet.view.JstlView">
+		<property name="url" value="/WEB-INF/pages/patrol/monitor/view_alert.jsp" />
+	</bean>
+	<bean id="view_patrolPhoto" class="org.springframework.web.servlet.view.JstlView">
+		<property name="url" value="/WEB-INF/pages/patrol/view_patrolPhoto.jsp" />
+	</bean>
+
+
+</beans>

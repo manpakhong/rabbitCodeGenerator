@@ -1,0 +1,11 @@
+eclipse.preferences.version=1
+encoding//WebContent/WEB-INF/pages/common/navigation.jsp=UTF-8
+encoding//WebContent/WEB-INF/pages/logonmgt/login.jsp=UTF-8
+encoding//report/PatrolResult_Report.jrxml=UTF-8
+encoding//report/PatrolStaff_Report.jrxml=UTF-8
+encoding//bin/report/defectList2.jrxml=UTF-8
+encoding//report/defectList.jrxml=UTF-8
+encoding//report/defectList2.jrxml=UTF-8
+encoding//report/defectStatusSummary.jrxml=UTF-8
+encoding//report/defectStatusSummaryTest.jrxml=UTF-8
+encoding//src/hk/ebsl/mfms/web/controller/DefectController.java=UTF-8

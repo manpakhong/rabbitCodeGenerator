@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:task="http://www.springframework.org/schema/task" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	   		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	   		http://www.springframework.org/schema/task
+			http://www.springframework.org/schema/task/spring-task-3.0.xsd
+			http://www.springframework.org/schema/context  
+            http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+
+	<!-- <context:property-placeholder location="WEB-INF/config/scheduler.properties"/> -->
+	<!-- task:scheduled-tasks scheduler="taskScheduler"> <task:scheduled ref="workOrderService" 
+		method="test" cron="${test.schedule.time}"/> </task:scheduled-tasks -->
+	<!-- <task:scheduled-tasks scheduler="taskScheduler"> </task:scheduled-tasks> 
+		<task:scheduled-tasks scheduler="taskScheduler"> </task:scheduled-tasks> -->
+	<!-- <task:scheduled-tasks scheduler="taskScheduler"> </task:scheduled-tasks> 
+		<task:scheduled-tasks scheduler="taskScheduler"> <task:scheduled ref="scheduledEmailTask" 
+		method="emailExpiringWorkOrder" cron="${schedule.email.onDemand}"/> <task:scheduled 
+		ref="scheduledEmailTask" method="emailExpiringGroupWorkOrder" cron="${schedule.email.onDemand}"/> 
+		<task:scheduled ref="scheduledEmailTask" method="emailDailyWorkOrder" cron="${schedule.email.daily}"/> 
+		</task:scheduled-tasks> -->
+
+
+	<task:scheduled-tasks scheduler="taskScheduler">
+
+		<task:scheduled ref="scheduledEmailTask" method="emailDailyExpiredWorkOrder"
+			cron="${schedule.email.daily}" />
+		<task:scheduled ref="scheduledEmailTask" method="emailDailyMaintenanceSchedule"
+			cron="${schedule.email.daily}" />
+		<task:scheduled ref="scheduledPatrolEmail" method="sendDailyPatrolEmail"
+			cron="${schedule.email.daily}" />
+
+		<task:scheduled ref="scheduledPatrolEmail" method="sendExpiredPatrolEmail"
+			cron="${schedule.email.daily}" />
+				
+		<!-- 
+		<task:scheduled ref="scheduledPatrolEmail" method="sendExpiredPatrolEmail"
+			cron="${schedule.email.onDemand}" />
+		 -->
+			
+		<!--<task:scheduled ref="scheduledPatrolEmail" method="sendDailyPatrolEmail" fixed-delay="15000"/> 
+		<task:scheduled ref="scheduledPatrolEmail" method="sendExpiredPatrolEmail" 
+			fixed-delay="1500000000000000"/>-->
+	</task:scheduled-tasks>
+
+
+	<task:scheduler id="taskScheduler" pool-size="10" />
+	<bean id="scheduledEmailTask" class="hk.ebsl.mfms.task.ScheduledEmailTask">
+		<property name="defectManager" ref="defectManager" />
+		<property name="defectScheduleManager" ref="defectScheduleManager" />
+		<property name="defectEmailManager" ref="defectEmailManager" />
+		<property name="emailManager" ref="emailManager" />
+		<property name="userAccountManager" ref="userAccountManager" />
+		<property name="equipmentManager" ref="equipmentManager" />
+		<property name="accountGroupManager" ref="accountGroupManager" />
+		<property name="accountGroupResponsibleManager" ref="accountGroupResponsibleManager" />
+		<property name="locationManager" ref="locationManager" />
+		<property name="siteManager" ref="siteManager" />
+		<property name="calendarEvent" ref="calendarEvent" />
+	</bean>
+
+	<bean id="scheduledPatrolEmail" class="hk.ebsl.mfms.task.SchedulePatrolEmail">
+		<property name="emailManager" ref="emailManager" />
+		<property name="siteManager" ref="siteManager" />
+		<property name="calendarEvent" ref="calendarEvent" />
+	</bean>
+</beans>

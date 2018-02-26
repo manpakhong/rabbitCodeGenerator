@@ -1,0 +1,2 @@
+MFMS2 : 今天的保養日程 (總數: {0}) Today''s Maintenance Schedule (Total: {0})
+{1}
