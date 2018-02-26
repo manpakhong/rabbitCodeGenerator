@@ -3,6 +3,7 @@ encoding//WebContent/WEB-INF/pages/common/navigation.jsp=UTF-8
 encoding//WebContent/WEB-INF/pages/defect/causeCode_search.jsp=UTF-8
 encoding//WebContent/WEB-INF/pages/logonmgt/login.jsp=UTF-8
 encoding//WebContent/WEB-INF/pages/maintenance/maintenance_defectCalendar.jsp=UTF-8
+encoding//WebContent/import/input-mask/phone-codes/phone-codes.json=UTF-8
 encoding//report/PatrolResult_Report.jrxml=UTF-8
 encoding//report/PatrolStaff_Report.jrxml=UTF-8
 encoding//report/defectList_v2.jrxml=UTF-8

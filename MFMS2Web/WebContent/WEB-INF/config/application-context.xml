@@ -217,6 +217,9 @@
 	<bean id="patrolResultDao" class="hk.ebsl.mfms.dao.PatrolResultDao">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="punchCardDao" class="hk.ebsl.mfms.dao.PunchCardDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	<bean id="statusAccessModeDao" class="hk.ebsl.mfms.dao.StatusAccessModeDao">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
@@ -447,6 +450,9 @@
 	</bean>
 	<bean id="patrolResultManager" class="hk.ebsl.mfms.manager.impl.PatrolResultManagerImpl">
 		<property name="patrolResultDao" ref="patrolResultDao" />
+	</bean>
+	<bean id="punchCardManager" class="hk.ebsl.mfms.manager.impl.PunchCardManagerImpl">
+		<property name="punchCardDao" ref="punchCardDao" />
 	</bean>
 	<bean id="defectFileManager" class="hk.ebsl.mfms.manager.impl.DefectFileManagerImpl">
 		<property name="defectFileDao" ref="defectFileDao" />
