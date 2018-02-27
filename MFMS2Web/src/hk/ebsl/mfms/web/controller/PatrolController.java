@@ -105,6 +105,8 @@ public class PatrolController {
 		public static final String pages_view_searchTable = "view_searchTable";
 		public static final String pages_view_patrolPhoto = "view_patrolPhoto";
 		public static final String pages_patrolPhotoSearch = "patrol/patrolPhoto_search";
+		public static final String pages_view_showClockInForm = "view_clock_in_form";
+		
 		
 		public static final String var_selectedLocation = "selectedLocationList";
 		public static final String var_childrenList = "childrenList";
