@@ -4,6 +4,17 @@
 
 <jsp:include page="../../common/left.jsp" />
 
+
+<link rel="stylesheet" href="import/css/patrol/patrol_style.css">
+
+<link rel="stylesheet"
+	href="import/datetimepicker/bootstrap-datetimepicker2.css">
+<script src="import/datetimepicker/moment.js"></script>
+<script src="import/datetimepicker/bootstrap-datetimepicker2.js"></script>
+<script src="import/customLoading.js"></script>
+<script src="import/punchcard/punchcard.js"></script>
+
+
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
 	<!-- Content Header (Page header) -->
@@ -19,8 +30,8 @@
 		<div class="row">
 <%-- 			<c:if
 				test="${currRole.grantedPrivilegeCodeList.contains(patrolMonitor)}"> --%>
-				<div class="col-lg-4  col-sm-6 iconStyle">
-					<a href="PatrolMonitor.do">
+				<div class="col-lg-4  col-sm-6 iconStyle" >
+	 				<a class="btn" onclick="openSelectRouteModal();" > 
 						<div class=" well">
 							<img class="img-responsive"
 								src="import/img2/pcm/clock_in.png" alt="">
@@ -31,7 +42,7 @@
 					</a>
 				</div>
 <%-- 			</c:if> --%>
-
+		<input type="button" value="test" onclick="openSelectRouteModal();"/>
 <%-- 			<c:if
 				test="${currRole.grantedPrivilegeCodeList.contains(modifyPatrolSchedule)
 					   || currRole.grantedPrivilegeCodeList.contains(createPatrolSchedule)
@@ -52,7 +63,7 @@
 <%-- 			</c:if> --%>
 
 				<div class="col-lg-4  col-sm-6 iconStyle">
-					<a href="PatrolAssign.do">
+					<a href="Home.do?roleKey=2">
 						<div class=" well">
 							<img class="img-responsive"
 								src="import/img2/pcm/skip.png" alt="">
@@ -62,10 +73,13 @@
 						</div>
 					</a>
 				</div>
-
+		</div>
 	</section>
 </div>
 
+
+
+
 <script>
-	menu_toggle("sub_pm", 1);
+/* 	menu_toggle("sub_pm", 1); */
 </script>

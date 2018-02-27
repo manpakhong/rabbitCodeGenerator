@@ -101,6 +101,8 @@
 	<bean id="view_patrolPhoto" class="org.springframework.web.servlet.view.JstlView">
 		<property name="url" value="/WEB-INF/pages/patrol/view_patrolPhoto.jsp" />
 	</bean>
-
+	<bean id="view_clock_in_form" class="org.springframework.web.servlet.view.JstlView">
+		<property name="url" value="/WEB-INF/pages/punchcard/view_clock_in_form.jsp" />
+	</bean>
 
 </beans>
