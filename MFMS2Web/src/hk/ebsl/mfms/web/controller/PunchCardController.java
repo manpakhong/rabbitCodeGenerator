@@ -51,7 +51,7 @@ public class PunchCardController {
 	}
 
 	@RequestMapping(value = "/ShowClockIn.do", method = RequestMethod.GET)
-	public String showStaffSearched(@RequestParam("privilege") String privilege, HttpServletRequest request,
+	public String showStaffSearched(HttpServletRequest request,
 			HttpServletResponse response, ModelMap model) {
 
 		logger.debug("/ShowClockIn.do");
