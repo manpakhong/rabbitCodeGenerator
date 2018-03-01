@@ -1,13 +1,10 @@
 /**
  * 
  */
-function openSelectRouteModal(){
-	$("#modalClockIn").dialog( "open" );
-}	
-	
+
 $(document).ready(
 		function() {
-
+        	$('#clockIn').load("ShowClockIn.do");
             $("#modalClockIn").dialog({
             	autoOpen: false,
                 modal: true,
@@ -15,6 +12,10 @@ $(document).ready(
                 width: 600,
                 height: 300,
                 resizable: true,
+	               position: {
+                my: "center",
+                at: "center"
+             },
                 buttons: [
 		            {
 		                id: "yes",
@@ -32,10 +33,10 @@ $(document).ready(
 		            }
 	            ]
             });			
-            
-            if ($.isFunction(loadShowClockIn)){
-            	loadShowClockIn();
-            }
+        	$('#clockIn').load("ShowClockIn.do");
+//            if ($.isFunction(loadShowClockIn)){
+//            	loadShowClockIn();
+//            }
 			
 
 

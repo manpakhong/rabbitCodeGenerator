@@ -3,11 +3,11 @@
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
 
-<!-- <script src="import/underscorejs/underscore-min.1.8.3.js"></script> -->
+<script src="import/underscorejs/underscore-min.1.8.3.js"></script>
 <!-- <script src="import/punchcard/viewclockin.js"></script> -->
 
 <%-- <spring:url value="/submitClockIn.do" var="submitClockInUrl" /> --%>
-
+<script src="import/punchcard/viewclockin.js"></script>
 <div id="modalClockIn">
 	<!-- Modal content -->
 	<div class="modal-content">
@@ -24,9 +24,9 @@
 				</tr>
 				<tr>
 					<td>Remark Location:</td>
-					<td><form:select path="locationList">
+					<td><form:select path="locationList">							
 							<form:option value="0" label="Select an Option" />
-							<form:option items="${locationList}" />
+							<form:options items="${locationList}" />
 						</form:select></td>
 				</tr>
 				<tr>
