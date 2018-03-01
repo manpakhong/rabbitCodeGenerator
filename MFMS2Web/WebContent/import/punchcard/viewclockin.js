@@ -33,7 +33,7 @@ $(document).ready(
 		            }
 	            ]
             });			
-        	$('#clockIn').load("ShowClockIn.do");
+
 //            if ($.isFunction(loadShowClockIn)){
 //            	loadShowClockIn();
 //            }
