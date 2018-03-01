@@ -1,34 +1,40 @@
 package hk.ebsl.mfms.web.controller;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import hk.ebsl.mfms.dao.PunchCardDao;
+import hk.ebsl.mfms.dto.Location;
 import hk.ebsl.mfms.dto.PunchCard;
 import hk.ebsl.mfms.dto.Role;
 import hk.ebsl.mfms.dto.UserAccount;
-import hk.ebsl.mfms.manager.PatrolResultManager;
+import hk.ebsl.mfms.exception.MFMSException;
+import hk.ebsl.mfms.manager.LocationManager;
 import hk.ebsl.mfms.manager.PunchCardManager;
+import hk.ebsl.mfms.utility.DateUtil;
 import hk.ebsl.mfms.web.controller.PatrolController.ModelMappingValue;
+import hk.ebsl.mfms.web.form.DefectScheduleForm;
 @Controller
 public class PunchCardController {
 	public final static Logger logger = Logger.getLogger(PunchCardController.class);
 	@Autowired
 	private PunchCardManager punchCardManager;
+	@Autowired
+	private LocationManager locationManager;
 	@RequestMapping(value = "/PunchCardManagement.do")
 	public String showPatrolMenu(HttpServletRequest request, HttpServletResponse response, ModelMap model) {
 		logger.debug("User requests to load patrol management page.");
@@ -50,31 +56,65 @@ public class PunchCardController {
 		this.punchCardManager = punchCardManager;
 	}
 
+//	@RequestMapping(value = "/submitClockIn.do", method = RequestMethod.POST)
+//	public String submitClockIn(@ModelAttribute("defectScheduleForm") DefectScheduleForm defectScheduleForm, HttpServletRequest request,
+//			HttpServletResponse response, ModelMap model) throws MFMSException {
+//
+//		try {
+//		logger.debug("/submitClockIn.do");
+//
+//		
+//		HttpSession session = request.getSession();
+//
+//		UserAccount account = (UserAccount) session.getAttribute("user");
+//		
+//		List<Location> locationList = locationManager.getAllLocation();
+//		Map<String, String> locationMap = new LinkedHashMap<String,String>();
+//		for (Location location: locationList) {
+//			locationMap.put(location.getCode(), location.getName());
+//		}
+//		
+//		model.addAttribute("locationList", locationMap);
+//		model.addAttribute("userAccount", account);
+//		
+//		Date currentDate = new Date();
+//		Timestamp ts = new Timestamp(currentDate.getTime());
+//		String currentDateTime = DateUtil.convertTimestampToString(ts);
+//		model.addAttribute("currentDateTime", currentDateTime);
+//		} catch (Exception e) {
+//			logger.error(this.getClass().getName() + ".showStaffSearched()", e);
+//		}
+//		return ModelMappingValue.pages_view_showClockInForm;
+//	}
+	
 	@RequestMapping(value = "/ShowClockIn.do", method = RequestMethod.GET)
 	public String showStaffSearched(HttpServletRequest request,
-			HttpServletResponse response, ModelMap model) {
+			HttpServletResponse response, ModelMap model) throws MFMSException {
 
+		try {
 		logger.debug("/ShowClockIn.do");
 
-//		List<UserAccount> accountList = getAccountBy(this.getRoleFromSession(request).getSiteKey(), "", -1, privilege);
-//		List<String> sortedAccountName = new ArrayList<String>();
-//		List<UserAccount> sortedAccountList = new ArrayList<UserAccount>();
-//		Map<String, UserAccount> map = new HashMap<String, UserAccount>();
-//
-//		for (UserAccount ua : accountList) {
-//
-//			// logger.debug("ShowStaffSearched.do ||||| Original AccountList: "
-//			// + ua.getLoginId());
-//			map.put(ua.getLoginId(), ua);
-//			sortedAccountName.add(ua.getLoginId());
-//		}
-//
-//		Collections.sort(sortedAccountName, new StringComparator());
-//		for (String s : sortedAccountName) {
-//			sortedAccountList.add(map.get(s));
-//		}
-//
-//		model.addAttribute(ModelMappingValue.var_searchedStaff, sortedAccountList);
+		
+		HttpSession session = request.getSession();
+
+		UserAccount account = (UserAccount) session.getAttribute("user");
+		
+		List<Location> locationList = locationManager.getAllLocation();
+		Map<String, String> locationMap = new LinkedHashMap<String,String>();
+		for (Location location: locationList) {
+			locationMap.put(location.getCode(), location.getName());
+		}
+		
+		model.addAttribute("locationList", locationMap);
+		model.addAttribute("userAccount", account);
+		
+		Date currentDate = new Date();
+		Timestamp ts = new Timestamp(currentDate.getTime());
+		String currentDateTime = DateUtil.convertTimestampToString(ts);
+		model.addAttribute("currentDateTime", currentDateTime);
+		} catch (Exception e) {
+			logger.error(this.getClass().getName() + ".showStaffSearched()", e);
+		}
 		return ModelMappingValue.pages_view_showClockInForm;
 	}
 }
