@@ -77,8 +77,8 @@
 					</div>
 				</a>
 			</div>
-			<input type="button" value="test" onclick="openSelectRouteModal();" />
-<!-- 			<div id="testDivButton"></div> -->
+<!-- 			<input type="button" value="test" onclick="openSelectRouteModal();" /> -->
+ 			<div id="testDivButton"></div> 
 		</div>
 	</section>
 </div>

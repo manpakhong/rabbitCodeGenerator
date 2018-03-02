@@ -4,7 +4,6 @@
 
 $(document).ready(
 		function() {
-//        	$('#clockIn').load("ShowClockIn.do");
             $("#modalClockIn").dialog({
             	autoOpen: false,
                 modal: true,

@@ -4,7 +4,7 @@
 $(document).ready(function() {
 
 			
-//	$("#testDivButton").append('<input type="button" value="test" onclick="openSelectRouteModal();" />');   
+			$("#testDivButton").append('<input type="button" value="test" onclick="openSelectRouteModal();" />');   
 			$('#clockIn').load("ShowClockIn.do");
 		})
 function openSelectRouteModal(){
