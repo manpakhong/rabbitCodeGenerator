@@ -11,7 +11,7 @@
 	href="import/datetimepicker/bootstrap-datetimepicker2.css">
 <link rel="stylesheet"
 	href="import/fullcalendar-3.4.0/lib/cupertino/jquery-ui.min.css">
-<!-- <script src="import/jQuery/jquery-3.3.1.js"></script> -->
+
 <script src="import/jQueryUI/jquery-ui.js"></script>
 <script src="import/datetimepicker/moment.js"></script>
 <script src="import/datetimepicker/bootstrap-datetimepicker2.js"></script>

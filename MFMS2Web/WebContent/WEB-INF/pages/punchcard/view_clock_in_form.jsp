@@ -3,8 +3,7 @@
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
 
-<script src="import/underscorejs/underscore-min.1.8.3.js"></script>
-<!-- <script src="import/punchcard/viewclockin.js"></script> -->
+<!-- <script src="import/underscorejs/underscore-min.1.8.3.js"></script> -->
 
 <%-- <spring:url value="/submitClockIn.do" var="submitClockInUrl" /> --%>
 <script src="import/punchcard/viewclockin.js"></script>
