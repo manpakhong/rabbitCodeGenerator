@@ -16,7 +16,7 @@ public class PunchCard {
 	@Column(name = "pc_Key")
 	@GeneratedValue
 	private Integer key;
-	
+	 
 	@Column(name = "pc_Name")
 	private String Name;
 
