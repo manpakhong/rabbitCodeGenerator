@@ -76,7 +76,13 @@ public class PunchCardController {
 		UserAccount account = (UserAccount) session.getAttribute("user");
 		
 		Attendance attendance = new Attendance();
-		
+		attendance.setAccountKey(account.getKey());
+		attendance.setLoginId(account.getName());
+		attendance.setPlatform("W");
+		attendance.setActionTypeCode("Yes");
+		String currentDateTimeString = punchCardForm.getCurrentDateTimeString();
+
+//		attendance.setActionDateTime();
 		List<Location> locationList = locationManager.getAllLocation();
 		Map<String, String> locationMap = new LinkedHashMap<String,String>();
 		for (Location location: locationList) {
