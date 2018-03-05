@@ -7,8 +7,13 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonRootName;
 
 @Entity
+@Table(name = "tbl_Attendance")
+@JsonRootName("")
 public class Attendance implements Serializable{
 	@Id
 	@Column(name="atd_Key")

@@ -83,16 +83,17 @@ public class PunchCardController {
 		UserAccount account = (UserAccount) session.getAttribute("user");
 		
 		Attendance attendance = new Attendance();
-		attendance.setKey(1);
+//		attendance.setKey(1);
 		attendance.setAccountKey(account.getKey());
 		attendance.setLoginId(account.getName());
 		attendance.setPlatform("W");
-		attendance.setActionTypeCode("Yes");
+		attendance.setActionTypeCode("CI");
 		String currentDateTimeString = punchCardForm.getCurrentDateTimeString();
 		Timestamp currentDateTime = null;
 		if (currentDateTimeString != null && !currentDateTimeString.isEmpty()) {
 			currentDateTime = DateUtil.convertStringToTimestamp(currentDateTimeString);
 		}
+
 		attendance.setActionDateTime(currentDateTime);
 		attendance.setCreateBy(account.getKey());
 		attendance.setCreateDateTime(currentDateTime);
