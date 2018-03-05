@@ -20,12 +20,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.google.gson.Gson;
 
+import hk.ebsl.mfms.dao.AttendanceDao;
 import hk.ebsl.mfms.dto.Attendance;
 import hk.ebsl.mfms.dto.Location;
 import hk.ebsl.mfms.dto.PunchCard;
 import hk.ebsl.mfms.dto.Role;
 import hk.ebsl.mfms.dto.UserAccount;
 import hk.ebsl.mfms.exception.MFMSException;
+import hk.ebsl.mfms.manager.AttendanceInfoManager;
+import hk.ebsl.mfms.manager.AttendanceManager;
 import hk.ebsl.mfms.manager.LocationManager;
 import hk.ebsl.mfms.manager.PunchCardManager;
 import hk.ebsl.mfms.utility.DateUtil;
@@ -37,6 +40,10 @@ public class PunchCardController {
 	public final static Logger logger = Logger.getLogger(PunchCardController.class);
 	@Autowired
 	private PunchCardManager punchCardManager;
+	@Autowired
+	private AttendanceManager attendanceManager;
+	@Autowired
+	private AttendanceInfoManager attendanceInfoManager;
 	@Autowired
 	private LocationManager locationManager;
 	@RequestMapping(value = "/PunchCardManagement.do")
@@ -76,28 +83,35 @@ public class PunchCardController {
 		UserAccount account = (UserAccount) session.getAttribute("user");
 		
 		Attendance attendance = new Attendance();
+		attendance.setKey(1);
 		attendance.setAccountKey(account.getKey());
 		attendance.setLoginId(account.getName());
 		attendance.setPlatform("W");
 		attendance.setActionTypeCode("Yes");
 		String currentDateTimeString = punchCardForm.getCurrentDateTimeString();
-
-//		attendance.setActionDateTime();
-		List<Location> locationList = locationManager.getAllLocation();
-		Map<String, String> locationMap = new LinkedHashMap<String,String>();
-		for (Location location: locationList) {
-			locationMap.put(location.getCode(), location.getName());
+		Timestamp currentDateTime = null;
+		if (currentDateTimeString != null && !currentDateTimeString.isEmpty()) {
+			currentDateTime = DateUtil.convertStringToTimestamp(currentDateTimeString);
 		}
+		attendance.setActionDateTime(currentDateTime);
+		attendance.setCreateBy(account.getKey());
+		attendance.setCreateDateTime(currentDateTime);
+		attendance.setLastModifyBy(account.getKey());
+		attendance.setLastModifyDateTime(currentDateTime);
+		attendance.setDeleted("N");
 		
-		model.addAttribute("locationList", locationMap);
-		model.addAttribute("userAccount", account);
+
+		attendanceManager.save(attendance);
 		
-		Date currentDate = new Date();
-		Timestamp ts = new Timestamp(currentDate.getTime());
-		String currentDateTime = DateUtil.convertTimestampToString(ts);
-		model.addAttribute("currentDateTime", currentDateTime);
+//		AttendanceInfo attendanceInfo = new AttendanceInfo();
+		
+		
+		
+		model.addAttribute("isSaved", true);
+//		model.addAttribute("userAccount", null);
+		
 		} catch (Exception e) {
-			logger.error(this.getClass().getName() + ".showStaffSearched()", e);
+			logger.error(this.getClass().getName() + ".submitClockIn()", e);
 		}
 		return ModelMappingValue.pages_view_showClockInForm;
 	}

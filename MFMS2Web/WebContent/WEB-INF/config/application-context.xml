@@ -220,6 +220,12 @@
 	<bean id="punchCardDao" class="hk.ebsl.mfms.dao.PunchCardDao">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="attendanceDao" class="hk.ebsl.mfms.dao.AttendanceDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="attendanceInfoDao" class="hk.ebsl.mfms.dao.AttendanceInfoDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>	
 	<bean id="statusAccessModeDao" class="hk.ebsl.mfms.dao.StatusAccessModeDao">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
@@ -454,6 +460,12 @@
 	<bean id="punchCardManager" class="hk.ebsl.mfms.manager.impl.PunchCardManagerImpl">
 		<property name="punchCardDao" ref="punchCardDao" />
 	</bean>
+	<bean id="attendanceManager" class="hk.ebsl.mfms.manager.impl.AttendanceManagerImpl">
+		<property name="attendanceDao" ref="attendanceDao" />
+	</bean>
+	<bean id="attendanceInfoManager" class="hk.ebsl.mfms.manager.impl.AttendanceInfoManagerImpl">
+		<property name="attendanceInfoDao" ref="attendanceInfoDao" />
+	</bean>		
 	<bean id="defectFileManager" class="hk.ebsl.mfms.manager.impl.DefectFileManagerImpl">
 		<property name="defectFileDao" ref="defectFileDao" />
 	</bean>

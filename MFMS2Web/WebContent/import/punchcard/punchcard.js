@@ -12,7 +12,7 @@ function openSelectRouteModal() {
 function loadShowClockIn() {
 	$('#clockIn').load("ShowClockIn.do");
 }
-function createVo(){
+function createPunchCardVo(){
 	var vo = {};
 	vo.currentDateTimeString = '';
 	vo.remarkLocation = '';
@@ -21,8 +21,8 @@ function createVo(){
 	return vo;
 }
 function postData(punchCardForm) {
-	var vo = createVo();
-	var dataString = JSON.stringify(vo);
+
+	var dataString = JSON.stringify(punchCardForm);
 	console.log(dataString);
 	$.ajax({
 		type : "POST",

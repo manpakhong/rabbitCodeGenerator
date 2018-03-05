@@ -8,7 +8,7 @@ $(document).ready(function() {
         modal: true,
         title: "Confirmation",
         width: 600,
-        height: 300,
+        height: 500,
         resizable: true,
         position: {
 	        my: "center",
@@ -36,11 +36,22 @@ $(document).ready(function() {
 //    	loadShowClockIn();
 //    }
 })
-		
+
+function connectionPunchCardVoData(){
+	var vo = createPunchCardVo();
+	var userName = $(".userAccountName").text();
+	var currentDateTimeString = $(".currentDateTimeString").text();
+	var locationListSelectObj = $(".locationListSelect");
+	var remarks = $(".remarks").val();
+	vo.userName = userName;
+	vo.currentDateTimeString = currentDateTimeString;
+	vo.remarkLocation = $(locationListSelectObj).val();
+	vo.remarks = remarks;
+	return vo;
+}
 function confirmSave(e){
-	var punchCardForm = {};
-	
+	var vo = connectionPunchCardVoData();
 	 if ($.isFunction(postData)){
-		 postData(punchCardForm);
+		 postData(vo);
 	}
 }

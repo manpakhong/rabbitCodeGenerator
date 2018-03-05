@@ -15,22 +15,22 @@
 			<table>
 				<tr>
 					<td>Username:</td>
-					<td><span>${userAccount.name}</span></td>
+					<td><span class="userAccountName">${userAccount.name}</span></td>
 				</tr>
 				<tr>
 					<td>Time:</td>
-					<td><span>${currentDateTime}</span></td>
+					<td><span class="currentDateTimeString">${currentDateTime}</span></td>
 				</tr>
 				<tr>
 					<td>Remark Location:</td>
-					<td><form:select path="locationList">							
+					<td><form:select path="locationList" cssClass="locationListSelect">							
 							<form:option value="0" label="Select an Option" />
 							<form:options items="${locationList}" />
 						</form:select></td>
 				</tr>
 				<tr>
 					<td>Remarks:</td>
-					<td><input type="text" /></td>
+					<td><textarea cols="28" rows="5" class="remarks" type="text" /></td>
 				</tr>
 			</table>
 		</form>

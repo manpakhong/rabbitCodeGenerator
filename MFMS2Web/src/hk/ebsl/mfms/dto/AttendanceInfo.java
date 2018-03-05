@@ -5,12 +5,14 @@ import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
 public class AttendanceInfo implements Serializable{
 	@Id
 	@Column(name="atdi_Key")
+	@GeneratedValue
 	private Integer key;
 	@Column(name="atdi_AttendanceKey")
 	private Integer attendanceKey;
