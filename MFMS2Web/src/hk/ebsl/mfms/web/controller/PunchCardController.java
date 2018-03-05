@@ -101,6 +101,8 @@ public class PunchCardController {
 		attendance.setLastModifyDateTime(currentDateTime);
 		attendance.setDeleted("N");
 		
+		
+		
 
 		attendanceManager.save(attendance);
 		
