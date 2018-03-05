@@ -17,13 +17,15 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
 
-import hk.ebsl.mfms.dao.AttendanceDao;
 import hk.ebsl.mfms.dto.Attendance;
+import hk.ebsl.mfms.dto.AttendanceInfo;
 import hk.ebsl.mfms.dto.Location;
 import hk.ebsl.mfms.dto.PunchCard;
+import hk.ebsl.mfms.dto.PunchCardResponse;
 import hk.ebsl.mfms.dto.Role;
 import hk.ebsl.mfms.dto.UserAccount;
 import hk.ebsl.mfms.exception.MFMSException;
@@ -68,13 +70,16 @@ public class PunchCardController {
 	}
 
 	@RequestMapping(value = "/submitClockIn.do", method = RequestMethod.POST)
-	public String submitClockIn(@ModelAttribute("defectScheduleForm") DefectScheduleForm defectScheduleForm, HttpServletRequest request,
+	public @ResponseBody String submitClockIn(@ModelAttribute("defectScheduleForm") DefectScheduleForm defectScheduleForm, HttpServletRequest request,
 			HttpServletResponse response, ModelMap model) throws MFMSException {
-
+		String responseString = null;
 		try {
 		logger.debug("/submitClockIn.do");
 
+
 		String jsonString = request.getParameter("data");
+		
+		
 		
 		Gson gson = new Gson();
 		PunchCardForm punchCardForm = gson.fromJson(jsonString, PunchCardForm.class);
@@ -102,21 +107,27 @@ public class PunchCardController {
 		attendance.setDeleted("N");
 		
 		
-		
-
+		String ipAddress = request.getRemoteAddr();
+//		String macAddress = request
 		attendanceManager.save(attendance);
 		
-//		AttendanceInfo attendanceInfo = new AttendanceInfo();
+		AttendanceInfo attendanceInfo = new AttendanceInfo();
+		attendanceInfo.setAttendanceKey(attendanceInfo.getKey());
+		attendanceInfo.setIp(ipAddress);
 		
 		
-		
-		model.addAttribute("isSaved", true);
+//		model.addAttribute("isSaved", true);
 //		model.addAttribute("userAccount", null);
+		PunchCardResponse punchCardResponse = new PunchCardResponse();
+		punchCardResponse.setResponseStatus(PunchCardResponse.RESPONSE_OK);
+		response.setStatus(HttpServletResponse.SC_ACCEPTED);
+
+		responseString = gson.toJson(punchCardResponse);
 		
 		} catch (Exception e) {
 			logger.error(this.getClass().getName() + ".submitClockIn()", e);
 		}
-		return ModelMappingValue.pages_view_showClockInForm;
+		return responseString;
 	}
 	
 	@RequestMapping(value = "/ShowClockIn.do", method = RequestMethod.GET)

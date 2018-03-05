@@ -64,6 +64,14 @@ public class AttendanceInfo implements Serializable{
 	private String refAttendance;
 	@Column(name="atdi_AttendanceInfocol")
 	private String attendanceInfocol;
+	
+	
+	public Integer getKey() {
+		return key;
+	}
+	public void setKey(Integer key) {
+		this.key = key;
+	}
 	public Integer getAttendanceKey() {
 		return attendanceKey;
 	}

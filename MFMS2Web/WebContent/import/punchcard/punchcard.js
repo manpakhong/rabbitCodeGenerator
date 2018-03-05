@@ -34,8 +34,14 @@ function postData(punchCardForm) {
 		selectBlogPageVoCallBack(data);
 		// alert("Promise success callback.");
 	}).fail(function(jqXHR, status, err) {
-		// alert("Promise error callback.");
+		alert("Promise error callback.");
 	}).always(function() {
-		// alert("Promise completion callback.");
+//		alert("Promise completion callback.");
 	})
+}
+
+function selectBlogPageVoCallBack(data){
+	var vo = JSON.parse(data);
+	alert('saved!');
+	$('#modalClockIn').dialog('close');
 }

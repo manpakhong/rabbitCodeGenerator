@@ -17,7 +17,7 @@
 <script src="import/datetimepicker/bootstrap-datetimepicker2.js"></script>
 <script src="import/customLoading.js"></script>
 <script src="import/punchcard/punchcard.js"></script>
-
+<!-- <script src="import/punchcard/viewclockin.js"></script> -->
 
 
 
