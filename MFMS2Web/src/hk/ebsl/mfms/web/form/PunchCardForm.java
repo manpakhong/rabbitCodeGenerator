@@ -5,6 +5,7 @@ public class PunchCardForm {
 	private String currentDateTimeString;
 	private String remarkLocation;
 	private String remarks;
+	private String action;
 	public String getUserName() {
 		return userName;
 	}
@@ -28,6 +29,12 @@ public class PunchCardForm {
 	}
 	public void setRemarks(String remarks) {
 		this.remarks = remarks;
+	}
+	public String getAction() {
+		return action;
+	}
+	public void setAction(String action) {
+		this.action = action;
 	}
 	
 	

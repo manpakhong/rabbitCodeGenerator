@@ -11,7 +11,8 @@
 	href="import/datetimepicker/bootstrap-datetimepicker2.css">
 <link rel="stylesheet"
 	href="import/fullcalendar-3.4.0/lib/cupertino/jquery-ui.min.css">
-
+<link rel="stylesheet"
+	href="import/punchcard/css/punchcard.css">
 <script src="import/jQueryUI/jquery-ui.js"></script>
 <script src="import/datetimepicker/moment.js"></script>
 <script src="import/datetimepicker/bootstrap-datetimepicker2.js"></script>
@@ -34,47 +35,31 @@
 	<section class="content">
 
 		<div class="row">
-			<%-- 			<c:if
-				test="${currRole.grantedPrivilegeCodeList.contains(patrolMonitor)}"> --%>
-			<div class="col-lg-4  col-sm-6 iconStyle">
-				<a class="btn" onclick="openSelectRouteModal();">
-					<div class=" well">
-						<img class="img-responsive" src="import/img2/pcm/clock_in.png"
-							alt="">
- 						<h2 class="iconName">
-							<spring:message code="menu.punchcardMgt.clockin" />
-						</h2> 
-					</div>
+
+			<div class="col-lg-4  col-sm-6 punchCardIcon iconhover" >
+
+						<img class="img-responsive clockIn" src="import/img2/pcm/clock_in.png"
+							alt="" >
+
+
 				</a>
 			</div>
-			<%-- 			</c:if> --%>
-			<%-- 			<c:if
-				test="${currRole.grantedPrivilegeCodeList.contains(modifyPatrolSchedule)
-					   || currRole.grantedPrivilegeCodeList.contains(createPatrolSchedule)
-					   || currRole.grantedPrivilegeCodeList.contains(searchPatrolSchedule)
-			           || currRole.grantedPrivilegeCodeList.contains(removePatrolSchedule)}"> --%>
 
-			<div class="col-lg-4  col-sm-6 iconStyle">
-				<a href="PatrolAssign.do">
-					<div class=" well">
-						<img class="img-responsive" src="import/img2/pcm/clock_out.png"
+
+			<div class="col-lg-4  col-sm-6 punchCardIcon iconhover">
+
+						<img class="img-responsive clockOut" src="import/img2/pcm/clock_out.png"
 							alt="">
- 						<h2 class="iconName">
-							<spring:message code="menu.punchcardMgt.clockout" />
-						</h2> 
-					</div>
+
+
 				</a>
 			</div>
-			<%-- 			</c:if> --%>
 
-			<div class="col-lg-4  col-sm-6 iconStyle">
-				<a href="Home.do?roleKey=2">
-					<div class=" well">
-						<img class="img-responsive" src="import/img2/pcm/skip.png" alt="">
- 						<h2 class="iconName">
-							<spring:message code="menu.punchcardMgt.skip" />
-						</h2> 
-					</div>
+
+			<div class="col-lg-4  col-sm-6 punchCardIcon iconhover">
+
+						<img class="img-responsive skip" src="import/img2/pcm/skip.png" alt="">
+
 				</a>
 			</div>
 <!-- 			<input type="button" value="test" onclick="openSelectRouteModal();" /> -->

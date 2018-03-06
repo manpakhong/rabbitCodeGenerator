@@ -37,7 +37,7 @@ $(document).ready(function() {
 //    }
 })
 
-function connectionPunchCardVoData(){
+function collectPunchCardVoData(){
 	var vo = createPunchCardVo();
 	var userName = $(".userAccountName").text();
 	var currentDateTimeString = $(".currentDateTimeString").text();
@@ -47,10 +47,12 @@ function connectionPunchCardVoData(){
 	vo.currentDateTimeString = currentDateTimeString;
 	vo.remarkLocation = $(locationListSelectObj).val();
 	vo.remarks = remarks;
+	vo.action = modalCaller;
+	
 	return vo;
 }
 function confirmSave(e){
-	var vo = connectionPunchCardVoData();
+	var vo = collectPunchCardVoData();
 	 if ($.isFunction(postData)){
 		 postData(vo);
 	}

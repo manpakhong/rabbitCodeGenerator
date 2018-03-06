@@ -92,7 +92,8 @@ public class PunchCardController {
 		attendance.setAccountKey(account.getKey());
 		attendance.setLoginId(account.getName());
 		attendance.setPlatform("W");
-		attendance.setActionTypeCode("CI");
+		
+		attendance.setActionTypeCode(punchCardForm.getAction());
 		String currentDateTimeString = punchCardForm.getCurrentDateTimeString();
 		Timestamp currentDateTime = null;
 		if (currentDateTimeString != null && !currentDateTimeString.isEmpty()) {
