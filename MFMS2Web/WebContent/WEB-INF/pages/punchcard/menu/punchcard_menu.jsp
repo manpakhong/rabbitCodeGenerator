@@ -58,11 +58,8 @@
 
 
 			<div class="col-lg-4  col-sm-6 punchCardIcon iconhover">
-
 						<img class="img-responsive clockOut" src="import/img2/pcm/clock_out.png"
 							alt="">
-
-
 				</a>
 			</div>
 

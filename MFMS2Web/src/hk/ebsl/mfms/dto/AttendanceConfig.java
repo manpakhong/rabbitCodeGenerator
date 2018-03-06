@@ -19,7 +19,7 @@ public class AttendanceConfig {
 	public final static String CODE_FUNC_WLI = "FUNC_WLI";
 	public final static String CODE_FUNC_WOI = "FUNC_WOI";
 	public final static String CODE_FUNC_WOO = "FUNC_WOO";
-	
+	public final static String CODE_REM_LOC_W = "REM_LOC_W";
 	
 	@Id
 	@Column(name="atdt_Key")

@@ -7,6 +7,7 @@
 
 <%-- <spring:url value="/submitClockIn.do" var="submitClockInUrl" /> --%>
 <script src="import/punchcard/viewclockin.js"></script>
+<input type="hidden" value="${isRemarkLocationShown}" class="isRemarkLocationShownClass"/>
 <div id="modalClockIn">
 	<!-- Modal content -->
 	<div class="modal-content">
@@ -21,6 +22,12 @@
 					<td><spring:message code="punchcard.message.time" />:</td>
 					<td><span class="currentDateTimeString">${currentDateTime}</span></td>
 				</tr>
+				
+
+
+			<c:if
+				test="${searchCauseCode == true}">
+				
 				<tr>
 					<td><spring:message code="punchcard.message.remarklocation" />:</td>
 					<td><form:select path="locationList" cssClass="locationListSelect">							
@@ -28,6 +35,7 @@
 							<form:options items="${locationList}" />
 						</form:select></td>
 				</tr>
+			</c:if>
 				<tr>
 					<td><spring:message code="punchcard.message.remarks" />:</td>
 					<td><textarea cols="28" rows="5" class="remarks" type="text" /></td>
