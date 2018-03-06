@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import hk.ebsl.mfms.dao.UserAccountDao;
 import hk.ebsl.mfms.dao.UserAccountRoleDao;
-import hk.ebsl.mfms.dto.Role;
 import hk.ebsl.mfms.dto.UserAccount;
 import hk.ebsl.mfms.dto.UserAccountRole;
 import hk.ebsl.mfms.exception.MFMSException;
@@ -263,4 +262,6 @@ public class UserAccountManagerImpl implements UserAccountManager {
 
 		return theCountoftotalResult;
 	}
+
+
 }

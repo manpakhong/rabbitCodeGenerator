@@ -55,11 +55,11 @@ public class PunchCardController {
 //		if (null==currRole) {
 //			return "main/site_select";
 //		}
-		PunchCard punchCard = new PunchCard();
-//		punchCard.setKey(1);
-		punchCard.setName("Test3");
+//		PunchCard punchCard = new PunchCard();
+//
+//		punchCard.setName("Test3");
 		
-		punchCardManager.save(punchCard);
+//		punchCardManager.save(punchCard);
 		return ModelMappingValue.pages_punchcardMenu;
 	}
 	public PunchCardManager getPunchCardManager() {

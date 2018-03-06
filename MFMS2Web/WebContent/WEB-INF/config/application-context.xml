@@ -245,7 +245,9 @@
 	<bean id="patrolRouteActionLogDao" class="hk.ebsl.mfms.dao.PatrolRouteActionLogDao">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-
+	<bean id="attendanceConfigDao" class="hk.ebsl.mfms.dao.AttendanceConfigDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	<!-- Manager -->
 	<bean id="systemParamManager" class="hk.ebsl.mfms.manager.impl.SystemParamManagerImpl">
 		<property name="systemParamDao" ref="systemParamDao" />
@@ -483,7 +485,9 @@
 	<bean id="patrolRouteActionLogManager" class="hk.ebsl.mfms.manager.impl.PatrolRouteActionLogManagerImpl">
 		<property name="patrolRouteActionLogDao" ref="patrolRouteActionLogDao" />
 	</bean>
-
+	<bean id="attendanceConfigManager" class="hk.ebsl.mfms.manager.impl.AttendanceConfigManagerImpl">
+		<property name="attendanceConfigDao" ref="attendanceConfigDao" />
+	</bean>
 	<!-- Form Validators -->
 
 	<bean id="siteFormValidator" class="hk.ebsl.mfms.web.form.validator.SiteFormValidator">

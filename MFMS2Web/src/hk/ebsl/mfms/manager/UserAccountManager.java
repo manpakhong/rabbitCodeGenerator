@@ -45,4 +45,6 @@ public interface UserAccountManager {
 	public List<UserAccountRole> searchUserAccountRoleByDate(Timestamp lastModifiedDate, Integer offset, Integer maxResults);
 
 	public Integer searchResultCountByUserAccountRole(Timestamp lastModifiedDate);
+	
+
 }

@@ -52,6 +52,7 @@
     class="hk.ebsl.mfms.web.handler.AuthenticationSuccessHandlerImpl">
     <beans:property name="userManager" ref="userAccountManager" />
     <beans:property name="accountActionLogManager" ref="accountActionLogManager" />
+    <beans:property name="attendanceConfigManager" ref="attendanceConfigManager" />
   </beans:bean>
   
   <beans:bean id="loginFailureHandler"
