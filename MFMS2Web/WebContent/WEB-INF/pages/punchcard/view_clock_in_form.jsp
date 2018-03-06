@@ -25,8 +25,7 @@
 				
 
 
-			<c:if
-				test="${searchCauseCode == true}">
+			<c:if test="${isRemarkLocationShown}">
 				
 				<tr>
 					<td><spring:message code="punchcard.message.remarklocation" />:</td>

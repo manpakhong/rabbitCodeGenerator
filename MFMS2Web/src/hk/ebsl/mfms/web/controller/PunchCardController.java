@@ -162,7 +162,7 @@ public class PunchCardController {
 		Timestamp ts = new Timestamp(currentDate.getTime());
 		String currentDateTime = DateUtil.convertTimestampToString(ts);
 		model.addAttribute("currentDateTime", currentDateTime);
-		model.addAttribute("isRemarkLocationShown", true);
+		model.addAttribute("isRemarkLocationShown", isShown);
 		} catch (Exception e) {
 			logger.error(this.getClass().getName() + ".showStaffSearched()", e);
 		}
