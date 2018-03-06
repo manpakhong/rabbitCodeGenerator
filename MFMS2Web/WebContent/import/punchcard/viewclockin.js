@@ -6,7 +6,7 @@ $(document).ready(function() {
     $("#modalClockIn").dialog({
     	autoOpen: false,
         modal: true,
-        title: "Confirmation",
+        title: confirmClass,
         width: 600,
         height: 500,
         resizable: true,
@@ -17,14 +17,14 @@ $(document).ready(function() {
         buttons: [
             {
                 id: "yes",
-                text: "Yes",
+                text: yesClass,
                 click: function (event) {
                 	confirmSave(event);
                 }
             },
             {
                 id: "no",
-                text: "No",
+                text: noClass,
                 click: function (event) {
                     $(this).dialog('close');
                 }

@@ -5,10 +5,39 @@ $(document).ready(function(){
 //	$("#testDivButton").append('<input type="button" value="test" onclick="openSelectRouteModal();" />');
 	$('#clockIn').load("ShowClockIn.do");
 	bindHandlers();
+	retrievePropertiesValues();
 })
 var ACTION_CLOCK_IN = 'CI';
 var ACTION_CLOCK_OUT = 'CO';
 var modalCaller = '';
+
+var confirmClass = '';
+var areyousureClass = '';
+var usernameClass = '';
+var timeClass = '';
+var remarklocationClass = '';
+var remarksClass = '';
+var yesClass = '';
+var noClass = '';
+var savesuccessfullyClass = '';
+var savefailedClass = '';
+var selectanoptionClass = '';
+
+
+function retrievePropertiesValues(){
+	confirmClass = $('.confirmClass').val();
+	areyousureClass = $('.areyousureClass').val();
+	usernameClass = $('.usernameClass').val();
+	timeClass = $('.timeClass').val();
+	remarklocationClass = $('.remarklocationClass').val();
+	remarksClass = $('.remarksClass').val();
+	yesClass = $('.yesClass').val();
+	noClass = $('.noClass').val();
+	savesuccessfullyClass = $('.savesuccessfullyClass').val();
+	savefailedClass = $('.savefailedClass').val();
+	selectanoptionClass = $('.selectanoptionClass').val();
+}
+
 function openSelectRouteModal(caller) {
 	modalCaller = caller;
 	$("#modalClockIn").dialog("open");
@@ -58,6 +87,6 @@ function bindHandlers(){
 }
 function selectBlogPageVoCallBack(data){
 	var vo = JSON.parse(data);
-	alert('saved!');
+	alert(savesuccessfullyClass);
 	$('#modalClockIn').dialog('close');
 }

@@ -20,6 +20,17 @@
 <script src="import/punchcard/punchcard.js"></script>
 <!-- <script src="import/punchcard/viewclockin.js"></script> -->
 
+<input type="hidden" class="confirmClass" value="<spring:message code="punchcard.message.confirmation" />" />
+<input type="hidden" class="areyousureClass" value="<spring:message code="punchcard.message.areyousure" />" />
+<input type="hidden" class="usernameClass" value="<spring:message code="punchcard.message.username" />" />
+<input type="hidden" class="timeClass" value="<spring:message code="punchcard.message.time" />" />
+<input type="hidden" class="remarklocationClass" value="<spring:message code="punchcard.message.remarklocation" />" />
+<input type="hidden" class="remarksClass" value="<spring:message code="punchcard.message.remarks" />" />
+<input type="hidden" class="yesClass" value="<spring:message code="punchcard.message.yes" />" />
+<input type="hidden" class="noClass" value="<spring:message code="punchcard.message.no" />" />
+<input type="hidden" class="savesuccessfullyClass" value="<spring:message code="punchcard.message.savesuccessfully" />" />
+<input type="hidden" class="savefailedClass" value="<spring:message code="punchcard.message.savefailed" />" />
+<input type="hidden" class="selectanoptionClass" value="<spring:message code="punchcard.message.selectanoption" />" />
 
 
 <!-- Content Wrapper. Contains page content -->
