@@ -17,7 +17,7 @@ public class MainConsole {
 			String argTableName = "";
 			if (args.length < 1)
 			{
-				argTableName = "tbl_location,tbl_patrolphoto,tbl_patrolresult,tbl_patrolresultreadingrecord,tbl_routedef";
+				argTableName = "gbl_about";
 			}
 			else
 			{

@@ -513,7 +513,7 @@ public class DaoGenerateMgr {
 		} catch (Exception e) {// Catch exception if any
 			System.err.println("Error: " + e.getMessage());
 		} // end try ... catch ...
-		  System.out.println("Dao is generated. : " + daoClassName + "DaoImpl.java");		
+		  System.out.println("Dao is generated. : " + daoClassName + "Dao.java");		
 	} // end generateDao()
 
 	/**

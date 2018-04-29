@@ -95,7 +95,7 @@ public class Misc {
 		try {
 			propertiesFactory = PropertiesFactory.getInstanceOfPropertiesFactory();
 			sysPropertiesEo = propertiesFactory.getInstanceOfSysProperties();
-			sysPropertiesEo.getTablePrefix();
+			tablePrefix = sysPropertiesEo.getTablePrefix();
 			if (null != _databaseName) {
 				int idxOfTablePrefix = _databaseName.indexOf(tablePrefix);
 

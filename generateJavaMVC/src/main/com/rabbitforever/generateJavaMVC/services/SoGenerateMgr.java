@@ -145,6 +145,6 @@ public class SoGenerateMgr {
 			e.printStackTrace();
 		} // end try ... catch ...
 
-		System.out.println("So is generated. : " + soClassName + ".java");
+		System.out.println("So is generated. : " + soClassName + "So.java");
 	} // end generateVo()
 } // end VoGenerateMgr

@@ -211,7 +211,7 @@ public class ServiceGenerateMgr {
 		} catch (Exception e) {// Catch exception if any
 			System.err.println("Error: " + e.getMessage());
 		} // end try ... catch ...
-		System.out.println("Service is generated. : " + serviceClassName + "MgrImpl.java");
+		System.out.println("Service is generated. : " + serviceClassName + "Mgr.java");
 	} // end generateDao()
 
 	/**

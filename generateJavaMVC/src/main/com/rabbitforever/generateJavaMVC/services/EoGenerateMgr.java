@@ -102,6 +102,6 @@ public class EoGenerateMgr {
 			e.printStackTrace();
 		} // end try ... catch ...
 
-		System.out.println("Eo is generated. : " + eoClassName + ".java");
+		System.out.println("Eo is generated. : " + eoClassName + "Eo.java");
 	} // end generateVo()
 } // end VoGenerateMgr
