@@ -86,7 +86,21 @@ public class Misc {
 
 
 	
+	public static String convertTableFieldsFormat2JavaPropertiesFormat(String _tableFieldName) {
+		String javaPropertiesName = "";
+		if (null != _tableFieldName) {
+			String[] splitTableFieldName = _tableFieldName.split("_");
 
+			for (int i = 0; i < splitTableFieldName.length; i++) {
+				if (i == 0) {
+					javaPropertiesName += Misc.lowerStringFirstChar(splitTableFieldName[i]);
+				} else {
+					javaPropertiesName += Misc.upperStringFirstChar(splitTableFieldName[i]);
+				}
+			} // end for
+		} // end if (null != _tableFieldName)
+		return javaPropertiesName;
+	} // end convertTableFieldsFormat2JavaPropertiesFormat
 	
 	public static String convertTableNameFormat2ClassNameFormat(String _databaseName) throws Exception {
 		SysProperties sysPropertiesEo = null; 
@@ -359,21 +373,7 @@ public class Misc {
 	} // end convertBundleFieldsFormat2JavaPropertiesFormat
 	
 	
-	public static String convertTableFieldsFormat2JavaPropertiesFormat(String _tableFieldName) {
-		String javaPropertiesName = "";
-		if (null != _tableFieldName) {
-			String[] splitTableFieldName = _tableFieldName.split("_");
 
-			for (int i = 0; i < splitTableFieldName.length; i++) {
-				if (i == 0) {
-					javaPropertiesName += Misc.lowerStringFirstChar(splitTableFieldName[i]);
-				} else {
-					javaPropertiesName += Misc.upperStringFirstChar(splitTableFieldName[i]);
-				}
-			} // end for
-		} // end if (null != _tableFieldName)
-		return javaPropertiesName;
-	} // end convertTableFieldsFormat2JavaPropertiesFormat
 
 	public static String convertTableFieldsFormat2JavaFnFormat(String _tableFieldName) {
 		String javaPropertiesName = "";

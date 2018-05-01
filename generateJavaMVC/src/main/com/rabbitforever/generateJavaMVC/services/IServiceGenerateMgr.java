@@ -16,7 +16,7 @@ public class IServiceGenerateMgr {
 	private String voClassName;
 	private String objClassName;
 
-	public IServiceGenerateMgr(String _tableName) {
+	public IServiceGenerateMgr(String _tableName) throws Exception {
 		tableName = _tableName;
 		voClassName = tableName;
 
@@ -75,8 +75,9 @@ public class IServiceGenerateMgr {
 
 	/**
 	 * @param args
+	 * @throws Exception 
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		// TODO Auto-generated method stub
 		IServiceGenerateMgr serviceGenerateMgr = new IServiceGenerateMgr("LACCCDTL");
 		serviceGenerateMgr.generateService();

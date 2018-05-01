@@ -60,7 +60,7 @@ public class DaoGenerateMgr {
 			// Create file
 
 			daoClassName = 	Misc.convertTableNameFormat2ClassNameFormat(tableName);
-			daoObjectName = Misc.convertTableFieldsFormat2JavaPropertiesFormat(tableName);
+			daoObjectName = Misc.lowerStringFirstChar(daoClassName);
 			outputRootDirectory = sysProperties.getOutputRootDirectory();
 			modelsDirName = sysProperties.getModelsDirName();
 			eosDirName = sysProperties.getEosDirName();
@@ -219,7 +219,7 @@ public class DaoGenerateMgr {
 			// ###############################
 			sb.append("\t@Override\n");
 			sb.append("\tpublic List<" + daoClassName + eoSuffix + "> " + "read(Object so) throws Exception{\n");
-			sb.append("\t\tList<" + daoClassName + eoSuffix + "> " + objClassName + eoSuffix + "List = null;\n");
+			sb.append("\t\tList<" + daoClassName + eoSuffix + "> " + daoObjectName + eoSuffix + "List = null;\n");
 			sb.append("\t\tStringBuilder whereSql = null;\n");
 			sb.append("\t\tPreparedStatement preparedStatement = null;\n");
 			sb.append("\t\ttry{\n");
@@ -335,7 +335,7 @@ public class DaoGenerateMgr {
 			sb.append("\t\t\t\t}\n");
 			sb.append("\t\t\t}\n");
 			sb.append("\t\t}\n");
-			sb.append("\t\treturn " + objClassName + eoSuffix + "List;\n");
+			sb.append("\t\treturn " + daoObjectName + eoSuffix + "List;\n");
 			sb.append("\t} // end select function\n");
 				
 			// ###############################

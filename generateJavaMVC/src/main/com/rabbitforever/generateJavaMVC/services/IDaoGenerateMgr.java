@@ -16,7 +16,7 @@ public class IDaoGenerateMgr {
 	private String voClassName;
 	private String objClassName;
 
-	public IDaoGenerateMgr(String _tableName) {
+	public IDaoGenerateMgr(String _tableName) throws Exception {
 		tableName = _tableName;
 		voClassName = tableName;
 
@@ -75,8 +75,9 @@ public class IDaoGenerateMgr {
 
 	/**
 	 * @param args
+	 * @throws Exception 
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		// TODO Auto-generated method stub
 		IDaoGenerateMgr daoGenerateMgr = new IDaoGenerateMgr("LACCCDTL");
 		daoGenerateMgr.generateDao();
