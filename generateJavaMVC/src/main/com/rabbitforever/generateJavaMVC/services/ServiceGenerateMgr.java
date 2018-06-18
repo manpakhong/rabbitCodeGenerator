@@ -57,6 +57,7 @@ public class ServiceGenerateMgr {
 		String daoObjectName = null;
 		String servicesDirName = null;
 		String serviceObjectName = null;
+		String classServiceSuffix="Service";
 		try {
 			// Create file
 
@@ -77,7 +78,7 @@ public class ServiceGenerateMgr {
 			systemRootDirectory = sysProperties.getSystemRootDirectory();
 
 			String serviceFile = outputRootDirectory + "\\" + javaDirName + "\\" + systemRootDir + "\\" + servicesDirName + "\\"
-					+ serviceClassName + "Mgr.java";
+					+ serviceClassName + classServiceSuffix +".java";
 
 			FileWriter fstream = new FileWriter(serviceFile);
 			BufferedWriter out = new BufferedWriter(fstream);
@@ -93,7 +94,7 @@ public class ServiceGenerateMgr {
 			sb.append("import org.slf4j.LoggerFactory;\n");
 			
 			// --- class
-			sb.append("public class " + serviceClassName + "Mgr extends ServiceBase");
+			sb.append("public class " + serviceClassName + classServiceSuffix +" extends ServiceBase");
 			sb.append("{\n");
 
 			MySqlDbMgr oracleDbMgr = new MySqlDbMgr();
@@ -110,21 +111,21 @@ public class ServiceGenerateMgr {
 			sb.append("\t}\n");
 			
 			// constructors
-			sb.append("\tpublic " + serviceClassName + "Mgr() throws Exception{\n");
+			sb.append("\tpublic " + serviceClassName +  classServiceSuffix +"() throws Exception{\n");
 			sb.append("\t\ttry{\n");
 			sb.append("\t\t\tinit(null);\n");
 			sb.append("\t\t} catch (Exception e){\n");
-			sb.append("\t\t\tlogger.error(getClassName() + \"." + serviceClassName + "Mgr() - connectionType=null\", e);\n");
+			sb.append("\t\t\tlogger.error(getClassName() + \"." + serviceClassName +  classServiceSuffix +"() - connectionType=null\", e);\n");
 			sb.append("\t\t\tthrow e;\n");
 			sb.append("\t\t}\n");
 			sb.append("\t} // end constructor\n");
 
 			
-			sb.append("\tpublic " + serviceClassName + "Mgr(String connectionType) throws Exception{\n");
+			sb.append("\tpublic " + serviceClassName +  classServiceSuffix +"(String connectionType) throws Exception{\n");
 			sb.append("\t\ttry{\n");
 			sb.append("\t\t\tinit(connectionType);\n");
 			sb.append("\t\t} catch (Exception e){\n");
-			sb.append("\t\t\tlogger.error(getClassName() + \"." + serviceClassName + "Mgr() - connectionType=\" + connectionType, e);\n");
+			sb.append("\t\t\tlogger.error(getClassName() + \"." + serviceClassName +  classServiceSuffix +"() - connectionType=\" + connectionType, e);\n");
 			sb.append("\t\t\tthrow e;\n");
 			sb.append("\t\t}\n");
 			sb.append("\t} // end constructor\n");
@@ -211,7 +212,7 @@ public class ServiceGenerateMgr {
 		} catch (Exception e) {// Catch exception if any
 			System.err.println("Error: " + e.getMessage());
 		} // end try ... catch ...
-		System.out.println("Service is generated. : " + serviceClassName + "Mgr.java");
+		System.out.println("Service is generated. : " + serviceClassName +  classServiceSuffix +".java");
 	} // end generateDao()
 
 	/**
