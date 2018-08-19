@@ -15,7 +15,7 @@
 	<property name="build" location="../generateJavaMVC/bin/classes" />
 	<property name="resource" location="../generateJavaMVC/resources" />
 	<target name="install_jars_to_maven_respository"  description="install jars to maven repository">
-		<exec executable="cmd.exe">
+		<exec executable="c:/apache-maven-3.5.4/bin/cmd.exe">
 			<arg value="/c" />
 			<arg value="mvn.cmd" />
 			<arg value="-X" />
