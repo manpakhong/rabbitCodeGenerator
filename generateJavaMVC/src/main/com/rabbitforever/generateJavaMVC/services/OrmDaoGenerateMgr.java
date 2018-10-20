@@ -54,6 +54,7 @@ public class OrmDaoGenerateMgr {
 		String systemRootDir = null;
 		String daoSuffix = "OrmDao";
 		String eoSuffix = "Eo";
+		String soSuffix = "So";
 		String daoClassName = null;
 		String daoObjectName = null;
 		try {
@@ -121,101 +122,6 @@ public class OrmDaoGenerateMgr {
 			sb.append("\tprivate final Logger logger = LoggerFactory.getLogger(getClassName());\n");
 //			sb.append("\tprivate static DbUtils mySqlDbUtils;\n");
 //			sb.append("\tprivate static DbUtilsFactory dbUtilsFactory;\n");
-
-
-
-			// ###############################
-			// select statement
-			// ###############################
-			sb.append("\tprivate final String SELECT_SQL=\n");
-			sb.append("\t\t\t\"select \" + \n");
-
-			for (int i = 0; i < metaDataFieldList.size(); i++) {
-				MetaDataField metaDataField = new MetaDataField();
-				metaDataField = metaDataFieldList.get(i);
-
-				sb.append("\t\t\t\"");
-				if (i > 0) {
-					sb.append(",");
-				}
-				sb.append("" + metaDataField.getColumnName());
-				sb.append(" \" + ");
-
-				sb.append("\n");
-			} // end for (int i = 0; i < metaDataFieldList.size(); i++)
-
-			sb.append("\t\t\t\"from " + tableName + " \";\n");
-
-			// ###############################
-			// insert statement
-			// ###############################
-			sb.append("\tprivate final String INSERT_SQL=\n");
-			sb.append("\t\t\t\"insert \" + \n");
-			sb.append("\t\t\t\"into \" + \n");
-			sb.append("\t\t\t\"" + tableName + " \" + \n");
-			sb.append("\t\t\t\"( \" + \n");
-			for (int i = 0; i < metaDataFieldList.size(); i++) {
-				MetaDataField metaDataField = new MetaDataField();
-				metaDataField = metaDataFieldList.get(i);
-
-				sb.append("\t\t\t\"");
-				if (i > 0) {
-					sb.append(",");
-				}
-				sb.append("" + metaDataField.getColumnName());
-				sb.append(" \" + ");
-
-				sb.append("\n");
-			} // end for (int i = 0; i < metaDataFieldList.size(); i++)
-			sb.append("\t\t\t\") \" + \n");
-			sb.append("\t\t\t\"values\" + \n");
-			sb.append("\t\t\t\"( \" + \n");
-			for (int i = 0; i < metaDataFieldList.size(); i++) {
-				MetaDataField metaDataField = new MetaDataField();
-				metaDataField = metaDataFieldList.get(i);
-
-				sb.append("\t\t\t\"");
-				if (i > 0) {
-					sb.append(",");
-				}
-				sb.append("" + "?");
-				sb.append(" \" + ");
-
-				sb.append("\n");
-			} // end for (int i = 0; i < metaDataFieldList.size(); i++)
-			sb.append("\t\t\t\") \";\n");		
-			
-			// ###############################
-			// update statement
-			// ###############################
-			sb.append("\tprivate final String UPDATE_SQL=\n");
-			sb.append("\t\t\t\"update \" + \n");
-			sb.append("\t\t\t\"" + tableName + " \" + \n");
-			sb.append("\t\t\t\"set \" + \n");
-			for (int i = 0; i < metaDataFieldList.size(); i++) {
-				MetaDataField metaDataField = new MetaDataField();
-				metaDataField = metaDataFieldList.get(i);
-
-				sb.append("\t\t\t\"");
-				if (i > 0) {
-					sb.append(",");
-				}
-				sb.append("" + metaDataField.getColumnName());
-				sb.append("= ? \" + ");
-
-				sb.append("\n");
-			} // end for (int i = 0; i < metaDataFieldList.size(); i++)
-
-			sb.append("\t\t\t\"where xxx = ? \";\n");	
-			
-			// ###############################
-			// delete statement
-			// ###############################
-			sb.append("\tprivate final String DELETE_SQL=\n");
-			sb.append("\t\t\t\"delete \" + \n");
-			sb.append("\t\t\t\"from \" + \n");
-			sb.append("\t\t\t\"" + tableName + " \" + \n");
-			sb.append("\t\t\t\"where xxx = ? \";\n");	
 			
 			// getClassName()
 			sb.append("\tprivate String getClassName(){\n");
@@ -237,101 +143,38 @@ public class OrmDaoGenerateMgr {
 			sb.append("\t@Override\n");
 			sb.append("\tpublic List<" + daoClassName + eoSuffix + "> " + "read(Object so) throws Exception{\n");
 			sb.append("\t\tList<" + daoClassName + eoSuffix + "> " + daoObjectName + eoSuffix + "List = null;\n");
-			sb.append("\t\tStringBuilder whereSql = null;\n");
-			sb.append("\t\tPreparedStatement preparedStatement = null;\n");
+			sb.append("\t\tCriteriaBuilder builder = null;\n");
+			sb.append("\t\tCriteriaQuery<" + daoClassName + eoSuffix + "> query = null;\n");
+			sb.append("\t\tTransaction trans = null;\n");
+			sb.append("\t\tRoot<" + daoClassName + eoSuffix + "> root = null;\n");
+			sb.append("\t\tQuery<" + daoClassName + eoSuffix + "> q = null;\n");
+			sb.append("\t\tList<Predicate> predicateList = null;\n");
 			sb.append("\t\ttry{\n");
-			sb.append("\t\t\tif (so instanceof " + daoClassName + "So == false) {\n");
-			sb.append("\t\t\t\tthrow new Exception(\"so is not an instanceof " + daoClassName + "So\");\n");
-			sb.append("\t\t\t}\n");
+			sb.append("\t\t\tsession = sessionFactory.getCurrentSession();\n");
+			sb.append("\t\t\t" + daoClassName + soSuffix + " " + daoObjectName + soSuffix + " = (" + daoClassName + soSuffix + ") so;"+ "\n");
+			sb.append("\t\t\ttrans = session.getTransaction();\n");
+			sb.append("\t\t\ttrans.begin();\n");
+			sb.append("\t\t\tbuilder = session.getCriteriaBuilder();\n");
+			sb.append("\t\t\tquery = builder.createQuery(" + daoClassName + eoSuffix + ".class);\n");
+		
+	
 			
-			sb.append("\t\t\t" + daoClassName + "So " + daoObjectName + "So = (" + daoClassName + "So) so;\n");
-			
-			sb.append("\t\t\twhereSql = new StringBuilder();\n");
-			sb.append("\t\t\tint wcount = 0;\n");
-			
-			// loop wcount field name
+			// loop if so.getXXX() != null
 			for (int i = 0; i < metaDataFieldList.size(); i++) {
 				MetaDataField metaDataField = new MetaDataField();
 				metaDataField = metaDataFieldList.get(i);
-				
-				sb.append("\t\t\tif(" + daoObjectName + "So.get"
-						+ Misc.upperStringFirstChar(Misc
-								.convertTableFieldsFormat2JavaPropertiesFormat(metaDataField
-										.getColumnName())
-						));
+				String upperFirstCharAttributeName = Misc.upperStringFirstChar(Misc.convertTableFieldsFormat2JavaPropertiesFormat(metaDataField.getColumnName()));
+				sb.append("\t\t\tif(" + daoObjectName + "So.get" + upperFirstCharAttributeName);
 				sb.append("() != null){\n");
-				sb.append("\t\t\t\tif (wcount == 0) {\n");
-				sb.append("\t\t\t\t\twhereSql.append(\"where \");\n");
+				sb.append("\t\t\t\tif (predicateList == null) {\n");
+				sb.append("\t\t\t\t\tpredicateList = new ArrayList<Predicate>();\n");
 				sb.append("\t\t\t\t}\n");
-				sb.append("\t\t\t\t else if (wcount > 0) {\n");
-				sb.append("\t\t\t\t\twhereSql.append(\"and \");\n");
-				sb.append("\t\t\t\t}\n");
-				sb.append("\t\t\t\twhereSql.append(\"" + metaDataField.getColumnName() + " = ? \");\n");
-				sb.append("\t\t\t}\n");
-			}
+				sb.append("\t\t\t\tPredicate predicate = builder.eual(root.get(\"" + metaDataField + "\", " + daoObjectName + ".get" + upperFirstCharAttributeName + "();\n");
 
-			// pcount
-			sb.append("\t\t\tint pcount = 1;\n");
-			sb.append("\t\t\tpreparedStatement = connection.prepareStatement(SELECT_SQL + whereSql.toString());\n");
-			
-			// loop pcount field name
-			for (int i = 0; i < metaDataFieldList.size(); i++) {
-				MetaDataField metaDataField = new MetaDataField();
-				metaDataField = metaDataFieldList.get(i);
-				
-				sb.append("\t\t\tif(" + daoObjectName + "So.get"
-						+ Misc.upperStringFirstChar(Misc
-								.convertTableFieldsFormat2JavaPropertiesFormat(metaDataField
-										.getColumnName())
-						));
-				sb.append("() != null){\n");
-				sb.append("\t\t\t\tpreparedStatement.setString(pcount, " + daoObjectName + "So.get" + 
-						Misc.upperStringFirstChar(Misc
-								.convertTableFieldsFormat2JavaPropertiesFormat(metaDataField
-										.getColumnName())
-								)
-				);
-				sb.append("());\n");
-				sb.append("\t\t\t\tpcount++;\n");
 				sb.append("\t\t\t}\n");
 			}
-			sb.append("\t\t\tResultSet rs = preparedStatement.executeQuery();\n");
-			sb.append("\t\t\twhile(rs.next()) {\n");
-			sb.append("\t\t\t\tif (" + daoObjectName + eoSuffix + "List == null){\n");
-			sb.append("\t\t\t\t\t" + daoObjectName + eoSuffix + "List = new ArrayList<" + daoClassName + eoSuffix + ">();\n");
-			sb.append("\t\t\t\t}\n");
-				
-				sb.append("\t\t\t\t" + daoClassName + eoSuffix + " eo = new " + daoClassName + eoSuffix + "();\n");
-			
-				// loop while(rs.next() content....
-				for (int i = 0; i < metaDataFieldList.size(); i++) {
-					MetaDataField metaDataField = new MetaDataField();
-					metaDataField = metaDataFieldList.get(i);
-					sb.append("\t\t\t\tString " + 
-							Misc
-							.convertTableFieldsFormat2JavaPropertiesFormat(metaDataField
-									.getColumnName())
-							);
-					sb.append(" = rs.getString(\"" +  
-							metaDataField.getColumnName()
-							+ "\");");
-					sb.append("\n");
-					sb.append("\t\t\t\teo.set" + 
-							Misc.upperStringFirstChar(Misc
-									.convertTableFieldsFormat2JavaPropertiesFormat(metaDataField
-											.getColumnName())
-									)
-							);
-					sb.append("(");
-					sb.append(
-							Misc
-							.convertTableFieldsFormat2JavaPropertiesFormat(metaDataField
-									.getColumnName())
-							);
-					sb.append(");\n");
-					
-				}
-			sb.append("\t\t\t\t" + daoObjectName + eoSuffix + "List.add(eo);\n");
+			sb.append("\t\t\tif (predicateList != null) {\n");
+
 				
 			sb.append("\t\t\t}\n");
 			
