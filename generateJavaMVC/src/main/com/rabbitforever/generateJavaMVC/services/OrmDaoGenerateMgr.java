@@ -169,17 +169,39 @@ public class OrmDaoGenerateMgr {
 				sb.append("\t\t\t\tif (predicateList == null) {\n");
 				sb.append("\t\t\t\t\tpredicateList = new ArrayList<Predicate>();\n");
 				sb.append("\t\t\t\t}\n");
-				sb.append("\t\t\t\tPredicate predicate = builder.eual(root.get(\"" + metaDataField + "\", " + daoObjectName + ".get" + upperFirstCharAttributeName + "();\n");
+				sb.append("\t\t\t\tPredicate predicate = builder.eual(root.get(\"" + metaDataField.getColumnName() + "\", " + daoObjectName + ".get" + upperFirstCharAttributeName + "();\n");
 
 				sb.append("\t\t\t}\n");
 			}
 			sb.append("\t\t\tif (predicateList != null) {\n");
-
-				
+			sb.append("\t\t\t\tquery.select(root).where(predicateList.toArray(new Predicate[] {}));\n");
+			sb.append("\t\t\t} else {\n");
+			sb.append("\t\t\t\tquery.orderBy(builder.desc(root.get(dataField)));\n");
 			sb.append("\t\t\t}\n");
 			
-			sb.append("\t\t}\n");
-			sb.append("\t\tcatch (Exception e){\n");
+			sb.append("\t\t\tList<OrderedBy> orderedByList = " + daoObjectName + soSuffix + ".getOrderedByList();\n");
+			sb.append("\t\t\tif (orderedByList != null){\n");
+			sb.append("\t\t\t\tfor (OrderedBy orderedBy: orderedByList) {\n");
+			sb.append("\t\t\t\t\tString dataField = orderedBy.getDataField();\n");
+			sb.append("\t\t\t\t\tif (orderedBy.getIsAsc()) {\n");
+			sb.append("\t\t\t\t\t\tquery.orderBy(builder.desc(root.get(dataField)));\n");
+			sb.append("\t\t\t\t\t} else {\n");
+			sb.append("\t\t\t\t\t\tquery.orderBy(builder.desc(root.get(dataField)));\n");
+			sb.append("\t\t\t\t\t}\n");
+			sb.append("\t\t\t\t}\n");
+			sb.append("\t\t\t}\n");
+			
+			sb.append("\t\t\tq = session.createQuery(query);\n");
+			sb.append("\t\t\t" + daoObjectName +"List = q.getResultList();\n");
+			sb.append("\t\t\tfor (" + daoClassName + eoSuffix +":" + daoObjectName + eoSuffix + "List){\n");
+			sb.append("\t\t\t\tlogger.debug(" + daoObjectName + eoSuffix + ".getResult());\n");
+			sb.append("\t\t\t}\n");
+			
+			
+
+			
+			
+			sb.append("\t\t}catch (Exception e){\n");
 			sb.append("\t\t\tlogger.error(getClassName() + \".read() - so=\" + so, e);\n");
 			sb.append("\t\t\tthrow e;\n");
 			sb.append("\t\t} // end try ... catch\n");			
