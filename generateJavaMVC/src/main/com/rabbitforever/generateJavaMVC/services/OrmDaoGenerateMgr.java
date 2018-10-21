@@ -98,17 +98,14 @@ public class OrmDaoGenerateMgr {
 			sb.append("import org.hibernate.Session;\n");
 			sb.append("import org.hibernate.SessionFactory;\n");
 			sb.append("import org.hibernate.Transaction;\n");
-			sb.append("import org.hibernate.SessionFactory;\n");
-			sb.append("import org.hibernate.Session;\n");
-			sb.append("import org.hibernate.SessionFactory;\n");
-			sb.append("import org.hibernate.Session;\n");
-			sb.append("import org.hibernate.SessionFactory;\n");
-			sb.append("import org.hibernate.Session;\n");
-			sb.append("import org.hibernate.SessionFactory;\n");
-			sb.append("import org.hibernate.Session;\n");
-			sb.append("import org.hibernate.SessionFactory;\n");
+			sb.append("import org.hibernate.query.Query;\n");
 			sb.append("import org.slf4j.Logger;\n");
 			sb.append("import org.slf4j.LoggerFactory;\n");
+			sb.append("import org.springframework.beans.factory.annotation.Autowired;\n");
+			sb.append("import org.springframework.stereotype.Repository;\n");
+			sb.append("import com.rabbitforever.gamblehub.interceptors.AuditInterceptor;\n");
+			sb.append("import com.rabbitforever.gamblehub.models.sos.OrderedBy;\n");
+
 			
 			// --- class
 			sb.append("public class " + daoClassName + daoSuffix + " extends DaoBase" + "<" + daoClassName + eoSuffix + ">");
@@ -169,14 +166,14 @@ public class OrmDaoGenerateMgr {
 				sb.append("\t\t\t\tif (predicateList == null) {\n");
 				sb.append("\t\t\t\t\tpredicateList = new ArrayList<Predicate>();\n");
 				sb.append("\t\t\t\t}\n");
-				sb.append("\t\t\t\tPredicate predicate = builder.eual(root.get(\"" + metaDataField.getColumnName() + "\", " + daoObjectName + ".get" + upperFirstCharAttributeName + "();\n");
+				sb.append("\t\t\t\tPredicate predicate = builder.equal(root.get(\"" + metaDataField.getColumnName() + "\"), " + daoObjectName + soSuffix + ".get" + upperFirstCharAttributeName+ "());\n");
 
 				sb.append("\t\t\t}\n");
 			}
 			sb.append("\t\t\tif (predicateList != null) {\n");
 			sb.append("\t\t\t\tquery.select(root).where(predicateList.toArray(new Predicate[] {}));\n");
 			sb.append("\t\t\t} else {\n");
-			sb.append("\t\t\t\tquery.orderBy(builder.desc(root.get(dataField)));\n");
+			sb.append("\t\t\t\tquery.select(root);\n");
 			sb.append("\t\t\t}\n");
 			
 			sb.append("\t\t\tList<OrderedBy> orderedByList = " + daoObjectName + soSuffix + ".getOrderedByList();\n");
@@ -192,8 +189,8 @@ public class OrmDaoGenerateMgr {
 			sb.append("\t\t\t}\n");
 			
 			sb.append("\t\t\tq = session.createQuery(query);\n");
-			sb.append("\t\t\t" + daoObjectName +"List = q.getResultList();\n");
-			sb.append("\t\t\tfor (" + daoClassName + eoSuffix +":" + daoObjectName + eoSuffix + "List){\n");
+			sb.append("\t\t\t" + daoObjectName  + eoSuffix +"List = q.getResultList();\n");
+			sb.append("\t\t\tfor (" + daoClassName + eoSuffix + " " + daoObjectName + eoSuffix + ":" + daoObjectName + eoSuffix + "List){\n");
 			sb.append("\t\t\t\tlogger.debug(" + daoObjectName + eoSuffix + ".getResult());\n");
 			sb.append("\t\t\t}\n");
 			
@@ -206,15 +203,9 @@ public class OrmDaoGenerateMgr {
 			sb.append("\t\t\tthrow e;\n");
 			sb.append("\t\t} // end try ... catch\n");			
 			sb.append("\t\tfinally {\n");
-			sb.append("\t\t\tif(preparedStatement != null){\n");
-			sb.append("\t\t\t\tpreparedStatement.close();\n");
-			sb.append("\t\t\t\tpreparedStatement = null;\n");
-			sb.append("\t\t\t}\n");
-			sb.append("\t\t\tif (connectionType.equals(CONNECTION_TYPE_JDBC)){\n");
-			sb.append("\t\t\t\tif(connection != null) {\n");
-			sb.append("\t\t\t\t\tconnection.close();\n");
-			sb.append("\t\t\t\t\tconnection = null;\n");
-			sb.append("\t\t\t\t}\n");
+			sb.append("\t\t\tif(trans != null){\n");
+			sb.append("\t\t\t\ttrans.commit();\n");
+			sb.append("\t\t\t\ttrans = null;\n");
 			sb.append("\t\t\t}\n");
 			sb.append("\t\t}\n");
 			sb.append("\t\treturn " + daoObjectName + eoSuffix + "List;\n");
@@ -225,58 +216,37 @@ public class OrmDaoGenerateMgr {
 			// ###############################
 			sb.append("\t@Override\n");
 			sb.append("\tpublic Integer " + "create(" + daoClassName +  eoSuffix + " eo) throws Exception{\n");
-			sb.append("\t\tPreparedStatement preparedStatement = null;\n");
-			sb.append("\t\tInteger noOfAffectedRow = null;\n");
+			sb.append("\t\tTransaction trans = null;\n");
+			sb.append("\t\tInteger id = null;\n");
 			sb.append("\t\ttry{\n");
 			
-			// pcount
-			sb.append("\t\t\tint pcount = 1;\n");
-			sb.append("\t\t\tpreparedStatement = connection.prepareStatement(INSERT_SQL);\n");
+
+			sb.append("\t\t\tsession = sessionFactory.withOptions().interceptor(new AuditInterceptor()).openSession();\n");
+			sb.append("\t\t\ttrans = session.getTransaction();\n");
+			sb.append("\t\t\ttrans.begin();\n");
 			
-			// loop pcount field name
-			for (int i = 0; i < metaDataFieldList.size(); i++) {
-				MetaDataField metaDataField = new MetaDataField();
-				metaDataField = metaDataFieldList.get(i);
-				
-				sb.append("\t\t\tif(eo.get"
-						+ Misc.upperStringFirstChar(Misc
-								.convertTableFieldsFormat2JavaPropertiesFormat(metaDataField
-										.getColumnName())
-						));
-				sb.append("() != null){\n");
-				sb.append("\t\t\t\tpreparedStatement.setString(pcount, eo.get" + 
-						Misc.upperStringFirstChar(Misc
-								.convertTableFieldsFormat2JavaPropertiesFormat(metaDataField
-										.getColumnName())
-								)
-				);
-				sb.append("());\n");
-				sb.append("\t\t\t\tpcount++;\n");
-				sb.append("\t\t\t}\n");
-			}
-			sb.append("\t\t\tnoOfAffectedRow = preparedStatement.executeUpdate();\n");
-			sb.append("\t\t\tif (noOfAffectedRow.intValue() != 1) {\n");
-			sb.append("\t\t\t\tthrow new Exception(\"insert failed! affectedRow=\" + noOfAffectedRow);\n");
-			sb.append("\t\t\t}\n");
+			sb.append("\t\t\teo.setCreatedBy(\"\");\n");
+			sb.append("\t\t\teo.setCreateDate(new Date());\n");
+			sb.append("\t\t\teo.setUpdatedBy(\"\");\n");
+			sb.append("\t\t\teo.setUpdateDate(new Date());\n");
+			sb.append("\t\t\tsession.save(eo);\n");
+			sb.append("\t\t\ttrans.commit();\n");
+			sb.append("\t\t\tid = eo.getId();\n");
+
 			
-			sb.append("\t\t}\n");
-			sb.append("\t\tcatch (Exception e){\n");
+			sb.append("\t\t}catch (Exception e){\n");
 			sb.append("\t\t\tlogger.error(getClassName() + \".create() - eo=\" + eo, e);\n");
+			sb.append("\t\t\ttrans.rollback();\n");
 			sb.append("\t\t\tthrow e;\n");
 			sb.append("\t\t} // end try ... catch\n");			
 			sb.append("\t\tfinally {\n");
-			sb.append("\t\t\tif(preparedStatement != null){\n");
-			sb.append("\t\t\t\tpreparedStatement.close();\n");
-			sb.append("\t\t\t\tpreparedStatement = null;\n");
+			sb.append("\t\t\tif(session != null){\n");
+			sb.append("\t\t\t\tsession.close();\n");
+			sb.append("\t\t\t\tsession = null;\n");
 			sb.append("\t\t\t}\n");
-			sb.append("\t\t\tif (connectionType.equals(CONNECTION_TYPE_JDBC)){\n");
-			sb.append("\t\t\t\tif(connection != null) {\n");
-			sb.append("\t\t\t\t\tconnection.close();\n");
-			sb.append("\t\t\t\t\tconnection = null;\n");
-			sb.append("\t\t\t\t}\n");
-			sb.append("\t\t\t}\n");
+			
 			sb.append("\t\t}\n");
-			sb.append("\t\treturn noOfAffectedRow;\n");
+			sb.append("\t\treturn id;\n");
 			sb.append("\t} // end create function\n");			
 			
 			
