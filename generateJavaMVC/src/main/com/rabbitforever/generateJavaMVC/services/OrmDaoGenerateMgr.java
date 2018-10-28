@@ -6,11 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.rabbitforever.generateJavaMVC.bundles.SysProperties;
-import com.rabbitforever.generateJavaMVC.commons.JavaOracle;
 import com.rabbitforever.generateJavaMVC.commons.Misc;
 import com.rabbitforever.generateJavaMVC.factories.PropertiesFactory;
 import com.rabbitforever.generateJavaMVC.models.eos.MetaDataField;
-import com.rabbitforever.generateJavaMVC.policies.SystemParams;
 
 public class OrmDaoGenerateMgr {
 
@@ -153,7 +151,7 @@ public class OrmDaoGenerateMgr {
 			sb.append("\t\t\ttrans.begin();\n");
 			sb.append("\t\t\tbuilder = session.getCriteriaBuilder();\n");
 			sb.append("\t\t\tquery = builder.createQuery(" + daoClassName + eoSuffix + ".class);\n");
-		
+			sb.append("\t\t\troot = query.from("+ daoClassName + eoSuffix + ".class);\n");
 	
 			
 			// loop if so.getXXX() != null
