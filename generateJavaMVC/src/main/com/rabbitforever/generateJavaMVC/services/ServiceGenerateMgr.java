@@ -57,7 +57,7 @@ public class ServiceGenerateMgr {
 		String daoObjectName = null;
 		String servicesDirName = null;
 		String serviceObjectName = null;
-		String classServiceSuffix="Service";
+		String classServiceSuffix="Mgr";
 		try {
 			// Create file
 
