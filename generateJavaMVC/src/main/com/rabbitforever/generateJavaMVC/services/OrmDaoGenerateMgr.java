@@ -109,9 +109,16 @@ public class OrmDaoGenerateMgr {
 			sb.append("public class " + daoClassName + daoSuffix + " extends DaoBase" + "<" + daoClassName + eoSuffix + ">");
 			sb.append("{\n");
 
-			MySqlDbMgr oracleDbMgr = new MySqlDbMgr();
+			String database = this.sysProperties.getDatabase();
+
+			DbMgr dbMgr = null;
+			if (database.equals(SysProperties.DATABASE_MYSQL)) {
+				dbMgr = new MySqlDbMgr();
+			}else if (database.equals(SysProperties.DATABASE_ORACLE)){
+				dbMgr = new OracleDbMgr();
+			}
 			List<MetaDataField> metaDataFieldList = new ArrayList<MetaDataField>();
-			metaDataFieldList = oracleDbMgr.getMetaDataList(tableName);
+			metaDataFieldList = dbMgr.getMetaDataList(tableName);
 
 			// properties
 			sb.append("\tprivate final Logger logger = LoggerFactory.getLogger(getClassName());\n");

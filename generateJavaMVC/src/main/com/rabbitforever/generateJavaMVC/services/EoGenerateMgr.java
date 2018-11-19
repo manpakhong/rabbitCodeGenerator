@@ -78,9 +78,16 @@ public class EoGenerateMgr {
 			sb.append("public class " + eoClassName + eoSuffix +  "\n");
 			sb.append("{\n");
 
-			MySqlDbMgr oracleDbMgr = new MySqlDbMgr();
+			String database = this.sysProperties.getDatabase();
+			
+			DbMgr dbMgr = null;
+			if (database.equals(SysProperties.DATABASE_MYSQL)) {
+				dbMgr = new MySqlDbMgr();
+			}else if (database.equals(SysProperties.DATABASE_ORACLE)){
+				dbMgr = new OracleDbMgr();
+			}
 			List<MetaDataField> metaDataFieldList = new ArrayList<MetaDataField>();
-			metaDataFieldList = oracleDbMgr.getMetaDataList(tableName);
+			metaDataFieldList = dbMgr.getMetaDataList(tableName);
 			for (int i = 0; i < metaDataFieldList.size(); i++) {
 				MetaDataField metaDataField = new MetaDataField();
 				metaDataField = metaDataFieldList.get(i);

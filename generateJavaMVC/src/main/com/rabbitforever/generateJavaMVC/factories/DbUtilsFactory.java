@@ -5,11 +5,13 @@ import org.slf4j.LoggerFactory;
 
 import com.rabbitforever.generateJavaMVC.utils.DbUtils;
 import com.rabbitforever.generateJavaMVC.utils.MySqlDbUtils;
+import com.rabbitforever.generateJavaMVC.utils.OracleDbUtils;
 public class DbUtilsFactory {
 	private final static Logger logger = LoggerFactory.getLogger(getClassName());
 
 	private static DbUtils mySqlDbUtils;
 	private static DbUtilsFactory dbUtilsFactory;
+	private static DbUtils oracleDbUtils;
 //	private static DbUtils db2DbUtils;
 //	private static DbUtils msSqlDbUtils;
 	
@@ -31,6 +33,16 @@ public class DbUtilsFactory {
 			logger.error(getClassName() + ".getInstanceOfMySqlDbUtils()", e);
 		}
 		return mySqlDbUtils;
+	}
+	public DbUtils getInstanceOfOracleDbUtils() throws Exception{
+		try {
+			if (oracleDbUtils == null){
+				oracleDbUtils = new OracleDbUtils();
+			}
+		} catch (Exception e) {
+			logger.error(getClassName() + ".getInstanceOfOracleDbUtils()", e);
+		}
+		return oracleDbUtils;
 	}
 	public static String getClassName() {
 		String className = DbUtilsFactory.class.getName();

@@ -5,7 +5,7 @@ import java.util.List;
 import com.rabbitforever.generateJavaMVC.daos.OracleDbDao;
 import com.rabbitforever.generateJavaMVC.models.eos.MetaDataField;
 
-public class OracleDbMgr {
+public class OracleDbMgr extends DbMgr{
 	private OracleDbDao oracleDbDao;
 	public OracleDbMgr()
 	{

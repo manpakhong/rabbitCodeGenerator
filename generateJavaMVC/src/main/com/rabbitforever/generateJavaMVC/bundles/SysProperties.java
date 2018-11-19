@@ -2,6 +2,8 @@ package com.rabbitforever.generateJavaMVC.bundles;
 public class SysProperties extends PropertiesBase{
 	public static final String LANG_EN = PropertiesBase.LANG_EN;
 	public static final String LANG_TCHI = PropertiesBase.LANG_TCHI;
+	public static final String DATABASE_MYSQL = "mysql";
+	public static final String DATABASE_ORACLE = "oracle";
 	public SysProperties() {
 		super();
 }

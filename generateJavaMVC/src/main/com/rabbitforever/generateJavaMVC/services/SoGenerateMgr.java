@@ -84,9 +84,16 @@ public class SoGenerateMgr {
 			sb.append("public class " + soClassName + soSuffix +  " extends " + soClassName + eoSuffix + " implements So\n");
 			sb.append("{\n");
 
-			MySqlDbMgr oracleDbMgr = new MySqlDbMgr();
+			String database = this.sysProperties.getDatabase();
+
+			DbMgr dbMgr = null;
+			if (database.equals(SysProperties.DATABASE_MYSQL)) {
+				dbMgr = new MySqlDbMgr();
+			}else if (database.equals(SysProperties.DATABASE_ORACLE)){
+				dbMgr = new OracleDbMgr();
+			}
 			List<MetaDataField> metaDataFieldList = new ArrayList<MetaDataField>();
-			metaDataFieldList = oracleDbMgr.getMetaDataList(tableName);
+			metaDataFieldList = dbMgr.getMetaDataList(tableName);
 
 			sb.append("\tprotected Date createDateTimeFrom;\n");
 			sb.append("\tprotected Date createDateTimeTo;\n");

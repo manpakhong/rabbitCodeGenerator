@@ -5,7 +5,7 @@ import java.util.List;
 import com.rabbitforever.generateJavaMVC.daos.MySqlDbDao;
 import com.rabbitforever.generateJavaMVC.models.eos.MetaDataField;
 
-public class MySqlDbMgr {
+public class MySqlDbMgr extends DbMgr{
 	private MySqlDbDao mysqlDbDao;
 	public MySqlDbMgr() throws Exception
 	{

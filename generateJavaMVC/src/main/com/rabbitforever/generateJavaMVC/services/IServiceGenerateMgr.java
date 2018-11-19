@@ -5,8 +5,10 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.rabbitforever.generateJavaMVC.bundles.SysProperties;
 import com.rabbitforever.generateJavaMVC.commons.JavaOracle;
 import com.rabbitforever.generateJavaMVC.commons.Misc;
+import com.rabbitforever.generateJavaMVC.factories.PropertiesFactory;
 import com.rabbitforever.generateJavaMVC.models.eos.MetaDataField;
 import com.rabbitforever.generateJavaMVC.policies.SystemParams;
 
@@ -15,11 +17,14 @@ public class IServiceGenerateMgr {
 	private String tableName;
 	private String voClassName;
 	private String objClassName;
-
+	private PropertiesFactory propertiesFactory;
+	private SysProperties sysProperties;
+	
 	public IServiceGenerateMgr(String _tableName) throws Exception {
 		tableName = _tableName;
 		voClassName = tableName;
-
+		propertiesFactory = PropertiesFactory.getInstanceOfPropertiesFactory();
+		sysProperties = propertiesFactory.getInstanceOfSysProperties();
 		objClassName = Misc
 				.convertTableFieldsFormat2JavaPropertiesFormat(tableName);
 	} // end constructor
@@ -42,10 +47,16 @@ public class IServiceGenerateMgr {
 			// --- Interface
 			sb.append("public Interface " + voClassName + "Service\n");
 			sb.append("{\n");
-
-			OracleDbMgr oracleDbMgr = new OracleDbMgr();
+			String database = this.sysProperties.getDatabase();
+			
+			DbMgr dbMgr = null;
+			if (database.equals(SysProperties.DATABASE_MYSQL)) {
+				dbMgr = new MySqlDbMgr();
+			}else if (database.equals(SysProperties.DATABASE_ORACLE)){
+				dbMgr = new OracleDbMgr();
+			}
 			List<MetaDataField> metaDataFieldList = new ArrayList<MetaDataField>();
-			metaDataFieldList = oracleDbMgr.getMetaDataList(tableName);
+			metaDataFieldList = dbMgr.getMetaDataList(tableName);
 
 			// select function
 			sb.append("public List<" + voClassName + "> " + "selectAll();\n");
