@@ -9,13 +9,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.rabbitforever.generateJavaMVC.commons.RConnection;
+import com.rabbitforever.generateJavaMVC.factories.DbUtilsFactory;
 import com.rabbitforever.generateJavaMVC.models.eos.MetaDataField;
+import com.rabbitforever.generateJavaMVC.utils.DbUtils;
 
 public class OracleDbDao {
-
-	public OracleDbDao()
+	private DbUtilsFactory dbUtilsFactory;
+	private DbUtils dbUtils;
+	public OracleDbDao() throws Exception
 	{
-		
+		try {
+			dbUtilsFactory = DbUtilsFactory.getInstanceOfDbUtilsFactory();
+			dbUtils = dbUtilsFactory.getInstanceOfOracleDbUtils();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
 	}
 
 	public List<MetaDataField> getMetaDataList(String _database)
@@ -25,10 +34,20 @@ public class OracleDbDao {
 
 		try
 		{
-			conn = RConnection.getInstanceOfConnection("ORACLE");
+			conn = dbUtils.getConnection();
 			
 		    ResultSet rsColumns = null;
 		    DatabaseMetaData meta = conn.getMetaData();
+		    
+//		    ResultSet rsTables = meta.getTables(null,null,null,null);
+//		    while (rsTables.next()) {
+//		    	String tableName = rsTables.getString("TABLE_NAME");
+//		    	String tbl = tableName;
+//		    	if (tbl.equals("BIL_CHARGE_REQUEST")) {
+//		    		String helo = tbl;
+//		    		String a = helo;
+//		    	}
+//		    }
 		    rsColumns = meta.getColumns(null, null, _database, null);
 		    
 		    while (rsColumns.next()) {
@@ -46,6 +65,15 @@ public class OracleDbDao {
 		catch (Exception ex)
 		{
 			ex.printStackTrace();
+		} finally {
+				try {
+				if (conn != null) {
+					conn.close();
+					conn = null;
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		
 		
@@ -84,7 +112,16 @@ public class OracleDbDao {
 		catch (Exception ex)
 		{
 			ex.printStackTrace();
+		}finally {
+			try {
+			if (conn != null) {
+				conn.close();
+				conn = null;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+	}
 	
 	}
 	public void testConnection(){

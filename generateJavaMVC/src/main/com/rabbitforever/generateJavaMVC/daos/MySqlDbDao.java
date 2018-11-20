@@ -56,7 +56,16 @@ public class MySqlDbDao {
 		catch (Exception ex)
 		{
 			ex.printStackTrace();
+		}finally {
+			try {
+			if (conn != null) {
+				conn.close();
+				conn = null;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+	}
 		
 		
 		return metaDataFieldList;
@@ -94,7 +103,16 @@ public class MySqlDbDao {
 		catch (Exception ex)
 		{
 			ex.printStackTrace();
+		}finally {
+			try {
+			if (conn != null) {
+				conn.close();
+				conn = null;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+	}
 	
 	}
 	public void testConnection(){

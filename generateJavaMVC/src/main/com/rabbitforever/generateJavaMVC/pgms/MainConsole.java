@@ -18,7 +18,7 @@ public class MainConsole {
 			String argTableName = "";
 			if (args.length < 1)
 			{
-				argTableName = "gbl_baccarat,gbl_about,gbl_authorities,gbl_big_small,gbl_role,gbl_user";
+				argTableName = "BIL_CHARGE_REQUEST";
 			}
 			else
 			{

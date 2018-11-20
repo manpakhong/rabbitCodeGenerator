@@ -21,13 +21,13 @@ public class PropGenMainConsole {
 			
 			FileUtils fileUtils = new FileUtils();
 			String path = new File(".").getCanonicalPath();
-			final String FILE_NAME_ROOT = "d:/universe_git/MfmsReports/properties";
+			final String FILE_NAME_ROOT = "C:/svn/bill_engine/trunk/java/release2/billing-patient-charges/properties";
 			String fileNamesString = null;
 			List<String> fileNameStringList = null;
 			boolean isUsingFileNameRoot = false;
 			if (args.length < 1) {
 				if (!isUsingFileNameRoot) {
-					fileNamesString = "mysql.db.properties,sys.properties,report.properties";
+					fileNamesString = "patient-charges.properties,db-cms.properties,db-datapool.properties";
 				} else {
 					List<File> fileList = new ArrayList<File>();
 					fileUtils.traverseDir(FILE_NAME_ROOT, fileList);
