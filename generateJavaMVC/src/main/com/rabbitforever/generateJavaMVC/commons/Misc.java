@@ -129,7 +129,7 @@ public class Misc {
 					String[] splitClassName = null;
 					
 					if (tempClassName.contains("_")){
-						tempClassName.split("_");
+						splitClassName = tempClassName.split("_");
 					}
 
 
