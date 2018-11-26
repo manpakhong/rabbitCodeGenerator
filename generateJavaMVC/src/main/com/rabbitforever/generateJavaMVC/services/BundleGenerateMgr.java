@@ -85,12 +85,12 @@ public class BundleGenerateMgr {
 			
 			sb.append("\tpublic " + objUpperFirstCharClassName + "Properties() {\n");
 			sb.append("\t\tsuper();\n");
-			sb.append("}\n");
+			sb.append("\t}\n");
 			
 			
 			sb.append("\tpublic " + objUpperFirstCharClassName + "Properties(String lang) {\n");
 			sb.append("\t\tsuper(lang);\n");
-			sb.append("}\n");
+			sb.append("\t}\n");
 			
 			// member variables - No language specification
 			for (String line : lineList) {
