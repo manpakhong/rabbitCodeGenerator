@@ -113,7 +113,13 @@ public class DaoGenerateMgr {
 //			sb.append("\tprivate static DbUtils mySqlDbUtils;\n");
 //			sb.append("\tprivate static DbUtilsFactory dbUtilsFactory;\n");
 
-
+			// ###############################
+			// select next seq statement - oracle
+			// ###############################
+			sb.append("\tprivate final String SELECT_NEXTSEQ_SQL=\n");
+			sb.append("\t\t\t\"select \" + \n");
+			sb.append("\t\t\t\"" + tableName + "_SEQ.NEXTVAL " + "\" +\n");
+			sb.append("\t\t\t\"from DUAL \";\n");
 
 			// ###############################
 			// select statement
@@ -221,6 +227,41 @@ public class DaoGenerateMgr {
 			sb.append("\tpublic " + daoClassName + daoSuffix + "(String connectionType) throws Exception {\n");
 			sb.append("\t\tsuper(connectionType);\n");
 			sb.append("\t}\n");
+			
+			// ###############################
+			// read next seq function
+			// ###############################
+
+			sb.append("\tprivate Long retrieveNextSeq() throws Exception{\n");
+			sb.append("\t\tLong nextSeq = null;\n");
+			sb.append("\t\tPreparedStatement preparedStatement = null;\n");
+			sb.append("\t\ttry{\n");
+			sb.append("\t\t\tpreparedStatement = getConnection().prepareStatement(SELECT_NEXTSEQ_SQL);\n");
+			
+			sb.append("\t\t\tResultSet rs = preparedStatement.executeQuery();\n");
+			sb.append("\t\t\twhile(rs.next()) {\n");
+			sb.append("\t\t\t\tnextSeq = rs.getLong(1);\n");
+			sb.append("\t\t\t}\n");
+			
+			sb.append("\t\t}\n");
+			sb.append("\t\tcatch (Exception e){\n");
+			sb.append("\t\t\tlogger.error(getClassName() + \".retrieveNextSeq()\", e);\n");
+			sb.append("\t\t\tthrow e;\n");
+			sb.append("\t\t} // end try ... catch\n");			
+			sb.append("\t\tfinally {\n");
+			sb.append("\t\t\tif(preparedStatement != null){\n");
+			sb.append("\t\t\t\tpreparedStatement.close();\n");
+			sb.append("\t\t\t\tpreparedStatement = null;\n");
+			sb.append("\t\t\t}\n");
+			sb.append("\t\t\tif (connectionType.equals(CONNECTION_TYPE_JDBC)){\n");
+			sb.append("\t\t\t\tif(connection != null) {\n");
+			sb.append("\t\t\t\t\tconnection.close();\n");
+			sb.append("\t\t\t\t\tconnection = null;\n");
+			sb.append("\t\t\t\t}\n");
+			sb.append("\t\t\t}\n");
+			sb.append("\t\t}\n");
+			sb.append("\t\treturn nextSeq;\n");
+			sb.append("\t} // end retrieveNextSeq function\n");			
 			
 			// ###############################
 			// read function
@@ -364,21 +405,21 @@ public class DaoGenerateMgr {
 				MetaDataField metaDataField = new MetaDataField();
 				metaDataField = metaDataFieldList.get(i);
 				
-				sb.append("\t\t\tif(eo.get"
-						+ Misc.upperStringFirstChar(Misc
-								.convertTableFieldsFormat2JavaPropertiesFormat(metaDataField
-										.getColumnName())
-						));
-				sb.append("() != null){\n");
-				sb.append("\t\t\t\tpreparedStatement.setString(pcount, eo.get" + 
+//				sb.append("\t\t\tif(eo.get"
+//						+ Misc.upperStringFirstChar(Misc
+//								.convertTableFieldsFormat2JavaPropertiesFormat(metaDataField
+//										.getColumnName())
+//						));
+//				sb.append("() != null){\n");
+				sb.append("\t\t\tpreparedStatement.setString(pcount, eo.get" + 
 						Misc.upperStringFirstChar(Misc
 								.convertTableFieldsFormat2JavaPropertiesFormat(metaDataField
 										.getColumnName())
 								)
 				);
 				sb.append("());\n");
-				sb.append("\t\t\t\tpcount++;\n");
-				sb.append("\t\t\t}\n");
+				sb.append("\t\t\tpcount++;\n");
+//				sb.append("\t\t\t}\n");
 			}
 			sb.append("\t\t\tnoOfAffectedRow = preparedStatement.executeUpdate();\n");
 			sb.append("\t\t\tif (noOfAffectedRow.intValue() != 1) {\n");
