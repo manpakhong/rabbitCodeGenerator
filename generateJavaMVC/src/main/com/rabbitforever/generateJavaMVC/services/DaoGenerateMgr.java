@@ -263,7 +263,7 @@ public class DaoGenerateMgr {
 
 			// pcount
 			sb.append("\t\t\tint pcount = 1;\n");
-			sb.append("\t\t\tpreparedStatement = connection.prepareStatement(SELECT_SQL + whereSql.toString());\n");
+			sb.append("\t\t\tpreparedStatement = getConnection().prepareStatement(SELECT_SQL + whereSql.toString());\n");
 			
 			// loop pcount field name
 			for (int i = 0; i < metaDataFieldList.size(); i++) {
@@ -357,7 +357,7 @@ public class DaoGenerateMgr {
 			
 			// pcount
 			sb.append("\t\t\tint pcount = 1;\n");
-			sb.append("\t\t\tpreparedStatement = connection.prepareStatement(INSERT_SQL);\n");
+			sb.append("\t\t\tpreparedStatement = getConnection().prepareStatement(INSERT_SQL);\n");
 			
 			// loop pcount field name
 			for (int i = 0; i < metaDataFieldList.size(); i++) {
@@ -418,28 +418,28 @@ public class DaoGenerateMgr {
 			
 			// pcount
 			sb.append("\t\t\tint pcount = 1;\n");
-			sb.append("\t\t\tpreparedStatement = connection.prepareStatement(UPDATE_SQL);\n");
+			sb.append("\t\t\tpreparedStatement = getConnection().prepareStatement(UPDATE_SQL);\n");
 			
 			// loop pcount field name
 			for (int i = 0; i < metaDataFieldList.size(); i++) {
 				MetaDataField metaDataField = new MetaDataField();
 				metaDataField = metaDataFieldList.get(i);
 				
-				sb.append("\t\t\tif(eo.get"
-						+ Misc.upperStringFirstChar(Misc
-								.convertTableFieldsFormat2JavaPropertiesFormat(metaDataField
-										.getColumnName())
-						));
-				sb.append("() != null){\n");
-				sb.append("\t\t\t\tpreparedStatement.setString(pcount, eo.get" + 
+//				sb.append("\t\t\tif(eo.get"
+//						+ Misc.upperStringFirstChar(Misc
+//								.convertTableFieldsFormat2JavaPropertiesFormat(metaDataField
+//										.getColumnName())
+//						));
+//				sb.append("() != null){\n");
+				sb.append("\t\t\tpreparedStatement.setString(pcount, eo.get" + 
 						Misc.upperStringFirstChar(Misc
 								.convertTableFieldsFormat2JavaPropertiesFormat(metaDataField
 										.getColumnName())
 								)
 				);
 				sb.append("());\n");
-				sb.append("\t\t\t\tpcount++;\n");
-				sb.append("\t\t\t}\n");
+				sb.append("\t\t\tpcount++;\n");
+//				sb.append("\t\t\t}\n");
 			}
 			sb.append("\t\t\tnoOfAffectedRow = preparedStatement.executeUpdate();\n");
 			sb.append("\t\t\tif (noOfAffectedRow.intValue() != 1) {\n");
@@ -478,7 +478,7 @@ public class DaoGenerateMgr {
 			
 			// pcount
 			sb.append("\t\t\tint pcount = 1;\n");
-			sb.append("\t\t\tpreparedStatement = connection.prepareStatement(DELETE_SQL);\n");
+			sb.append("\t\t\tpreparedStatement = getConnection().prepareStatement(DELETE_SQL);\n");
 			
 			sb.append("\t\t\tif(eo.getXXX_key_XXX() != null){\n");
 			sb.append("\t\t\t\tpreparedStatement.setInt(pcount, eo.getXXX_key_XXX());\n");

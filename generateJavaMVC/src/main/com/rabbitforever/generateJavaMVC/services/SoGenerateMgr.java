@@ -97,8 +97,9 @@ public class SoGenerateMgr {
 
 			sb.append("\tprotected Date createDateTimeFrom;\n");
 			sb.append("\tprotected Date createDateTimeTo;\n");
-			sb.append("\tprotected Date lastModifyDateTimeFrom;\n");
-			sb.append("\tprotected Date lastModifyDateTimeTo;\n");
+			sb.append("\tprotected Date updateDateTimeFrom;\n");
+			sb.append("\tprotected Date updateDateTimeTo;\n");
+			sb.append("\tprotected List<OrderedBy> orderedByList;\n");
 
 			sb.append("\t@Override\n");
 			sb.append("\tpublic void setCreateDateTimeFrom(Date createDateTimeFrom){\n");
@@ -111,16 +112,27 @@ public class SoGenerateMgr {
 			sb.append("\t}\n");
 			
 			sb.append("\t@Override\n");
-			sb.append("\tpublic void setLastModifyDateTimeFrom(Date lastModifyDateTimeFrom){\n");
-			sb.append("\t\tthis.lastModifyDateTimeFrom = lastModifyDateTimeFrom;\n");
+			sb.append("\tpublic void setUpdateDateTimeFrom(Date updateDateTimeFrom){\n");
+			sb.append("\t\tthis.updateDateTimeFrom = updateDateTimeFrom;\n");
 			sb.append("\t}\n");
 			
 			sb.append("\t@Override\n");
-			sb.append("\tpublic void setLastModifyDateTimeTo(Date lastModifyDateTimeTo){\n");
-			sb.append("\t\tthis.lastModifyDateTimeTo = lastModifyDateTimeTo;\n");
+			sb.append("\tpublic void setUpdateDateTimeTo(Date updateDateTimeTo){\n");
+			sb.append("\t\tthis.updateDateTimeTo = updateDateTimeTo;\n");
 			sb.append("\t}\n");
 			
+			sb.append("\t@Override\n");
+			sb.append("\tpublic void setOrderedByList(List<OrderedBy> orderedByList){\n");
+			sb.append("\t\tthis.orderedByList = orderedByList;\n");
+			sb.append("\t}\n");		
 			
+			sb.append("\t@Override\n");
+			sb.append("\tpublic void addOrderedBy(OrderedBy orderedBy){\n");
+			sb.append("\t\tif(this.orderedByList == null){\n");
+			sb.append("\t\t\tthis.orderedByList = new ArrayList<OrderedBy>();\n");
+			sb.append("\t\t}\n");
+			sb.append("\t\tthis.orderedByList.add(orderedBy);\n");
+			sb.append("\t}\n");	
 			
 			sb.append("\t@Override\n");
 			sb.append("\tpublic Date getCreateDateTimeFrom(){\n");
@@ -133,15 +145,19 @@ public class SoGenerateMgr {
 			sb.append("\t}\n");
 			
 			sb.append("\t@Override\n");
-			sb.append("\tpublic Date getLastModifyDateTimeFrom(){\n");
-			sb.append("\t\treturn this.lastModifyDateTimeFrom;\n");
+			sb.append("\tpublic Date getUpdateDateTimeFrom(){\n");
+			sb.append("\t\treturn this.updateDateTimeFrom;\n");
 			sb.append("\t}\n");
 			
 			sb.append("\t@Override\n");
-			sb.append("\tpublic Date getLastModifyDateTimeTo(){\n");
-			sb.append("\t\treturn this.lastModifyDateTimeTo;\n");
+			sb.append("\tpublic Date getUpdateDateTimeTo(){\n");
+			sb.append("\t\treturn this.updateDateTimeTo;\n");
 			sb.append("\t}\n");
 			
+			sb.append("\t@Override\n");
+			sb.append("\tpublic List<OrderedBy> getOrderedByList(){\n");
+			sb.append("\t\treturn this.orderedByList;\n");
+			sb.append("\t}\n");
 			
 			sb.append("}\n");
 			out.write(sb.toString());
