@@ -221,11 +221,23 @@ public class DaoGenerateMgr {
 			
 			// constructors
 			sb.append("\tpublic " + daoClassName +  daoSuffix + "() throws Exception {\n");
-			sb.append("\t\tsuper();\n");
+			sb.append("\t\tsuper(DaoBase.CONNECTION_TYPE_JDBC);\n");
 			sb.append("\t}\n");
 			
 			sb.append("\tpublic " + daoClassName + daoSuffix + "(String connectionType) throws Exception {\n");
 			sb.append("\t\tsuper(connectionType);\n");
+			sb.append("\t}\n");
+			
+			sb.append("\tpublic " + daoClassName + daoSuffix + "(Connection connection) throws Exception {\n");
+			sb.append("\t\tsuper(connection);\n");
+			sb.append("\t}\n");
+			
+			sb.append("\tpublic " + daoClassName + daoSuffix + "(Connection connection, String connectionType) throws Exception {\n");
+			sb.append("\t\tsuper(connection, connectionType);\n");
+			sb.append("\t}\n");
+			
+			sb.append("\tpublic " + daoClassName + daoSuffix + "(Connection connection,Boolean closeConnectionFinally,  String connectionType) throws Exception {\n");
+			sb.append("\t\tsuper(connection, closeConnectionFinally, connectionType);\n");
 			sb.append("\t}\n");
 			
 			// ###############################
@@ -254,7 +266,7 @@ public class DaoGenerateMgr {
 			sb.append("\t\t\t\tpreparedStatement = null;\n");
 			sb.append("\t\t\t}\n");
 			sb.append("\t\t\tif (connectionType.equals(CONNECTION_TYPE_JDBC)){\n");
-			sb.append("\t\t\t\tif(connection != null) {\n");
+			sb.append("\t\t\t\tif(closeConnectionFinally && connection != null) {\n");
 			sb.append("\t\t\t\t\tconnection.close();\n");
 			sb.append("\t\t\t\t\tconnection = null;\n");
 			sb.append("\t\t\t\t}\n");
@@ -378,7 +390,7 @@ public class DaoGenerateMgr {
 			sb.append("\t\t\t\tpreparedStatement = null;\n");
 			sb.append("\t\t\t}\n");
 			sb.append("\t\t\tif (connectionType.equals(CONNECTION_TYPE_JDBC)){\n");
-			sb.append("\t\t\t\tif(connection != null) {\n");
+			sb.append("\t\t\t\tif(closeConnectionFinally && connection != null) {\n");
 			sb.append("\t\t\t\t\tconnection.close();\n");
 			sb.append("\t\t\t\t\tconnection = null;\n");
 			sb.append("\t\t\t\t}\n");
@@ -437,7 +449,7 @@ public class DaoGenerateMgr {
 			sb.append("\t\t\t\tpreparedStatement = null;\n");
 			sb.append("\t\t\t}\n");
 			sb.append("\t\t\tif (connectionType.equals(CONNECTION_TYPE_JDBC)){\n");
-			sb.append("\t\t\t\tif(connection != null) {\n");
+			sb.append("\t\t\t\tif(closeConnectionFinally && connection != null) {\n");
 			sb.append("\t\t\t\t\tconnection.close();\n");
 			sb.append("\t\t\t\t\tconnection = null;\n");
 			sb.append("\t\t\t\t}\n");
@@ -498,7 +510,7 @@ public class DaoGenerateMgr {
 			sb.append("\t\t\t\tpreparedStatement = null;\n");
 			sb.append("\t\t\t}\n");
 			sb.append("\t\t\tif (connectionType.equals(CONNECTION_TYPE_JDBC)){\n");
-			sb.append("\t\t\t\tif(connection != null) {\n");
+			sb.append("\t\t\t\tif(closeConnectionFinally && connection != null) {\n");
 			sb.append("\t\t\t\t\tconnection.close();\n");
 			sb.append("\t\t\t\t\tconnection = null;\n");
 			sb.append("\t\t\t\t}\n");
@@ -543,7 +555,7 @@ public class DaoGenerateMgr {
 			sb.append("\t\t\t\tpreparedStatement = null;\n");
 			sb.append("\t\t\t}\n");
 			sb.append("\t\t\tif (connectionType.equals(CONNECTION_TYPE_JDBC)){\n");
-			sb.append("\t\t\t\tif(connection != null) {\n");
+			sb.append("\t\t\t\tif(closeConnectionFinally && connection != null) {\n");
 			sb.append("\t\t\t\t\tconnection.close();\n");
 			sb.append("\t\t\t\t\tconnection = null;\n");
 			sb.append("\t\t\t\t}\n");
