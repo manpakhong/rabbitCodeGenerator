@@ -8,19 +8,25 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.rabbitforever.generateJavaMVC.bundles.DbProperties;
 import com.rabbitforever.generateJavaMVC.commons.RConnection;
 import com.rabbitforever.generateJavaMVC.factories.DbUtilsFactory;
+import com.rabbitforever.generateJavaMVC.factories.PropertiesFactory;
 import com.rabbitforever.generateJavaMVC.models.eos.MetaDataField;
 import com.rabbitforever.generateJavaMVC.utils.DbUtils;
 
 public class OracleDbDao {
 	private DbUtilsFactory dbUtilsFactory;
 	private DbUtils dbUtils;
+	private PropertiesFactory propertiesFactory;
+	private DbProperties dbProperties;
 	public OracleDbDao() throws Exception
 	{
 		try {
 			dbUtilsFactory = DbUtilsFactory.getInstanceOfDbUtilsFactory();
 			dbUtils = dbUtilsFactory.getInstanceOfOracleDbUtils();
+			propertiesFactory = PropertiesFactory.getInstanceOfPropertiesFactory();
+			dbProperties = propertiesFactory.getInstanceOfDbProperties();
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
@@ -34,6 +40,8 @@ public class OracleDbDao {
 
 		try
 		{
+			String user = dbProperties.getUsername();
+			String schema = dbProperties.getSchema();
 			conn = dbUtils.getConnection();
 			
 		    ResultSet rsColumns = null;

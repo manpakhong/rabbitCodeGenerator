@@ -120,9 +120,9 @@ public class ServiceGenerateMgr {
 			// constructors
 			sb.append("\tpublic " + serviceClassName +  classServiceSuffix +"() throws Exception{\n");
 			sb.append("\t\ttry{\n");
-			sb.append("\t\t\tinit(null);\n");
+			sb.append("\t\t\tinit(null, false, CONNECTION_TYPE_JDBC);\n");
 			sb.append("\t\t} catch (Exception e){\n");
-			sb.append("\t\t\tlogger.error(getClassName() + \"." + serviceClassName +  classServiceSuffix +"() - connectionType=null\", e);\n");
+			sb.append("\t\t\tlogger.error(getClassName() + \"." + serviceClassName +  classServiceSuffix +"() - closeConnectionFinally=false\" + \",connectionType=\" + CONNECTION_TYPE_JDBC, e);\n");
 			sb.append("\t\t\tthrow e;\n");
 			sb.append("\t\t}\n");
 			sb.append("\t} // end constructor\n");
@@ -130,20 +130,48 @@ public class ServiceGenerateMgr {
 			
 			sb.append("\tpublic " + serviceClassName +  classServiceSuffix +"(String connectionType) throws Exception{\n");
 			sb.append("\t\ttry{\n");
-			sb.append("\t\t\tinit(connectionType);\n");
+			sb.append("\t\t\tinit(null, false, CONNECTION_TYPE_JDBC);\n");
 			sb.append("\t\t} catch (Exception e){\n");
-			sb.append("\t\t\tlogger.error(getClassName() + \"." + serviceClassName +  classServiceSuffix +"() - connectionType=\" + connectionType, e);\n");
+			sb.append("\t\t\tlogger.error(getClassName() + \"." + serviceClassName +  classServiceSuffix +"() - closeConnectionFinally=false\" + \",connectionType=\" + CONNECTION_TYPE_JDBC, e);\n");
 			sb.append("\t\t\tthrow e;\n");
 			sb.append("\t\t}\n");
 			sb.append("\t} // end constructor\n");
 			
 			
-			// init
-			sb.append("\tpublic void init(String connectionType) throws Exception{\n");
+			sb.append("\tpublic " + serviceClassName +  classServiceSuffix +"(Connection connection) throws Exception{\n");
 			sb.append("\t\ttry{\n");
-			sb.append("\t\t\tdao = new " + serviceClassName + "Dao(connectionType);\n");
+			sb.append("\t\t\tinit(null, false, CONNECTION_TYPE_JDBC);\n");
 			sb.append("\t\t} catch (Exception e){\n");
-			sb.append("\t\t\tlogger.error(getClassName() + \"init() - connectionType=\" + connectionType, e);\n");
+			sb.append("\t\t\tlogger.error(getClassName() + \"." + serviceClassName +  classServiceSuffix +"() - closeConnectionFinally=false\" + \",connectionType=\" + CONNECTION_TYPE_JDBC, e);\n");
+			sb.append("\t\t\tthrow e;\n");
+			sb.append("\t\t}\n");
+			sb.append("\t} // end constructor\n");
+			
+			sb.append("\tpublic " + serviceClassName +  classServiceSuffix +"(Connection connection, String connectionType) throws Exception{\n");
+			sb.append("\t\ttry{\n");
+			sb.append("\t\t\tinit(null, false, connectionType);\n");
+			sb.append("\t\t} catch (Exception e){\n");
+			sb.append("\t\t\tlogger.error(getClassName() + \"." + serviceClassName +  classServiceSuffix +"() - closeConnectionFinally=false\" + \",connectionType=\" + connectionType, e);\n");
+			sb.append("\t\t\tthrow e;\n");
+			sb.append("\t\t}\n");
+			sb.append("\t} // end constructor\n");
+			
+			
+			sb.append("\tpublic " + serviceClassName +  classServiceSuffix +"(Connection connection, Boolean closeConnectionFinally,  String connectionType) throws Exception{\n");
+			sb.append("\t\ttry{\n");
+			sb.append("\t\t\tinit(connection, closeConnectionFinally, connectionType);\n");
+			sb.append("\t\t} catch (Exception e){\n");
+			sb.append("\t\t\tlogger.error(getClassName() + \"." + serviceClassName +  classServiceSuffix +"() - closeConnectionFinally=\" + closeConnectionFinally + \",connectionType=\" + connectionType, e);\n");
+			sb.append("\t\t\tthrow e;\n");
+			sb.append("\t\t}\n");
+			sb.append("\t} // end constructor\n");
+			
+			// init
+			sb.append("\tpublic void init(Connection connection, Boolean closeConnectionFinally,  String connectionType) throws Exception{\n");
+			sb.append("\t\ttry{\n");
+			sb.append("\t\t\tdao = new " + serviceClassName + "Dao(connection, closeConnectionFinally, connectionType);\n");
+			sb.append("\t\t} catch (Exception e){\n");
+			sb.append("\t\t\tlogger.error(getClassName() + \"init() - closeConnectionFinally=\" + closeConnectionFinally + \",connectionType=\" + connectionType, e);\n");
 			sb.append("\t\t\tthrow e;\n");
 			sb.append("\t\t}\n");
 			sb.append("\t} // end constructor\n");

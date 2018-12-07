@@ -91,6 +91,7 @@ public class DaoGenerateMgr {
 			sb.append("import java.util.List;\n");
 			sb.append("import org.slf4j.Logger;\n");
 			sb.append("import org.slf4j.LoggerFactory;\n");
+			sb.append("import java.sql.Connection;\n");
 			
 			// --- class
 			sb.append("public class " + daoClassName + daoSuffix + " extends DaoBase" + "<" + daoClassName + eoSuffix + ">");
@@ -244,7 +245,7 @@ public class DaoGenerateMgr {
 			// read next seq function
 			// ###############################
 
-			sb.append("\tprivate Long retrieveNextSeq() throws Exception{\n");
+			sb.append("\tpublic Long retrieveNextSeq() throws Exception{\n");
 			sb.append("\t\tLong nextSeq = null;\n");
 			sb.append("\t\tPreparedStatement preparedStatement = null;\n");
 			sb.append("\t\ttry{\n");

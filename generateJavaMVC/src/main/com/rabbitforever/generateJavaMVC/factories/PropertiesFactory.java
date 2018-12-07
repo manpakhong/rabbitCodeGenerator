@@ -3,6 +3,7 @@ package com.rabbitforever.generateJavaMVC.factories;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.rabbitforever.generateJavaMVC.bundles.DbProperties;
 import com.rabbitforever.generateJavaMVC.bundles.MysqlDbProperties;
 import com.rabbitforever.generateJavaMVC.bundles.OracleDbProperties;
 import com.rabbitforever.generateJavaMVC.bundles.SysProperties;
@@ -56,7 +57,19 @@ public class PropertiesFactory {
 		}
 		return propertiesFactory;
 	}
-	
+	public DbProperties getInstanceOfDbProperties() throws Exception {
+		DbProperties dbProperties = null;
+		try {
+			if (getInstanceOfSysProperties().getDatabase().equals(SysProperties.DATABASE_ORACLE)) {
+				dbProperties = getInstanceOfOracleDbProperties();
+			} else if (getInstanceOfSysProperties().getDatabase().equals(SysProperties.DATABASE_MYSQL)) {
+				dbProperties = getInstanceOfMySqlDbProperties();
+			}
+		} catch (Exception e) {
+			logger.error(className + ".getInstanceOfDbProperties() - ", e);
+		}
+		return dbProperties;
+	}
 	public MysqlDbProperties getInstanceOfMySqlDbProperties() throws Exception {
 		try {
 			if (mysqlDbProperties == null) {
