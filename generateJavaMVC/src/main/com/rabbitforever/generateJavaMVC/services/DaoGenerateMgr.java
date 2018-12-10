@@ -315,6 +315,38 @@ public class DaoGenerateMgr {
 				sb.append("\t\t\t}\n");
 			}
 
+			// createDateTime and updateDateTime from to, between statement
+			sb.append("\t\t\tif(" + daoObjectName + "So.getCreateDateTimeFrom() != null && " + daoObjectName + "So.getCreateDateTimeTo() != null){\n");
+
+			sb.append("\t\t\t\tif (wcount == 0) {\n");
+			sb.append("\t\t\t\t\twhereSql.append(\"where \");\n");
+			sb.append("\t\t\t\t}\n");
+			sb.append("\t\t\t\t else if (wcount > 0) {\n");
+			sb.append("\t\t\t\t\twhereSql.append(\"and \");\n");
+			sb.append("\t\t\t\t}\n");
+			sb.append("\t\t\t\twhereSql.append(\"create_datetime \");\n");
+			sb.append("\t\t\t\twhereSql.append(\"between \");\n");
+			sb.append("\t\t\t\twhereSql.append(\"to_date('\" + " + "dateUtils.convertDate2SqlDateString(createDateTimeFrom) + \"', 'YYYY-MM-DD HH24:MI:SS')" + " \");\n");
+			sb.append("\t\t\t\twhereSql.append(\"and \");\n");
+			sb.append("\t\t\t\twhereSql.append(\"to_date('\" + " + "dateUtils.convertDate2SqlDateString(createDateTimeTo) + \"', 'YYYY-MM-DD HH24:MI:SS')" + " \");\n");
+			sb.append("\t\t\t}\n");
+			
+			sb.append("\t\t\tif(" + daoObjectName + "So.getUpdateDateTimeFrom() != null && " + daoObjectName + "So.getUpdateDateTimeTo() != null){\n");
+
+			sb.append("\t\t\t\tif (wcount == 0) {\n");
+			sb.append("\t\t\t\t\twhereSql.append(\"where \");\n");
+			sb.append("\t\t\t\t}\n");
+			sb.append("\t\t\t\t else if (wcount > 0) {\n");
+			sb.append("\t\t\t\t\twhereSql.append(\"and \");\n");
+			sb.append("\t\t\t\t}\n");
+			sb.append("\t\t\t\twhereSql.append(\"update_datetime \");\n");
+			sb.append("\t\t\t\twhereSql.append(\"between \");\n");
+			sb.append("\t\t\t\twhereSql.append(\"to_date('\" + " + "dateUtils.convertDate2SqlDateString(updateDateTimeFrom) + \"', 'YYYY-MM-DD HH24:MI:SS')" + " \");\n");
+			sb.append("\t\t\t\twhereSql.append(\"and \");\n");
+			sb.append("\t\t\t\twhereSql.append(\"to_date('\" + " + "dateUtils.convertDate2SqlDateString(updateDateTimeTo) + \"', 'YYYY-MM-DD HH24:MI:SS')" + " \");\n");
+			sb.append("\t\t\t}\n");
+			
+			
 			// pcount
 			sb.append("\t\t\tint pcount = 1;\n");
 			sb.append("\t\t\tpreparedStatement = getConnection().prepareStatement(SELECT_SQL + whereSql.toString());\n");
