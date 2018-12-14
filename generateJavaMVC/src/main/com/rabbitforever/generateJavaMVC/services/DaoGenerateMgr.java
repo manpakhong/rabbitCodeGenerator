@@ -320,7 +320,6 @@ public class DaoGenerateMgr {
 			sb.append("\t\t\t\tDate createDateTimeFrom = " + daoObjectName + "So.getCreateDateTimeFrom();\n");
 			sb.append("\t\t\t\tDate createDateTimeTo = " + daoObjectName + "So.getCreateDateTimeTo();\n");
 			sb.append("\t\t\t\tif (wcount == 0) {\n");
-			sb.append("\t\t\t\tif (wcount == 0) {\n");
 			sb.append("\t\t\t\t\twhereSql.append(\"where \");\n");
 			sb.append("\t\t\t\t}\n");
 			sb.append("\t\t\t\t else if (wcount > 0) {\n");
