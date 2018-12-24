@@ -178,6 +178,21 @@ public class ServiceGenerateMgr {
 			
 			
 			// ###############################
+			// count Mgr
+			// ###############################
+			sb.append("\tpublic Integer count(Object so) throws Exception{\n");
+			sb.append("\t\tInteger count = null;\n");
+			sb.append("\t\ttry{\n");
+			sb.append("\t\t\tcount = dao.count(so);\n");
+			sb.append("\t\t}\n");
+			sb.append("\t\tcatch (Exception e){\n");
+			sb.append("\t\t\tlogger.error(getClassName() + \".count() - so=\" + so, e);\n");
+			sb.append("\t\t\tthrow e;\n");
+			sb.append("\t\t} // end try ... catch\n");
+			sb.append("\t\treturn count;\n");
+			sb.append("\t} // end count function\n");
+			
+			// ###############################
 			// read Mgr
 			// ###############################
 			sb.append("\tpublic List<" + serviceClassName + "Eo> " + "read(Object so) throws Exception{\n");

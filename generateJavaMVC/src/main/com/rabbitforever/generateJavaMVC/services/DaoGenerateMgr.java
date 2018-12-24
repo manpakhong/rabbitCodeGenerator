@@ -123,6 +123,14 @@ public class DaoGenerateMgr {
 			sb.append("\t\t\t\"from DUAL \";\n");
 
 			// ###############################
+			// select count statement 
+			// ###############################
+			sb.append("\tprivate final String SELECT_COUNT_SQL=\n");
+			sb.append("\t\t\t\"select \" + \n");
+			sb.append("\t\t\t\"count(0) as count \" +\n");
+			sb.append("\t\t\t\"from " + tableName + " \";\n");
+			
+			// ###############################
 			// select statement
 			// ###############################
 			sb.append("\tprivate final String SELECT_SQL=\n");
@@ -277,23 +285,15 @@ public class DaoGenerateMgr {
 			sb.append("\t} // end retrieveNextSeq function\n");			
 			
 			// ###############################
-			// read function
+			// generateReadWhereStatement
 			// ###############################
-			sb.append("\t@Override\n");
-			sb.append("\tpublic List<" + daoClassName + eoSuffix + "> " + "read(Object so) throws Exception{\n");
-			sb.append("\t\tList<" + daoClassName + eoSuffix + "> " + daoObjectName + eoSuffix + "List = null;\n");
-			sb.append("\t\tStringBuilder whereSql = null;\n");
-			sb.append("\t\tPreparedStatement preparedStatement = null;\n");
+			
+			
+
+			sb.append("\tprivate String generateReadWhereStatement(" + daoClassName + "So " + daoObjectName + "So) throws Exception{\n");
+			sb.append("\t\tStringBuilder whereSql = new StringBuilder();\n");
 			sb.append("\t\ttry{\n");
-			sb.append("\t\t\tif (so instanceof " + daoClassName + "So == false) {\n");
-			sb.append("\t\t\t\tthrow new Exception(\"so is not an instanceof " + daoClassName + "So\");\n");
-			sb.append("\t\t\t}\n");
-			
-			sb.append("\t\t\t" + daoClassName + "So " + daoObjectName + "So = (" + daoClassName + "So) so;\n");
-			
-			sb.append("\t\t\twhereSql = new StringBuilder();\n");
 			sb.append("\t\t\tint wcount = 0;\n");
-			
 			// loop wcount field name
 			for (int i = 0; i < metaDataFieldList.size(); i++) {
 				MetaDataField metaDataField = new MetaDataField();
@@ -312,6 +312,7 @@ public class DaoGenerateMgr {
 				sb.append("\t\t\t\t\twhereSql.append(\"and \");\n");
 				sb.append("\t\t\t\t}\n");
 				sb.append("\t\t\t\twhereSql.append(\"" + metaDataField.getColumnName() + " = ? \");\n");
+				sb.append("\t\t\t\twcount++;\n");
 				sb.append("\t\t\t}\n");
 			}
 
@@ -330,6 +331,7 @@ public class DaoGenerateMgr {
 			sb.append("\t\t\t\twhereSql.append(\"to_date('\" + " + "dateUtils.convertDate2SqlDateString(createDateTimeFrom) + \"', 'YYYY-MM-DD HH24:MI:SS')" + " \");\n");
 			sb.append("\t\t\t\twhereSql.append(\"and \");\n");
 			sb.append("\t\t\t\twhereSql.append(\"to_date('\" + " + "dateUtils.convertDate2SqlDateString(createDateTimeTo) + \"', 'YYYY-MM-DD HH24:MI:SS')" + " \");\n");
+			sb.append("\t\t\t\twcount++;\n");
 			sb.append("\t\t\t}\n");
 			
 			sb.append("\t\t\tif(" + daoObjectName + "So.getUpdateDateTimeFrom() != null && " + daoObjectName + "So.getUpdateDateTimeTo() != null){\n");
@@ -346,12 +348,110 @@ public class DaoGenerateMgr {
 			sb.append("\t\t\t\twhereSql.append(\"to_date('\" + " + "dateUtils.convertDate2SqlDateString(updateDateTimeFrom) + \"', 'YYYY-MM-DD HH24:MI:SS')" + " \");\n");
 			sb.append("\t\t\t\twhereSql.append(\"and \");\n");
 			sb.append("\t\t\t\twhereSql.append(\"to_date('\" + " + "dateUtils.convertDate2SqlDateString(updateDateTimeTo) + \"', 'YYYY-MM-DD HH24:MI:SS')" + " \");\n");
+			sb.append("\t\t\t\twcount++;\n");
 			sb.append("\t\t\t}\n");
+			
+			
+			sb.append("\t\t}\n");
+			sb.append("\t\tcatch (Exception e){\n");
+			sb.append("\t\t\tlogger.error(getClassName() + \".generateReadWhereStatement() - " + daoObjectName + "So=\" + " + daoObjectName + "So, e);\n");
+			sb.append("\t\t\tthrow e;\n");
+			sb.append("\t\t} // end try ... catch\n");			
+			sb.append("\t\treturn whereSql.toString();\n");
+			sb.append("\t} // end generateReadWhereStatement function\n");
+			
+			// ###############################
+			// count function
+			// ###############################
+			sb.append("\t@Override\n");
+			sb.append("\tpublic Integer count(Object so) throws Exception{\n");
+			sb.append("\t\tInteger count = null;\n");
+			sb.append("\t\tString whereSql = null;\n");
+			sb.append("\t\tPreparedStatement preparedStatement = null;\n");
+			sb.append("\t\ttry{\n");
+			sb.append("\t\t\tif (so instanceof " + daoClassName + "So == false) {\n");
+			sb.append("\t\t\t\tthrow new Exception(\"so is not an instanceof " + daoClassName + "So\");\n");
+			sb.append("\t\t\t}\n");
+			
+			sb.append("\t\t\t" + daoClassName + "So " + daoObjectName + "So = (" + daoClassName + "So) so;\n");
+			
+			sb.append("\t\t\twhereSql = generateReadWhereStatement(" + daoObjectName + "So);\n");
+			
+			// pcount
+			sb.append("\t\t\tint pcount = 1;\n");
+			sb.append("\t\t\tpreparedStatement = getConnection().prepareStatement(SELECT_COUNT_SQL + whereSql);\n");
+			
+			// loop pcount field name
+			for (int i = 0; i < metaDataFieldList.size(); i++) {
+				MetaDataField metaDataField = new MetaDataField();
+				metaDataField = metaDataFieldList.get(i);
+				
+				sb.append("\t\t\tif(" + daoObjectName + "So.get"
+						+ Misc.upperStringFirstChar(Misc
+								.convertTableFieldsFormat2JavaPropertiesFormat(metaDataField
+										.getColumnName())
+						));
+				sb.append("() != null){\n");
+				sb.append("\t\t\t\tpreparedStatement.setString(pcount, " + daoObjectName + "So.get" + 
+						Misc.upperStringFirstChar(Misc
+								.convertTableFieldsFormat2JavaPropertiesFormat(metaDataField
+										.getColumnName())
+								)
+				);
+				sb.append("());\n");
+				sb.append("\t\t\t\tpcount++;\n");
+				sb.append("\t\t\t}\n");
+			}
+			sb.append("\t\t\tResultSet rs = preparedStatement.executeQuery();\n");
+			sb.append("\t\t\twhile(rs.next()) {\n");
+				sb.append("\t\t\t\tcount = rs.getInt(\"count\");\n");
+			sb.append("\t\t\t} // end while(rs.next())\n");
+			
+			sb.append("\t\t}\n");
+			sb.append("\t\tcatch (Exception e){\n");
+			sb.append("\t\t\tlogger.error(getClassName() + \".count() - so=\" + so, e);\n");
+			sb.append("\t\t\tthrow e;\n");
+			sb.append("\t\t} // end try ... catch\n");			
+			sb.append("\t\tfinally {\n");
+			sb.append("\t\t\tif(preparedStatement != null){\n");
+			sb.append("\t\t\t\tpreparedStatement.close();\n");
+			sb.append("\t\t\t\tpreparedStatement = null;\n");
+			sb.append("\t\t\t}\n");
+			sb.append("\t\t\tif (connectionType.equals(CONNECTION_TYPE_JDBC)){\n");
+			sb.append("\t\t\t\tif(closeConnectionFinally && connection != null) {\n");
+			sb.append("\t\t\t\t\tconnection.close();\n");
+			sb.append("\t\t\t\t\tconnection = null;\n");
+			sb.append("\t\t\t\t}\n");
+			sb.append("\t\t\t}\n");
+			sb.append("\t\t}\n");
+			sb.append("\t\treturn count;\n");
+			sb.append("\t} // end select count function\n");
+			
+			
+			// ###############################
+			// read function
+			// ###############################
+			sb.append("\t@Override\n");
+			sb.append("\tpublic List<" + daoClassName + eoSuffix + "> " + "read(Object so) throws Exception{\n");
+			sb.append("\t\tList<" + daoClassName + eoSuffix + "> " + daoObjectName + eoSuffix + "List = null;\n");
+			sb.append("\t\tString whereSql = null;\n");
+			sb.append("\t\tPreparedStatement preparedStatement = null;\n");
+			sb.append("\t\ttry{\n");
+			sb.append("\t\t\tif (so instanceof " + daoClassName + "So == false) {\n");
+			sb.append("\t\t\t\tthrow new Exception(\"so is not an instanceof " + daoClassName + "So\");\n");
+			sb.append("\t\t\t}\n");
+			
+			sb.append("\t\t\t" + daoClassName + "So " + daoObjectName + "So = (" + daoClassName + "So) so;\n");
+			
+			sb.append("\t\t\twhereSql = generateReadWhereStatement(" + daoObjectName + "So);\n");
+			sb.append("\t\t\tint wcount = 0;\n");
+			
+
 			
 			
 			// pcount
 			sb.append("\t\t\tint pcount = 1;\n");
-			sb.append("\t\t\tpreparedStatement = getConnection().prepareStatement(SELECT_SQL + whereSql.toString());\n");
+			sb.append("\t\t\tpreparedStatement = getConnection().prepareStatement(SELECT_SQL + whereSql);\n");
 			
 			// loop pcount field name
 			for (int i = 0; i < metaDataFieldList.size(); i++) {
