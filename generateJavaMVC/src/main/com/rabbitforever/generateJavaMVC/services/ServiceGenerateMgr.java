@@ -140,7 +140,7 @@ public class ServiceGenerateMgr {
 			
 			sb.append("\tpublic " + serviceClassName +  classServiceSuffix +"(Connection connection) throws Exception{\n");
 			sb.append("\t\ttry{\n");
-			sb.append("\t\t\tinit(null, false, CONNECTION_TYPE_JDBC);\n");
+			sb.append("\t\t\tinit(connection, false, CONNECTION_TYPE_JDBC);\n");
 			sb.append("\t\t} catch (Exception e){\n");
 			sb.append("\t\t\tlogger.error(getClassName() + \"." + serviceClassName +  classServiceSuffix +"() - closeConnectionFinally=false\" + \",connectionType=\" + CONNECTION_TYPE_JDBC, e);\n");
 			sb.append("\t\t\tthrow e;\n");
@@ -149,7 +149,7 @@ public class ServiceGenerateMgr {
 			
 			sb.append("\tpublic " + serviceClassName +  classServiceSuffix +"(Connection connection, String connectionType) throws Exception{\n");
 			sb.append("\t\ttry{\n");
-			sb.append("\t\t\tinit(null, false, connectionType);\n");
+			sb.append("\t\t\tinit(connection, false, connectionType);\n");
 			sb.append("\t\t} catch (Exception e){\n");
 			sb.append("\t\t\tlogger.error(getClassName() + \"." + serviceClassName +  classServiceSuffix +"() - closeConnectionFinally=false\" + \",connectionType=\" + connectionType, e);\n");
 			sb.append("\t\t\tthrow e;\n");
