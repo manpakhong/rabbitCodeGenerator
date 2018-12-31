@@ -6,11 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.rabbitforever.generateJavaMVC.bundles.SysProperties;
-import com.rabbitforever.generateJavaMVC.commons.JavaOracle;
 import com.rabbitforever.generateJavaMVC.commons.Misc;
 import com.rabbitforever.generateJavaMVC.factories.PropertiesFactory;
 import com.rabbitforever.generateJavaMVC.models.eos.MetaDataField;
-import com.rabbitforever.generateJavaMVC.policies.SystemParams;
 
 public class DaoGenerateMgr {
 
@@ -349,6 +347,26 @@ public class DaoGenerateMgr {
 			sb.append("\t\t\t\twhereSql.append(\"and \");\n");
 			sb.append("\t\t\t\twhereSql.append(\"to_date('\" + " + "dateUtils.convertDate2SqlDateString(updateDateTimeTo) + \"', 'YYYY-MM-DD HH24:MI:SS')" + " \");\n");
 			sb.append("\t\t\t\twcount++;\n");
+			sb.append("\t\t\t}\n");
+			
+			// ordered by
+			sb.append("\t\t\tif(" + daoObjectName + "So.getOrderedByList != null){\n");
+			sb.append("\t\t\t\t\tList<OrderedBy> orderedByList = bilChargeRequestSo.getOrderedByList();\n");
+			sb.append("\t\t\t\t\tif (orderedByList.size() > 0) {\n");
+			sb.append("\t\t\t\t\t\twhereSql.append(\"order\");\n");
+			sb.append("\t\t\t\t\t\tfor (int i=0; i < orderedByList.size(); i++) {");
+			sb.append("\t\t\t\t\t\t\tif (i > 1) {\n");
+			sb.append("\t\t\t\t\t\t\t\twhereSql.append(\", \");\n");
+			sb.append("\t\t\t\t\t\t\t}\n");
+			sb.append("\t\t\t\t\t\t\tOrderedBy orderedBy = orderedByList.get(i);\n");
+			sb.append("\t\t\t\t\t\t\twhereSql.append(orderedBy.getDataField() + \" \");\n");
+			sb.append("\t\t\t\t\t\t\tif (orderedBy.getIsAsc()){\n");
+			sb.append("\t\t\t\t\t\t\t\twhereSql.append(\"asc \");\n");
+			sb.append("\t\t\t\t\t\t\t} else {\n");
+			sb.append("\t\t\t\t\t\t\t\twhereSql.append(\"desc \");\n");
+			sb.append("\t\t\t\t\t\t\t}\n");
+			sb.append("\t\t\t\t\t\t} //endfor\n");
+			sb.append("\t\t\t\t\t}\n");
 			sb.append("\t\t\t}\n");
 			
 			
