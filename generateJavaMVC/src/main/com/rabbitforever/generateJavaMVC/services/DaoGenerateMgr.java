@@ -350,11 +350,11 @@ public class DaoGenerateMgr {
 			sb.append("\t\t\t}\n");
 			
 			// ordered by
-			sb.append("\t\t\tif(" + daoObjectName + "So.getOrderedByList != null){\n");
-			sb.append("\t\t\t\t\tList<OrderedBy> orderedByList = bilChargeRequestSo.getOrderedByList();\n");
+			sb.append("\t\t\tif(" + daoObjectName + "So.getOrderedByList() != null){\n");
+			sb.append("\t\t\t\t\tList<OrderedBy> orderedByList = " + daoObjectName + "So.getOrderedByList();\n");
 			sb.append("\t\t\t\t\tif (orderedByList.size() > 0) {\n");
 			sb.append("\t\t\t\t\t\twhereSql.append(\"order\");\n");
-			sb.append("\t\t\t\t\t\tfor (int i=0; i < orderedByList.size(); i++) {");
+			sb.append("\t\t\t\t\t\tfor (int i=0; i < orderedByList.size(); i++) {\n");
 			sb.append("\t\t\t\t\t\t\tif (i > 1) {\n");
 			sb.append("\t\t\t\t\t\t\t\twhereSql.append(\", \");\n");
 			sb.append("\t\t\t\t\t\t\t}\n");
