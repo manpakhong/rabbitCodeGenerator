@@ -1,13 +1,16 @@
 package com.rabbitforever.generateJavaMVC.services;
 
 import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
 import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.rabbitforever.generateJavaMVC.bundles.SysProperties;
 import com.rabbitforever.generateJavaMVC.commons.Misc;
 import com.rabbitforever.generateJavaMVC.factories.PropertiesFactory;
+import com.rabbitforever.generateJavaMVC.models.dtos.CompressFileDto;
 import com.rabbitforever.generateJavaMVC.models.eos.MetaDataField;
 
 public class OrmDaoGenerateMgr {
@@ -33,8 +36,10 @@ public class OrmDaoGenerateMgr {
 		}
 
 	} // end constructor
-
-	public void generateDao() {
+	public void generateDao() throws Exception{
+		generateDao(null);
+	}
+	public void generateDao(CompressFileDto compressFileDto) throws Exception {
 		String outputRootDirectory = null;
 		String projectFolderRoot = null;
 		String phpSysConfigRoot = null;
@@ -55,6 +60,9 @@ public class OrmDaoGenerateMgr {
 		String soSuffix = "So";
 		String daoClassName = null;
 		String daoObjectName = null;
+		FileWriter fstream = null;
+		BufferedWriter out = null;
+		PrintWriter pw = null;
 		try {
 			// Create file
 
@@ -76,8 +84,7 @@ public class OrmDaoGenerateMgr {
 			String daoFile = outputRootDirectory + "\\" + javaDirName + "\\" + systemRootDir + "\\" 
 					+ daoDirName + "\\" + daoClassName + daoSuffix + ".java";
 
-			FileWriter fstream = new FileWriter(daoFile);
-			BufferedWriter out = new BufferedWriter(fstream);
+
 			// ################################################## begin writing
 			// file
 			StringBuilder sb = new StringBuilder();
@@ -362,24 +369,51 @@ public class OrmDaoGenerateMgr {
 			
 			// ########## end class ##############################
 			sb.append("} //end class\n");
-			out.write(sb.toString());
+			
+			if (compressFileDto != null) {
+				
+				ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+				pw = new PrintWriter(byteArrayOutputStream);
+				pw.write(sb.toString());
+				
+				compressFileDto.setFileName(daoClassName + daoSuffix + ".java");
+				compressFileDto.setByteArrayOutputStream(byteArrayOutputStream);
+			} else {
+				fstream = new FileWriter(daoFile);
+				out = new BufferedWriter(fstream);
+								out.write(sb.toString());
+			}
 
 			// ################################################## end writing
 			// file
-			out.close();
+
 		} catch (Exception e) {// Catch exception if any
 			System.err.println("Error: " + e.getMessage());
 		} // end try ... catch ...
+		finally {
+			if (out != null) {
+				out.close();
+				out = null;
+			}
+			if (fstream != null) {
+				fstream.close();
+				fstream = null;
+			}
+			if (pw != null) {
+				pw.close();
+				pw = null;
+			}
+		}
 		  System.out.println("Dao is generated. : " + daoClassName + "Dao.java");		
 	} // end generateDao()
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		OrmDaoGenerateMgr daoGenerateMgr = new OrmDaoGenerateMgr("LACCCDTL");
-		daoGenerateMgr.generateDao();
-	}
+//	/**
+//	 * @param args
+//	 */
+//	public static void main(String[] args) {
+//		// TODO Auto-generated method stub
+//		OrmDaoGenerateMgr daoGenerateMgr = new OrmDaoGenerateMgr("LACCCDTL");
+//		daoGenerateMgr.generateDao();
+//	}
 
 }

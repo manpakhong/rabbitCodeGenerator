@@ -1,16 +1,17 @@
 package com.rabbitforever.generateJavaMVC.services;
 
 import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
 import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.rabbitforever.generateJavaMVC.bundles.SysProperties;
-import com.rabbitforever.generateJavaMVC.commons.JavaOracle;
 import com.rabbitforever.generateJavaMVC.commons.Misc;
 import com.rabbitforever.generateJavaMVC.factories.PropertiesFactory;
+import com.rabbitforever.generateJavaMVC.models.dtos.CompressFileDto;
 import com.rabbitforever.generateJavaMVC.models.eos.MetaDataField;
-import com.rabbitforever.generateJavaMVC.policies.SystemParams;
 
 public class SoGenerateMgr {
 
@@ -34,8 +35,13 @@ public class SoGenerateMgr {
 		}
 
 	} // end constructor
-
-	public void generateVo() {
+	public void generateSo() throws Exception{
+		generateSo(null);
+	}
+	public void generateSo(CompressFileDto compressFileDto) throws Exception{
+		FileWriter fstream = null;
+		BufferedWriter out = null;
+		PrintWriter pw = null;
 		try {
 			// Create file
 			String outputRootDirectory = null;
@@ -73,8 +79,7 @@ public class SoGenerateMgr {
 			String soFile = outputRootDirectory + "\\" + javaDirName + "\\" + systemRootDir + "\\" + modelsDirName + "\\"
 					+ sosDirName + "\\" + soClassName + soSuffix + ".java";
 
-			FileWriter fstream = new FileWriter(soFile);
-			BufferedWriter out = new BufferedWriter(fstream);
+
 			// ################################################## begin writing file
 			StringBuilder sb = new StringBuilder();
 
@@ -160,14 +165,39 @@ public class SoGenerateMgr {
 			sb.append("\t}\n");
 			
 			sb.append("}\n");
-			out.write(sb.toString());
+			if (compressFileDto != null) {
+				
+				ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+				pw = new PrintWriter(byteArrayOutputStream);
+				pw.write(sb.toString());
+				
+				compressFileDto.setFileName(soClassName + soSuffix + ".java");
+				compressFileDto.setByteArrayOutputStream(byteArrayOutputStream);
+			} else {
+				fstream = new FileWriter(soFile);
+				out = new BufferedWriter(fstream);
+								out.write(sb.toString());
+			}
 
 			// ################################################## end writing file
-			out.close();
+
 		} catch (Exception e) {// Catch exception if any
 			e.printStackTrace();
 		} // end try ... catch ...
-
+		finally {
+			if (out != null) {
+				out.close();
+				out = null;
+			}
+			if (fstream != null) {
+				fstream.close();
+				fstream = null;
+			}
+			if (pw != null) {
+				pw.close();
+				pw = null;
+			}
+		}
 		System.out.println("So is generated. : " + soClassName + "So.java");
 	} // end generateVo()
 } // end VoGenerateMgr

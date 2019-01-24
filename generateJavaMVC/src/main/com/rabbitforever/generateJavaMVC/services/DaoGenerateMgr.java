@@ -1,13 +1,17 @@
 package com.rabbitforever.generateJavaMVC.services;
 
 import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.rabbitforever.generateJavaMVC.bundles.SysProperties;
 import com.rabbitforever.generateJavaMVC.commons.Misc;
 import com.rabbitforever.generateJavaMVC.factories.PropertiesFactory;
+import com.rabbitforever.generateJavaMVC.models.dtos.CompressFileDto;
 import com.rabbitforever.generateJavaMVC.models.eos.MetaDataField;
 
 public class DaoGenerateMgr {
@@ -34,7 +38,10 @@ public class DaoGenerateMgr {
 
 	} // end constructor
 
-	public void generateDao() {
+	public void generateDao() throws Exception {
+		generateDao(null);
+	}
+	public void generateDao(CompressFileDto compressFileDto) throws Exception {
 		String outputRootDirectory = null;
 		String projectFolderRoot = null;
 		String phpSysConfigRoot = null;
@@ -54,6 +61,9 @@ public class DaoGenerateMgr {
 		String eoSuffix = "Eo";
 		String daoClassName = null;
 		String daoObjectName = null;
+		FileWriter fstream = null;
+		BufferedWriter out = null;
+		PrintWriter pw = null;
 		try {
 			// Create file
 
@@ -75,8 +85,7 @@ public class DaoGenerateMgr {
 			String daoFile = outputRootDirectory + "\\" + javaDirName + "\\" + systemRootDir + "\\" 
 					+ daoDirName + "\\" + daoClassName + daoSuffix + ".java";
 
-			FileWriter fstream = new FileWriter(daoFile);
-			BufferedWriter out = new BufferedWriter(fstream);
+
 			// ################################################## begin writing
 			// file
 			StringBuilder sb = new StringBuilder();
@@ -228,7 +237,7 @@ public class DaoGenerateMgr {
 			
 			// constructors
 			sb.append("\tpublic " + daoClassName +  daoSuffix + "() throws Exception {\n");
-			sb.append("\t\tsuper(DaoBase.CONNECTION_TYPE_JDBC);\n");
+			sb.append("\t\tsuper();\n");
 			sb.append("\t}\n");
 			
 			sb.append("\tpublic " + daoClassName + daoSuffix + "(String connectionType) throws Exception {\n");
@@ -253,6 +262,20 @@ public class DaoGenerateMgr {
 
 			sb.append("\tpublic Long retrieveNextSeq() throws Exception{\n");
 			sb.append("\t\tLong nextSeq = null;\n");
+			
+			sb.append("\t\ttry{\n");
+			sb.append("\t\t\tnextSeq = retrieveNextSeq(false);\n");
+
+			sb.append("\t\tcatch (Exception e){\n");
+			sb.append("\t\t\tlogger.error(getClassName() + \".retrieveNextSeq()\", e);\n");
+			sb.append("\t\t\tthrow e;\n");
+			sb.append("\t\t} // end try ... catch\n");			
+			sb.append("\t\treturn nextSeq;\n");
+			sb.append("\t} // end retrieveNextSeq function\n");	
+			
+			
+			sb.append("\tpublic Long retrieveNextSeq(Boolean returnConnection) throws Exception{\n");
+			sb.append("\t\tLong nextSeq = null;\n");
 			sb.append("\t\tPreparedStatement preparedStatement = null;\n");
 			sb.append("\t\ttry{\n");
 			sb.append("\t\t\tpreparedStatement = getConnection().prepareStatement(SELECT_NEXTSEQ_SQL);\n");
@@ -264,7 +287,7 @@ public class DaoGenerateMgr {
 			
 			sb.append("\t\t}\n");
 			sb.append("\t\tcatch (Exception e){\n");
-			sb.append("\t\t\tlogger.error(getClassName() + \".retrieveNextSeq()\", e);\n");
+			sb.append("\t\t\tlogger.error(getClassName() + \".retrieveNextSeq()-returnConnection=\" + returnConnection, e);\n");
 			sb.append("\t\t\tthrow e;\n");
 			sb.append("\t\t} // end try ... catch\n");			
 			sb.append("\t\tfinally {\n");
@@ -272,11 +295,8 @@ public class DaoGenerateMgr {
 			sb.append("\t\t\t\tpreparedStatement.close();\n");
 			sb.append("\t\t\t\tpreparedStatement = null;\n");
 			sb.append("\t\t\t}\n");
-			sb.append("\t\t\tif (connectionType.equals(CONNECTION_TYPE_JDBC)){\n");
-			sb.append("\t\t\t\tif(closeConnectionFinally && connection != null) {\n");
-			sb.append("\t\t\t\t\tconnection.close();\n");
-			sb.append("\t\t\t\t\tconnection = null;\n");
-			sb.append("\t\t\t\t}\n");
+			sb.append("\t\t\tif(returnConnection){\n");
+			sb.append("\t\t\t\treturnConnection(connection);\n");
 			sb.append("\t\t\t}\n");
 			sb.append("\t\t}\n");
 			sb.append("\t\treturn nextSeq;\n");
@@ -435,12 +455,7 @@ public class DaoGenerateMgr {
 			sb.append("\t\t\t\tpreparedStatement.close();\n");
 			sb.append("\t\t\t\tpreparedStatement = null;\n");
 			sb.append("\t\t\t}\n");
-			sb.append("\t\t\tif (connectionType.equals(CONNECTION_TYPE_JDBC)){\n");
-			sb.append("\t\t\t\tif(closeConnectionFinally && connection != null) {\n");
-			sb.append("\t\t\t\t\tconnection.close();\n");
-			sb.append("\t\t\t\t\tconnection = null;\n");
-			sb.append("\t\t\t\t}\n");
-			sb.append("\t\t\t}\n");
+			sb.append("\t\t\treturnConnection(connection);\n");
 			sb.append("\t\t}\n");
 			sb.append("\t\treturn count;\n");
 			sb.append("\t} // end select count function\n");
@@ -542,12 +557,7 @@ public class DaoGenerateMgr {
 			sb.append("\t\t\t\tpreparedStatement.close();\n");
 			sb.append("\t\t\t\tpreparedStatement = null;\n");
 			sb.append("\t\t\t}\n");
-			sb.append("\t\t\tif (connectionType.equals(CONNECTION_TYPE_JDBC)){\n");
-			sb.append("\t\t\t\tif(closeConnectionFinally && connection != null) {\n");
-			sb.append("\t\t\t\t\tconnection.close();\n");
-			sb.append("\t\t\t\t\tconnection = null;\n");
-			sb.append("\t\t\t\t}\n");
-			sb.append("\t\t\t}\n");
+			sb.append("\t\t\treturnConnection(connection);\n");
 			sb.append("\t\t}\n");
 			sb.append("\t\treturn " + daoObjectName + eoSuffix + "List;\n");
 			sb.append("\t} // end select function\n");
@@ -601,12 +611,7 @@ public class DaoGenerateMgr {
 			sb.append("\t\t\t\tpreparedStatement.close();\n");
 			sb.append("\t\t\t\tpreparedStatement = null;\n");
 			sb.append("\t\t\t}\n");
-			sb.append("\t\t\tif (connectionType.equals(CONNECTION_TYPE_JDBC)){\n");
-			sb.append("\t\t\t\tif(closeConnectionFinally && connection != null) {\n");
-			sb.append("\t\t\t\t\tconnection.close();\n");
-			sb.append("\t\t\t\t\tconnection = null;\n");
-			sb.append("\t\t\t\t}\n");
-			sb.append("\t\t\t}\n");
+			sb.append("\t\t\treturnConnection(connection);\n");
 			sb.append("\t\t}\n");
 			sb.append("\t\treturn noOfAffectedRow;\n");
 			sb.append("\t} // end create function\n");			
@@ -662,12 +667,7 @@ public class DaoGenerateMgr {
 			sb.append("\t\t\t\tpreparedStatement.close();\n");
 			sb.append("\t\t\t\tpreparedStatement = null;\n");
 			sb.append("\t\t\t}\n");
-			sb.append("\t\t\tif (connectionType.equals(CONNECTION_TYPE_JDBC)){\n");
-			sb.append("\t\t\t\tif(closeConnectionFinally && connection != null) {\n");
-			sb.append("\t\t\t\t\tconnection.close();\n");
-			sb.append("\t\t\t\t\tconnection = null;\n");
-			sb.append("\t\t\t\t}\n");
-			sb.append("\t\t\t}\n");
+			sb.append("\t\t\treturnConnection(connection);\n");
 			sb.append("\t\t}\n");
 			sb.append("\t\treturn noOfAffectedRow;\n");
 			sb.append("\t} // end update function\n");	
@@ -707,36 +707,58 @@ public class DaoGenerateMgr {
 			sb.append("\t\t\t\tpreparedStatement.close();\n");
 			sb.append("\t\t\t\tpreparedStatement = null;\n");
 			sb.append("\t\t\t}\n");
-			sb.append("\t\t\tif (connectionType.equals(CONNECTION_TYPE_JDBC)){\n");
-			sb.append("\t\t\t\tif(closeConnectionFinally && connection != null) {\n");
-			sb.append("\t\t\t\t\tconnection.close();\n");
-			sb.append("\t\t\t\t\tconnection = null;\n");
-			sb.append("\t\t\t\t}\n");
-			sb.append("\t\t\t}\n");
+			sb.append("\t\t\treturnConnection(connection);\n");
 			sb.append("\t\t}\n");
 			sb.append("\t\treturn noOfAffectedRow;\n");
 			sb.append("\t} // end delete function\n");	
 			
 			// ########## end class ##############################
 			sb.append("} //end class\n");
-			out.write(sb.toString());
+			if (compressFileDto != null) {
+				
+				ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+				pw = new PrintWriter(byteArrayOutputStream);
+				pw.write(sb.toString());
+				
+				compressFileDto.setFileName(daoClassName + daoSuffix + ".java");
+				compressFileDto.setByteArrayOutputStream(byteArrayOutputStream);
+			} else {
+				fstream = new FileWriter(daoFile);
+				out = new BufferedWriter(fstream);
+								out.write(sb.toString());
+			}
 
 			// ################################################## end writing
 			// file
-			out.close();
+
 		} catch (Exception e) {// Catch exception if any
 			System.err.println("Error: " + e.getMessage());
 		} // end try ... catch ...
+		finally {
+		if (out != null) {
+			out.close();
+			out = null;
+		}
+		if (fstream != null) {
+			fstream.close();
+			fstream = null;
+		}
+		if (pw != null) {
+			pw.close();
+			pw = null;
+		}
+	}
 		  System.out.println("Dao is generated. : " + daoClassName + "Dao.java");		
 	} // end generateDao()
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		DaoGenerateMgr daoGenerateMgr = new DaoGenerateMgr("LACCCDTL");
-		daoGenerateMgr.generateDao();
-	}
+//	/**
+//	 * @param args
+//	 * @throws Exception 
+//	 */
+//	public static void main(String[] args) throws Exception {
+//		// TODO Auto-generated method stub
+//		DaoGenerateMgr daoGenerateMgr = new DaoGenerateMgr("LACCCDTL");
+//		daoGenerateMgr.generateDao();
+//	}
 
 }

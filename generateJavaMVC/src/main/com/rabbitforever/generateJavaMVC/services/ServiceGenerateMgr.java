@@ -1,15 +1,17 @@
 package com.rabbitforever.generateJavaMVC.services;
 
 import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
 import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.rabbitforever.generateJavaMVC.bundles.SysProperties;
 import com.rabbitforever.generateJavaMVC.commons.Misc;
 import com.rabbitforever.generateJavaMVC.factories.PropertiesFactory;
+import com.rabbitforever.generateJavaMVC.models.dtos.CompressFileDto;
 import com.rabbitforever.generateJavaMVC.models.eos.MetaDataField;
-import com.rabbitforever.generateJavaMVC.policies.SystemParams;
 
 public class ServiceGenerateMgr {
 
@@ -34,8 +36,10 @@ public class ServiceGenerateMgr {
 		}
 
 	} // end constructor
-
-	public void generateService() {
+	public void generateService() throws Exception{
+		generateService(null);
+	}
+	public void generateService(CompressFileDto compressFileDto) throws Exception{
 		String outputRootDirectory = null;
 		String projectFolderRoot = null;
 		String phpSysConfigRoot = null;
@@ -58,6 +62,9 @@ public class ServiceGenerateMgr {
 		String servicesDirName = null;
 		String serviceObjectName = null;
 		String classServiceSuffix="Mgr";
+		FileWriter fstream = null;
+		BufferedWriter out = null;
+		PrintWriter pw = null;
 		try {
 			// Create file
 
@@ -80,8 +87,6 @@ public class ServiceGenerateMgr {
 			String serviceFile = outputRootDirectory + "\\" + javaDirName + "\\" + systemRootDir + "\\" + servicesDirName + "\\"
 					+ serviceClassName + classServiceSuffix +".java";
 
-			FileWriter fstream = new FileWriter(serviceFile);
-			BufferedWriter out = new BufferedWriter(fstream);
 			// ################################################## begin writing
 			// file
 			StringBuilder sb = new StringBuilder();
@@ -120,9 +125,9 @@ public class ServiceGenerateMgr {
 			// constructors
 			sb.append("\tpublic " + serviceClassName +  classServiceSuffix +"() throws Exception{\n");
 			sb.append("\t\ttry{\n");
-			sb.append("\t\t\tinit(null, false, CONNECTION_TYPE_JDBC);\n");
+			sb.append("\t\t\tinit(null, null, null);\n");
 			sb.append("\t\t} catch (Exception e){\n");
-			sb.append("\t\t\tlogger.error(getClassName() + \"." + serviceClassName +  classServiceSuffix +"() - closeConnectionFinally=false\" + \",connectionType=\" + CONNECTION_TYPE_JDBC, e);\n");
+			sb.append("\t\t\tlogger.error(getClassName() + \"." + serviceClassName +  classServiceSuffix +"() \", e);\n");
 			sb.append("\t\t\tthrow e;\n");
 			sb.append("\t\t}\n");
 			sb.append("\t} // end constructor\n");
@@ -130,9 +135,9 @@ public class ServiceGenerateMgr {
 			
 			sb.append("\tpublic " + serviceClassName +  classServiceSuffix +"(String connectionType) throws Exception{\n");
 			sb.append("\t\ttry{\n");
-			sb.append("\t\t\tinit(null, false, CONNECTION_TYPE_JDBC);\n");
+			sb.append("\t\t\tinit(null, null, connectionType);\n");
 			sb.append("\t\t} catch (Exception e){\n");
-			sb.append("\t\t\tlogger.error(getClassName() + \"." + serviceClassName +  classServiceSuffix +"() - closeConnectionFinally=false\" + \",connectionType=\" + CONNECTION_TYPE_JDBC, e);\n");
+			sb.append("\t\t\tlogger.error(getClassName() + \"." + serviceClassName +  classServiceSuffix +"() - connectionType=\" + connectionType, e);\n");
 			sb.append("\t\t\tthrow e;\n");
 			sb.append("\t\t}\n");
 			sb.append("\t} // end constructor\n");
@@ -140,9 +145,9 @@ public class ServiceGenerateMgr {
 			
 			sb.append("\tpublic " + serviceClassName +  classServiceSuffix +"(Connection connection) throws Exception{\n");
 			sb.append("\t\ttry{\n");
-			sb.append("\t\t\tinit(connection, false, CONNECTION_TYPE_JDBC);\n");
+			sb.append("\t\t\tinit(connection, false, null);\n");
 			sb.append("\t\t} catch (Exception e){\n");
-			sb.append("\t\t\tlogger.error(getClassName() + \"." + serviceClassName +  classServiceSuffix +"() - closeConnectionFinally=false\" + \",connectionType=\" + CONNECTION_TYPE_JDBC, e);\n");
+			sb.append("\t\t\tlogger.error(getClassName() + \"." + serviceClassName +  classServiceSuffix +"()\", e);\n");
 			sb.append("\t\t\tthrow e;\n");
 			sb.append("\t\t}\n");
 			sb.append("\t} // end constructor\n");
@@ -151,7 +156,7 @@ public class ServiceGenerateMgr {
 			sb.append("\t\ttry{\n");
 			sb.append("\t\t\tinit(connection, false, connectionType);\n");
 			sb.append("\t\t} catch (Exception e){\n");
-			sb.append("\t\t\tlogger.error(getClassName() + \"." + serviceClassName +  classServiceSuffix +"() - closeConnectionFinally=false\" + \",connectionType=\" + connectionType, e);\n");
+			sb.append("\t\t\tlogger.error(getClassName() + \"." + serviceClassName +  classServiceSuffix +"() - connectionType=\" + connectionType, e);\n");
 			sb.append("\t\t\tthrow e;\n");
 			sb.append("\t\t}\n");
 			sb.append("\t} // end constructor\n");
@@ -169,6 +174,9 @@ public class ServiceGenerateMgr {
 			// init
 			sb.append("\tpublic void init(Connection connection, Boolean closeConnectionFinally,  String connectionType) throws Exception{\n");
 			sb.append("\t\ttry{\n");
+			sb.append("\t\t\tif(connectionType == null){\n");
+			sb.append("\t\t\t\tconnectionType = dbProperties.getConnectionType();\n");
+			sb.append("\t\t\t}\n");
 			sb.append("\t\t\tdao = new " + serviceClassName + "Dao(connection, closeConnectionFinally, connectionType);\n");
 			sb.append("\t\t} catch (Exception e){\n");
 			sb.append("\t\t\tlogger.error(getClassName() + \"init() - closeConnectionFinally=\" + closeConnectionFinally + \",connectionType=\" + connectionType, e);\n");
@@ -254,24 +262,50 @@ public class ServiceGenerateMgr {
 
 			// ########## end class ##############################
 			sb.append("} //end class\n");
-			out.write(sb.toString());
+			if (compressFileDto != null) {
+				
+				ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+				pw = new PrintWriter(byteArrayOutputStream);
+				pw.write(sb.toString());
+				
+				compressFileDto.setFileName(serviceClassName + classServiceSuffix + ".java");
+				compressFileDto.setByteArrayOutputStream(byteArrayOutputStream);
+			} else {
+				fstream = new FileWriter(serviceFile);
+				out = new BufferedWriter(fstream);
+				out.write(sb.toString());
+			}
 
 			// ################################################## end writing
 			// file
-			out.close();
+//			out.close();
 		} catch (Exception e) {// Catch exception if any
 			System.err.println("Error: " + e.getMessage());
 		} // end try ... catch ...
+		finally {
+			if (out != null) {
+				out.close();
+				out = null;
+			}
+			if (fstream != null) {
+				fstream.close();
+				fstream = null;
+			}
+			if (pw != null) {
+				pw.close();
+				pw = null;
+			}
+		}
 		System.out.println("Service is generated. : " + serviceClassName +  classServiceSuffix +".java");
 	} // end generateDao()
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		ServiceGenerateMgr daoGenerateMgr = new ServiceGenerateMgr("LACCCDTL");
-		daoGenerateMgr.generateService();
-	}
+//	/**
+//	 * @param args
+//	 */
+//	public static void main(String[] args) {
+//		// TODO Auto-generated method stub
+//		ServiceGenerateMgr daoGenerateMgr = new ServiceGenerateMgr("LACCCDTL");
+//		daoGenerateMgr.generateService();
+//	}
 
 }

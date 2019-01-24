@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.rabbitforever.generateJavaMVC</groupId>
 	<artifactId>generateJavaMVC</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<name>generateJavaMVC</name>
 	<url>http://maven.apache.org</url>
 	<build>

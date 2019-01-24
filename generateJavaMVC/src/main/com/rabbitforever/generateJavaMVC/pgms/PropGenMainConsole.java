@@ -21,7 +21,7 @@ public class PropGenMainConsole {
 			
 			FileUtils fileUtils = new FileUtils();
 			String path = new File(".").getCanonicalPath();
-			final String FILE_NAME_ROOT = "C:/svn/bill_engine/trunk/java/release2/billing-patient-charges/properties";
+			final String FILE_NAME_ROOT = "C:/workspace/billing-patient-charges/properties";
 			String fileNamesString = null;
 			List<String> fileNameStringList = null;
 			boolean isUsingFileNameRoot = false;
