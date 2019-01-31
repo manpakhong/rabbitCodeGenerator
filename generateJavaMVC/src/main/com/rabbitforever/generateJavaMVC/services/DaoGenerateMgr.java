@@ -508,10 +508,11 @@ public class DaoGenerateMgr {
 				sb.append("\t\t\t}\n");
 			}
 			sb.append("\t\t\tResultSet rs = preparedStatement.executeQuery();\n");
+			sb.append("\t\t\t" + daoObjectName + eoSuffix + "List = new ArrayList<" + daoClassName + eoSuffix + ">();\n");
 			sb.append("\t\t\twhile(rs.next()) {\n");
-			sb.append("\t\t\t\tif (" + daoObjectName + eoSuffix + "List == null){\n");
-			sb.append("\t\t\t\t\t" + daoObjectName + eoSuffix + "List = new ArrayList<" + daoClassName + eoSuffix + ">();\n");
-			sb.append("\t\t\t\t}\n");
+//			sb.append("\t\t\t\tif (" + daoObjectName + eoSuffix + "List == null){\n");
+//
+//			sb.append("\t\t\t\t}\n");
 				
 				sb.append("\t\t\t\t" + daoClassName + eoSuffix + " eo = new " + daoClassName + eoSuffix + "();\n");
 			
@@ -659,7 +660,7 @@ public class DaoGenerateMgr {
 			
 			sb.append("\t\t}\n");
 			sb.append("\t\tcatch (Exception e){\n");
-			sb.append("\t\t\tlogger.error(getClassName() + \".create() - eo=\" + eo, e);\n");
+			sb.append("\t\t\tlogger.error(getClassName() + \".update() - eo=\" + eo, e);\n");
 			sb.append("\t\t\tthrow e;\n");
 			sb.append("\t\t} // end try ... catch\n");			
 			sb.append("\t\tfinally {\n");
