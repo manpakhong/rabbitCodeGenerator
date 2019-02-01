@@ -266,7 +266,7 @@ public class DaoGenerateMgr {
 			sb.append("\t\ttry{\n");
 			sb.append("\t\t\tnextSeq = retrieveNextSeq(false);\n");
 
-			sb.append("\t\tcatch (Exception e){\n");
+			sb.append("\t\t}catch (Exception e){\n");
 			sb.append("\t\t\tlogger.error(getClassName() + \".retrieveNextSeq()\", e);\n");
 			sb.append("\t\t\tthrow e;\n");
 			sb.append("\t\t} // end try ... catch\n");			
