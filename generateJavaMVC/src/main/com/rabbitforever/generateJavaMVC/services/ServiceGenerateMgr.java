@@ -177,6 +177,8 @@ public class ServiceGenerateMgr {
 			sb.append("\t\t\tif(connectionType == null){\n");
 			sb.append("\t\t\t\tconnectionType = dbProperties.getConnectionType();\n");
 			sb.append("\t\t\t}\n");
+			
+			sb.append("\t\t\tthis.connection = connection;\n");
 			sb.append("\t\t\tdao = new " + serviceClassName + "Dao(connection, closeConnectionFinally, connectionType);\n");
 			sb.append("\t\t} catch (Exception e){\n");
 			sb.append("\t\t\tlogger.error(getClassName() + \"init() - closeConnectionFinally=\" + closeConnectionFinally + \",connectionType=\" + connectionType, e);\n");
