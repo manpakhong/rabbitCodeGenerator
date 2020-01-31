@@ -7,6 +7,8 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.rabbitforever.generateJavaMVC.bundles.SysProperties;
 import com.rabbitforever.generateJavaMVC.commons.Misc;
 import com.rabbitforever.generateJavaMVC.factories.PropertiesFactory;
@@ -14,28 +16,40 @@ import com.rabbitforever.generateJavaMVC.models.dtos.CompressFileDto;
 import com.rabbitforever.generateJavaMVC.models.eos.MetaDataField;
 
 public class OrmDaoGenerateMgr {
-
+	private final Logger logger = Logger.getLogger(getClassName());
+	private TypeMappingMgr typeMappingMgr;
 	private String tableName;
 	private String className;
 	private String objClassName;
 	private PropertiesFactory propertiesFactory;
 	private SysProperties sysProperties;
-	public OrmDaoGenerateMgr(String _tableName) {
-
-
+	
+	private String getClassName() {
+		return this.getClass().getName();
+	}
+	
+	public OrmDaoGenerateMgr(String _tableName) throws Exception {
 		try {
 			tableName = _tableName;
-
-			propertiesFactory = PropertiesFactory.getInstanceOfPropertiesFactory();
-			sysProperties = propertiesFactory.getInstanceOfSysProperties();
-			
-			objClassName = Misc
-					.convertTableFieldsFormat2JavaPropertiesFormat(tableName);
+			init();
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(this.getClass() + ".OrmDaoGenerateMgr() - ", e);
+			throw e;
 		}
 
 	} // end constructor
+
+	private void init() throws Exception {
+		try {
+			propertiesFactory = PropertiesFactory.getInstanceOfPropertiesFactory();
+			sysProperties = propertiesFactory.getInstanceOfSysProperties();
+			objClassName = Misc.convertTableFieldsFormat2JavaPropertiesFormat(tableName);
+			typeMappingMgr = new OracleTypeMappingMgr();
+		} catch (Exception e) {
+			logger.error(this.getClass() + ".init() - ", e);
+			throw e;
+		}
+	}
 	public void generateDao() throws Exception{
 		generateDao(null);
 	}
@@ -108,8 +122,8 @@ public class OrmDaoGenerateMgr {
 			sb.append("import org.slf4j.LoggerFactory;\n");
 			sb.append("import org.springframework.beans.factory.annotation.Autowired;\n");
 			sb.append("import org.springframework.stereotype.Repository;\n");
-			sb.append("import com.rabbitforever.gamblehub.interceptors.AuditInterceptor;\n");
-			sb.append("import com.rabbitforever.gamblehub.models.sos.OrderedBy;\n");
+			sb.append("import hk.org.hkbh.cms.outpatient.core.daos.orm.interceptors.AuditInterceptor;\n");
+			sb.append("import hk.org.hkbh.cms.outpatient.core.models.sos.OrderedBy;\n");
 
 			
 			// --- class
@@ -128,9 +142,14 @@ public class OrmDaoGenerateMgr {
 			metaDataFieldList = dbMgr.getMetaDataList(tableName);
 
 			// properties
-			sb.append("\tprivate final Logger logger = LoggerFactory.getLogger(getClassName());\n");
+			sb.append("\tprivate final Logger logger = LogManager.getLogger(getClassName());\n");
 //			sb.append("\tprivate static DbUtils mySqlDbUtils;\n");
 //			sb.append("\tprivate static DbUtilsFactory dbUtilsFactory;\n");
+			
+			sb.append("\tprivate final String SELECT_COUNT_SQL =\n");
+			sb.append("\t\tselect \n");
+			sb.append("\t\tcount(0) as count_result \n"); 
+			sb.append("\t\tfrom "+ tableName +" " + daoObjectName +" \n");
 			
 			// getClassName()
 			sb.append("\tprivate String getClassName(){\n");
@@ -146,79 +165,275 @@ public class OrmDaoGenerateMgr {
 			sb.append("\t\tsuper(connectionType);\n");
 			sb.append("\t}\n");
 			
+			sb.append("\tpublic " + daoClassName + daoSuffix + "(Session session) throws Exception {\n");
+			sb.append("\t\tsuper(session);\n");
+			sb.append("\t}\n");
+			
+			sb.append("\tpublic " + daoClassName + daoSuffix + "(Session session, String connectionType) throws Exception {\n");
+			sb.append("\t\tsuper(session, connectionType);\n");
+			sb.append("\t}\n");
+			
+			// ###############################
+			// generateReadWhereStatement()
+			// ###############################
+			sb.append("\tpublic String generateReadWhereStatement(" + daoClassName + " " + daoObjectName + ") throws Exception {\n");
+			sb.append("\t\tStringBuilder whereSql = new StringBuilder();\n");
+			sb.append("\t\ttry {\n");
+			sb.append("\t\t\tint wcount = 0;\n");
+			
+			// loop pcount field name
+			for (int i = 0; i < metaDataFieldList.size(); i++) {
+				MetaDataField metaDataField = new MetaDataField();
+				metaDataField = metaDataFieldList.get(i);
+				String columnName = metaDataField.getColumnName();
+				String databaseFieldTypeName = metaDataField.getTypeName();
+				String typeString = typeMappingMgr.mappingTo(databaseFieldTypeName);
+				Integer columnSize = metaDataField.getColumnSize();
+				Integer nullable = metaDataField.getNullable();
+				Boolean isNullable = null;
+				
+				String javaPropertiesFormat = Misc.lowerStringFirstChar(Misc
+						.convertTableFieldsFormat2JavaPropertiesFormat(metaDataField
+								.getColumnName()));
+				String upperPropertiesFormat = Misc.upperStringFirstChar(Misc
+						.convertTableFieldsFormat2JavaPropertiesFormat(metaDataField
+								.getColumnName()));
+				
+				if (nullable == 1) {
+					isNullable = false;
+				} else {
+					isNullable = true;
+				}
+				
+				
+				sb.append("\t\t\tif(" + daoObjectName + "So.get" + upperPropertiesFormat);
+				sb.append("() != null){\n");
+				sb.append("\t\t\t\tif (wcount == 0) {\n");
+				sb.append("\t\t\t\t\twhereSql.append(\"where \");\n");
+				sb.append("\t\t\t\t}\n");
+				sb.append("\t\t\t\t else if (wcount > 0) {\n");
+				sb.append("\t\t\t\t\twhereSql.append(\"and \");\n");
+				sb.append("\t\t\t\t}\n");
+				sb.append("\t\t\t\twhereSql.append(\"" + daoObjectName + "." + javaPropertiesFormat + " = :" + javaPropertiesFormat +" \");\n");
+				sb.append("\t\t\t\twcount++;\n");
+				sb.append("\t\t\t}\n");
+			}
+			
+			
+			// ordered by
+			sb.append("\t\t\tif(" + daoObjectName + "So.getOrderedByList() != null){\n");
+			sb.append("\t\t\t\t\tList<OrderedBy> orderedByList = " + daoObjectName + "So.getOrderedByList();\n");
+			sb.append("\t\t\t\t\tif (orderedByList.size() > 0) {\n");
+			sb.append("\t\t\t\t\t\twhereSql.append(\"order by \");\n");
+			sb.append("\t\t\t\t\t\tfor (int i=0; i < orderedByList.size(); i++) {\n");
+			sb.append("\t\t\t\t\t\t\tif (i > 1) {\n");
+			sb.append("\t\t\t\t\t\t\t\twhereSql.append(\", \");\n");
+			sb.append("\t\t\t\t\t\t\t}\n");
+			sb.append("\t\t\t\t\t\t\tOrderedBy orderedBy = orderedByList.get(i);\n");
+			sb.append("\t\t\t\t\t\t\twhereSql.append(\""+ daoObjectName +".\" + orderedBy.getDataField() + \" \");\n");
+			sb.append("\t\t\t\t\t\t\tif (orderedBy.getIsAsc()){\n");
+			sb.append("\t\t\t\t\t\t\t\twhereSql.append(\"asc \");\n");
+			sb.append("\t\t\t\t\t\t\t} else {\n");
+			sb.append("\t\t\t\t\t\t\t\twhereSql.append(\"desc \");\n");
+			sb.append("\t\t\t\t\t\t\t}\n");
+			sb.append("\t\t\t\t\t\t} //endfor\n");
+			sb.append("\t\t\t\t\t}\n");
+			sb.append("\t\t\t}\n");
+			
+			sb.append("\t\t} catch (Exception e) {\n");
+			sb.append("\t\t\tlogger.error(getClassName() + \".generateReadWhereStatement() - " + daoObjectName
+					+ "So=\" + " + daoObjectName + "So, e);\n");
+			sb.append("\t\t}\n");
+			sb.append("\t\treturn whereSql.toString();\n");
+			sb.append("\t}// end generateReadWhereStatement\n");
+			
+			
+			
+			// ###############################
+			// generateQuery()
+			// ###############################
+			sb.append("\tpublic Query<" +  daoClassName + "Eo> generateQuery(" + daoClassName + " " + daoObjectName + ") throws Exception {\n");
+			sb.append("\t\tList<Predicate> predicateList = null;\n");
+			sb.append("\t\tCriteriaBuilder builder = null;\n");
+			sb.append("\t\tCriteriaQuery<" + daoClassName + "Eo> query = null;\n");
+			sb.append("\t\tQuery<" + daoClassName + "Eo> q = null;\n");
+			sb.append("\t\tRoot<" + daoClassName + "Eo> root = null;\n");
+			sb.append("\t\ttry {\n");
+			sb.append("\t\t\tbuilder = session.getCriteriaBuilder();\n");
+			sb.append("\t\t\tquery = builder.createQuery(" + daoClassName + ".class);\n");
+			sb.append("\t\t\troot = query.from(" + daoClassName + ".class);\n");
+			
+			
+			sb.append("\t\t\tif(" + daoObjectName + "So != null) {\n");
+
+			// loop pcount field name
+			for (int i = 0; i < metaDataFieldList.size(); i++) {
+				MetaDataField metaDataField = new MetaDataField();
+				metaDataField = metaDataFieldList.get(i);
+				String columnName = metaDataField.getColumnName();
+				String databaseFieldTypeName = metaDataField.getTypeName();
+				String typeString = typeMappingMgr.mappingTo(databaseFieldTypeName);
+				Integer columnSize = metaDataField.getColumnSize();
+				Integer nullable = metaDataField.getNullable();
+				Boolean isNullable = null;
+				
+				String javaPropertiesFormat = Misc.lowerStringFirstChar(Misc
+						.convertTableFieldsFormat2JavaPropertiesFormat(metaDataField
+								.getColumnName()));
+				String upperPropertiesFormat = Misc.upperStringFirstChar(Misc
+						.convertTableFieldsFormat2JavaPropertiesFormat(metaDataField
+								.getColumnName()));
+				
+				if (nullable == 1) {
+					isNullable = false;
+				} else {
+					isNullable = true;
+				}
+				
+				
+				sb.append("\t\t\t\tif(" + daoObjectName + "So.get" + upperPropertiesFormat);
+				sb.append("() != null){\n");
+				sb.append("\t\t\t\t\tif(predicateList == null) {\n");
+				sb.append("\t\t\t\t\t\tpredicateList = new ArrayList<Predicate>();\n");
+				sb.append("\t\t\t\t\t}\n");
+				sb.append("\t\t\t\t\tPredicate predicate = builder.equal(root.get(\"" + javaPropertiesFormat + "\"), "+ javaPropertiesFormat +"So.get" + upperPropertiesFormat + "());\n");
+				sb.append("\t\t\t\t\tpredicate.add(predicate);\n");
+				sb.append("\t\t\t\t}\n");
+			}
+			
+			sb.append("\t\t\t}\n");
+			
+			sb.append("\t\t\tif (predicateList != null) {\n");
+			sb.append("\t\t\t\tquery.select(root).where(predicateList.toArray(new Predicate[] {}));\n");
+			sb.append("\t\t\t}else{\n");
+			sb.append("\t\t\t\tquery.select(root);\n");
+			sb.append("\t\t\t}\n");
+			
+			sb.append("\t\t\tList<OrderedBy> orderedByList = " +daoObjectName + ".get" + daoObjectName + "So.getOrderedByList();\n");
+			sb.append("\t\t\tList<Order> orderList = null;\n");
+			
+			// ordered by
+			sb.append("\t\t\tif(" + daoObjectName + "So.getOrderedByList() != null){\n");
+			sb.append("\t\t\t\t\tList<OrderedBy> orderedByList = " + daoObjectName + "So.getOrderedByList();\n");
+			sb.append("\t\t\t\t\tif (orderedByList.size() > 0) {\n");
+			sb.append("\t\t\t\t\t\twhereSql.append(\"order by \");\n");
+			sb.append("\t\t\t\t\t\tfor (int i=0; i < orderedByList.size(); i++) {\n");
+			sb.append("\t\t\t\t\t\t\tif (i > 1) {\n");
+			sb.append("\t\t\t\t\t\t\t\twhereSql.append(\", \");\n");
+			sb.append("\t\t\t\t\t\t\t}\n");
+			sb.append("\t\t\t\t\t\t\tOrderedBy orderedBy = orderedByList.get(i);\n");
+			sb.append("\t\t\t\t\t\t\twhereSql.append(\""+ daoObjectName +".\" + orderedBy.getDataField() + \" \");\n");
+			sb.append("\t\t\t\t\t\t\tif (orderedBy.getIsAsc()){\n");
+			sb.append("\t\t\t\t\t\t\t\twhereSql.append(\"asc \");\n");
+			sb.append("\t\t\t\t\t\t\t} else {\n");
+			sb.append("\t\t\t\t\t\t\t\twhereSql.append(\"desc \");\n");
+			sb.append("\t\t\t\t\t\t\t}\n");
+			sb.append("\t\t\t\t\t\t} //endfor\n");
+			sb.append("\t\t\t\t\t}\n");
+			sb.append("\t\t\t}\n");
+			
+			sb.append("\t\t} catch (Exception e) {\n");
+			sb.append("\t\t\tlogger.error(getClassName() + \".generateReadWhereStatement() - " + daoObjectName
+					+ "So=\" + " + daoObjectName + "So, e);\n");
+			sb.append("\t\t\tthrow e;\n");
+			sb.append("\t\t}\n");
+			sb.append("\t\treturn q;\n");
+			sb.append("\t}// end generateReadWhereStatement\n");
+			
+			// ###############################
+			// count function
+			// ###############################
+			sb.append("\t@Override\n");
+			sb.append("\tpublic Integer count(Object so) throws Exception{\n");
+			sb.append("\t\tQuery<Long> query = null;\n");
+			sb.append("\t\tString whereSql = null;\n");
+			sb.append("\t\tPreparedStatement preparedStatement = null;\n");
+			sb.append("\t\ttry{\n");
+			sb.append("\t\t\tif (so instanceof " + daoClassName + "So == false) {\n");
+			sb.append("\t\t\t\tthrow new Exception(\"so is not an instanceof " + daoClassName + "So\");\n");
+			sb.append("\t\t\t}\n");
+
+			sb.append("\t\t\t" + daoClassName + "So " + daoObjectName + "So = (" + daoClassName + "So) so;\n");
+
+			sb.append("\t\t\twhereSql = generateReadWhereStatement(" + daoObjectName + "So);\n");
+
+			// pcount
+			sb.append("\t\t\tint pcount = 1;\n");
+			sb.append("\t\t\tpreparedStatement = getConnection().prepareStatement(SELECT_COUNT_SQL + whereSql);\n");
+
+			// loop pcount field name
+			for (int i = 0; i < metaDataFieldList.size(); i++) {
+				MetaDataField metaDataField = new MetaDataField();
+				metaDataField = metaDataFieldList.get(i);
+				String columnName = metaDataField.getColumnName();
+				String databaseFieldTypeName = metaDataField.getTypeName();
+				String typeString = typeMappingMgr.mappingTo(databaseFieldTypeName);
+				Integer columnSize = metaDataField.getColumnSize();
+				Integer nullable = metaDataField.getNullable();
+				Boolean isNullable = null;
+				
+				String javaPropertiesFormat = Misc.lowerStringFirstChar(Misc
+						.convertTableFieldsFormat2JavaPropertiesFormat(metaDataField
+								.getColumnName()));
+				String upperPropertiesFormat = Misc.upperStringFirstChar(Misc
+						.convertTableFieldsFormat2JavaPropertiesFormat(metaDataField
+								.getColumnName()));
+				
+				if (nullable == 1) {
+					isNullable = false;
+				} else {
+					isNullable = true;
+				}
+				
+				
+				sb.append("\t\t\tif(" + daoObjectName + "So.get" + upperPropertiesFormat);
+				sb.append("() != null){\n");
+
+				sb.append("\t\t\t\tquery.setParameter(\"" + javaPropertiesFormat + "\", " + daoObjectName + "So.get" + upperPropertiesFormat + "()));\n");
+
+//				sb.append("());\n");
+//				sb.append("\t\t\t\tpcount++;\n");
+				sb.append("\t\t\t}\n");
+			}
+			sb.append("\t\t\tObject value = query.uniqueResult();\n");
+			sb.append("\t\t\tcount = (Long) value;\n");
+
+
+			sb.append("\t\t}\n");
+			sb.append("\t\tcatch (Exception e){\n");
+			sb.append("\t\t\tlogger.error(getClassName() + \".count() - so=\" + so, e);\n");
+			sb.append("\t\t\tthrow e;\n");
+			sb.append("\t\t} // end try ... catch\n");
+			sb.append("\t\tfinally {\n");
+			sb.append("\t\t\treturnConnection(connection);\n");
+			sb.append("\t\t}\n");
+			sb.append("\t\treturn count;\n");
+			sb.append("\t} // end select count function\n");
+			
 			// ###############################
 			// read function
 			// ###############################
 			sb.append("\t@Override\n");
 			sb.append("\tpublic List<" + daoClassName + eoSuffix + "> " + "read(Object so) throws Exception{\n");
 			sb.append("\t\tList<" + daoClassName + eoSuffix + "> " + daoObjectName + eoSuffix + "List = null;\n");
-			sb.append("\t\tCriteriaBuilder builder = null;\n");
-			sb.append("\t\tCriteriaQuery<" + daoClassName + eoSuffix + "> query = null;\n");
-			sb.append("\t\tTransaction trans = null;\n");
-			sb.append("\t\tRoot<" + daoClassName + eoSuffix + "> root = null;\n");
-			sb.append("\t\tQuery<" + daoClassName + eoSuffix + "> q = null;\n");
-			sb.append("\t\tList<Predicate> predicateList = null;\n");
+			sb.append("\t\t" + daoClassName + "So " + daoObjectName + "So = null;\n");
+
 			sb.append("\t\ttry{\n");
-			sb.append("\t\t\tsession = sessionFactory.getCurrentSession();\n");
-			sb.append("\t\t\t" + daoClassName + soSuffix + " " + daoObjectName + soSuffix + " = (" + daoClassName + soSuffix + ") so;"+ "\n");
-			sb.append("\t\t\ttrans = session.getTransaction();\n");
-			sb.append("\t\t\ttrans.begin();\n");
-			sb.append("\t\t\tbuilder = session.getCriteriaBuilder();\n");
-			sb.append("\t\t\tquery = builder.createQuery(" + daoClassName + eoSuffix + ".class);\n");
-			sb.append("\t\t\troot = query.from("+ daoClassName + eoSuffix + ".class);\n");
-	
-			
-			// loop if so.getXXX() != null
-			for (int i = 0; i < metaDataFieldList.size(); i++) {
-				MetaDataField metaDataField = new MetaDataField();
-				metaDataField = metaDataFieldList.get(i);
-				String upperFirstCharAttributeName = Misc.upperStringFirstChar(Misc.convertTableFieldsFormat2JavaPropertiesFormat(metaDataField.getColumnName()));
-				sb.append("\t\t\tif(" + daoObjectName + "So.get" + upperFirstCharAttributeName);
-				sb.append("() != null){\n");
-				sb.append("\t\t\t\tif (predicateList == null) {\n");
-				sb.append("\t\t\t\t\tpredicateList = new ArrayList<Predicate>();\n");
-				sb.append("\t\t\t\t}\n");
-				sb.append("\t\t\t\tPredicate predicate = builder.equal(root.get(\"" + metaDataField.getColumnName() + "\"), " + daoObjectName + soSuffix + ".get" + upperFirstCharAttributeName+ "());\n");
-
-				sb.append("\t\t\t}\n");
-			}
-			sb.append("\t\t\tif (predicateList != null) {\n");
-			sb.append("\t\t\t\tquery.select(root).where(predicateList.toArray(new Predicate[] {}));\n");
+			sb.append("\t\t\tif (so instanceof " + daoClassName + "So == false) {\n");
+			sb.append("\t\t\t\tthrow new Exception(\"so is not instance of " + daoClassName + "So\");\n");
 			sb.append("\t\t\t} else {\n");
-			sb.append("\t\t\t\tquery.select(root);\n");
+			sb.append("\t\t\t\t" + daoObjectName +"So = (" + daoClassName + ") so;\n");
 			sb.append("\t\t\t}\n");
 			
-			sb.append("\t\t\tList<OrderedBy> orderedByList = " + daoObjectName + soSuffix + ".getOrderedByList();\n");
-			sb.append("\t\t\tif (orderedByList != null){\n");
-			sb.append("\t\t\t\tfor (OrderedBy orderedBy: orderedByList) {\n");
-			sb.append("\t\t\t\t\tString dataField = orderedBy.getDataField();\n");
-			sb.append("\t\t\t\t\tif (orderedBy.getIsAsc()) {\n");
-			sb.append("\t\t\t\t\t\tquery.orderBy(builder.desc(root.get(dataField)));\n");
-			sb.append("\t\t\t\t\t} else {\n");
-			sb.append("\t\t\t\t\t\tquery.orderBy(builder.desc(root.get(dataField)));\n");
-			sb.append("\t\t\t\t\t}\n");
-			sb.append("\t\t\t\t}\n");
-			sb.append("\t\t\t}\n");
-			
-			sb.append("\t\t\tq = session.createQuery(query);\n");
-			sb.append("\t\t\t" + daoObjectName  + eoSuffix +"List = q.getResultList();\n");
-			sb.append("\t\t\tfor (" + daoClassName + eoSuffix + " " + daoObjectName + eoSuffix + ":" + daoObjectName + eoSuffix + "List){\n");
-			sb.append("\t\t\t\tlogger.debug(" + daoObjectName + eoSuffix + ".getResult());\n");
-			sb.append("\t\t\t}\n");
-			
-			
-
-			
+			sb.append("\t\t\tQuery<" + daoClassName + "Eo> q = " + "generateQuery(" + daoObjectName + "So);\n");
+			sb.append("\t\t\t" + daoObjectName + "EoList = " + "q.getResultList();\n");
 			
 			sb.append("\t\t}catch (Exception e){\n");
 			sb.append("\t\t\tlogger.error(getClassName() + \".read() - so=\" + so, e);\n");
 			sb.append("\t\t\tthrow e;\n");
 			sb.append("\t\t} // end try ... catch\n");			
 			sb.append("\t\tfinally {\n");
-			sb.append("\t\t\tif(trans != null){\n");
-			sb.append("\t\t\t\ttrans.commit();\n");
-			sb.append("\t\t\t\ttrans = null;\n");
-			sb.append("\t\t\t}\n");
+			sb.append("\t\t\treturnConnection(connection);\n");
 			sb.append("\t\t}\n");
 			sb.append("\t\treturn " + daoObjectName + eoSuffix + "List;\n");
 			sb.append("\t} // end select function\n");
@@ -229,22 +444,14 @@ public class OrmDaoGenerateMgr {
 			sb.append("\t@Override\n");
 			sb.append("\tpublic Integer " + "create(" + daoClassName +  eoSuffix + " eo) throws Exception{\n");
 			sb.append("\t\tTransaction trans = null;\n");
-			sb.append("\t\tInteger id = null;\n");
-			sb.append("\t\ttry{\n");
-			
 
-			sb.append("\t\t\tsession = sessionFactory.withOptions().interceptor(new AuditInterceptor()).openSession();\n");
+			sb.append("\t\ttry{\n");
+
 			sb.append("\t\t\ttrans = session.getTransaction();\n");
 			sb.append("\t\t\ttrans.begin();\n");
-			
-			sb.append("\t\t\teo.setCreatedBy(\"\");\n");
-			sb.append("\t\t\teo.setCreateDate(new Date());\n");
-			sb.append("\t\t\teo.setUpdatedBy(\"\");\n");
-			sb.append("\t\t\teo.setUpdateDate(new Date());\n");
+
 			sb.append("\t\t\tsession.save(eo);\n");
 			sb.append("\t\t\ttrans.commit();\n");
-			sb.append("\t\t\tid = eo.getId();\n");
-
 			
 			sb.append("\t\t}catch (Exception e){\n");
 			sb.append("\t\t\tlogger.error(getClassName() + \".create() - eo=\" + eo, e);\n");
@@ -252,120 +459,75 @@ public class OrmDaoGenerateMgr {
 			sb.append("\t\t\tthrow e;\n");
 			sb.append("\t\t} // end try ... catch\n");			
 			sb.append("\t\tfinally {\n");
-			sb.append("\t\t\tif(session != null){\n");
-			sb.append("\t\t\t\tsession.close();\n");
-			sb.append("\t\t\t\tsession = null;\n");
+			sb.append("\t\t\tif (trans != null) {\n");
+			sb.append("\t\t\t\ttrans = null;\n");
+
 			sb.append("\t\t\t}\n");
-			
+			sb.append("\t\t\treturnConnection(connection);\n");
 			sb.append("\t\t}\n");
 			sb.append("\t\treturn id;\n");
-			sb.append("\t} // end create function\n");			
-			
-			
+			sb.append("\t} // end create function\n");
 			
 			// ###############################
 			// update function
 			// ###############################
 			sb.append("\t@Override\n");
-			sb.append("\tpublic Integer " + "update(" + daoClassName +  eoSuffix + " eo) throws Exception{\n");
-			sb.append("\t\tPreparedStatement preparedStatement = null;\n");
-			sb.append("\t\tInteger noOfAffectedRow = null;\n");
+			sb.append("\tpublic void " + "update(" + daoClassName +  eoSuffix + " eo) throws Exception{\n");
+			sb.append("\t\tTransaction trans = null;\n");
+
 			sb.append("\t\ttry{\n");
+
+			sb.append("\t\t\ttrans = session.getTransaction();\n");
+			sb.append("\t\t\ttrans.begin();\n");
+
+			sb.append("\t\t\tsession.update(eo);\n");
+			sb.append("\t\t\ttrans.commit();\n");
 			
-			// pcount
-			sb.append("\t\t\tint pcount = 1;\n");
-			sb.append("\t\t\tpreparedStatement = connection.prepareStatement(UPDATE_SQL);\n");
-			
-			// loop pcount field name
-			for (int i = 0; i < metaDataFieldList.size(); i++) {
-				MetaDataField metaDataField = new MetaDataField();
-				metaDataField = metaDataFieldList.get(i);
-				
-				sb.append("\t\t\tif(eo.get"
-						+ Misc.upperStringFirstChar(Misc
-								.convertTableFieldsFormat2JavaPropertiesFormat(metaDataField
-										.getColumnName())
-						));
-				sb.append("() != null){\n");
-				sb.append("\t\t\t\tpreparedStatement.setString(pcount, eo.get" + 
-						Misc.upperStringFirstChar(Misc
-								.convertTableFieldsFormat2JavaPropertiesFormat(metaDataField
-										.getColumnName())
-								)
-				);
-				sb.append("());\n");
-				sb.append("\t\t\t\tpcount++;\n");
-				sb.append("\t\t\t}\n");
-			}
-			sb.append("\t\t\tnoOfAffectedRow = preparedStatement.executeUpdate();\n");
-			sb.append("\t\t\tif (noOfAffectedRow.intValue() != 1) {\n");
-			sb.append("\t\t\t\tthrow new Exception(\"update failed! affectedRow=\" + noOfAffectedRow);\n");
-			sb.append("\t\t\t}\n");
-			
-			sb.append("\t\t}\n");
-			sb.append("\t\tcatch (Exception e){\n");
-			sb.append("\t\t\tlogger.error(getClassName() + \".create() - eo=\" + eo, e);\n");
+			sb.append("\t\t}catch (Exception e){\n");
+			sb.append("\t\t\tlogger.error(getClassName() + \".update() - eo=\" + eo, e);\n");
+			sb.append("\t\t\ttrans.rollback();\n");
 			sb.append("\t\t\tthrow e;\n");
 			sb.append("\t\t} // end try ... catch\n");			
 			sb.append("\t\tfinally {\n");
-			sb.append("\t\t\tif(preparedStatement != null){\n");
-			sb.append("\t\t\t\tpreparedStatement.close();\n");
-			sb.append("\t\t\t\tpreparedStatement = null;\n");
+			sb.append("\t\t\tif (trans != null) {\n");
+			sb.append("\t\t\t\ttrans = null;\n");
+
 			sb.append("\t\t\t}\n");
-			sb.append("\t\t\tif (connectionType.equals(CONNECTION_TYPE_JDBC)){\n");
-			sb.append("\t\t\t\tif(connection != null) {\n");
-			sb.append("\t\t\t\t\tconnection.close();\n");
-			sb.append("\t\t\t\t\tconnection = null;\n");
-			sb.append("\t\t\t\t}\n");
-			sb.append("\t\t\t}\n");
+			sb.append("\t\t\treturnConnection(connection);\n");
 			sb.append("\t\t}\n");
-			sb.append("\t\treturn noOfAffectedRow;\n");
-			sb.append("\t} // end update function\n");	
+
+			sb.append("\t} // end update function\n");
 			
 			
 			// ###############################
 			// delete function
 			// ###############################
 			sb.append("\t@Override\n");
-			sb.append("\tpublic Integer " + "delete(" + daoClassName +  eoSuffix + " eo) throws Exception{\n");
-			sb.append("\t\tPreparedStatement preparedStatement = null;\n");
-			sb.append("\t\tInteger noOfAffectedRow = null;\n");
+			sb.append("\tpublic void " + "delete(" + daoClassName +  eoSuffix + " eo) throws Exception{\n");
+			sb.append("\t\tTransaction trans = null;\n");
+
 			sb.append("\t\ttry{\n");
+
+			sb.append("\t\t\ttrans = session.getTransaction();\n");
+			sb.append("\t\t\ttrans.begin();\n");
+
+			sb.append("\t\t\tsession.delete(eo);\n");
+			sb.append("\t\t\ttrans.commit();\n");
 			
-			// pcount
-			sb.append("\t\t\tint pcount = 1;\n");
-			sb.append("\t\t\tpreparedStatement = connection.prepareStatement(DELETE_SQL);\n");
-			
-			sb.append("\t\t\tif(eo.getXXX_key_XXX() != null){\n");
-			sb.append("\t\t\t\tpreparedStatement.setInt(pcount, eo.getXXX_key_XXX());\n");
-			sb.append("\t\t\t\tpcount++;\n");
-			sb.append("\t\t\t}\n");
-			
-			
-			sb.append("\t\t\tnoOfAffectedRow = preparedStatement.executeUpdate();\n");
-			sb.append("\t\t\tif (noOfAffectedRow.intValue() != 1) {\n");
-			sb.append("\t\t\t\tthrow new Exception(\"delete failed! affectedRow=\" + noOfAffectedRow);\n");
-			sb.append("\t\t\t}\n");
-			
-			sb.append("\t\t}\n");
-			sb.append("\t\tcatch (Exception e){\n");
+			sb.append("\t\t}catch (Exception e){\n");
 			sb.append("\t\t\tlogger.error(getClassName() + \".delete() - eo=\" + eo, e);\n");
+			sb.append("\t\t\ttrans.rollback();\n");
 			sb.append("\t\t\tthrow e;\n");
 			sb.append("\t\t} // end try ... catch\n");			
 			sb.append("\t\tfinally {\n");
-			sb.append("\t\t\tif(preparedStatement != null){\n");
-			sb.append("\t\t\t\tpreparedStatement.close();\n");
-			sb.append("\t\t\t\tpreparedStatement = null;\n");
+			sb.append("\t\t\tif (trans != null) {\n");
+			sb.append("\t\t\t\ttrans = null;\n");
+
 			sb.append("\t\t\t}\n");
-			sb.append("\t\t\tif (connectionType.equals(CONNECTION_TYPE_JDBC)){\n");
-			sb.append("\t\t\t\tif(connection != null) {\n");
-			sb.append("\t\t\t\t\tconnection.close();\n");
-			sb.append("\t\t\t\t\tconnection = null;\n");
-			sb.append("\t\t\t\t}\n");
-			sb.append("\t\t\t}\n");
+			sb.append("\t\t\treturnConnection(connection);\n");
 			sb.append("\t\t}\n");
-			sb.append("\t\treturn noOfAffectedRow;\n");
-			sb.append("\t} // end delete function\n");	
+			sb.append("\t\treturn id;\n");
+			sb.append("\t} // end delete function\n");
 			
 			// ########## end class ##############################
 			sb.append("} //end class\n");
@@ -389,6 +551,8 @@ public class OrmDaoGenerateMgr {
 
 		} catch (Exception e) {// Catch exception if any
 			System.err.println("Error: " + e.getMessage());
+			logger.error(this.getClass() + ".generateDao() - ", e);
+			throw e;
 		} // end try ... catch ...
 		finally {
 			if (out != null) {

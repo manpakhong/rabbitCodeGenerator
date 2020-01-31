@@ -4,6 +4,7 @@ import com.rabbitforever.generateJavaMVC.services.DaoGenerateMgr;
 import com.rabbitforever.generateJavaMVC.services.EoGenerateMgr;
 import com.rabbitforever.generateJavaMVC.services.FileArchieveMgr;
 import com.rabbitforever.generateJavaMVC.services.OrmDaoGenerateMgr;
+import com.rabbitforever.generateJavaMVC.services.OrmServiceGenerateMgr;
 import com.rabbitforever.generateJavaMVC.services.ServiceGenerateMgr;
 import com.rabbitforever.generateJavaMVC.services.SoGenerateMgr;
 
@@ -44,6 +45,9 @@ public class MainConsole {
 	
 				DaoGenerateMgr daoGeneratorMgr = new DaoGenerateMgr(temp[i]);
 				daoGeneratorMgr.generateDao();
+				
+				ServiceGenerateMgr svrGeneratorMgr = new ServiceGenerateMgr(temp[i]);
+				svrGeneratorMgr.generateService();
 //				
 				OrmDaoGenerateMgr ormDaoGeneratorMgr = new OrmDaoGenerateMgr(temp[i]);
 				ormDaoGeneratorMgr.generateDao();
@@ -51,9 +55,9 @@ public class MainConsole {
 //				IDaoGenerateMgr idaoGeneratorMgr = new IDaoGenerateMgr(temp[i]);
 //				idaoGeneratorMgr.generateDao();	
 //				
-//				
-				ServiceGenerateMgr svrGeneratorMgr = new ServiceGenerateMgr(temp[i]);
-				svrGeneratorMgr.generateService();
+				OrmServiceGenerateMgr ormServiceGenerateMgr = new OrmServiceGenerateMgr(temp[i]);
+				ormServiceGenerateMgr.generateService();
+
 //				
 //				IServiceGenerateMgr isvrGeneratorMgr = new IServiceGenerateMgr(temp[i]);
 //				isvrGeneratorMgr.generateService();

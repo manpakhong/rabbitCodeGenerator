@@ -15,7 +15,7 @@ import com.rabbitforever.generateJavaMVC.factories.PropertiesFactory;
 import com.rabbitforever.generateJavaMVC.models.dtos.CompressFileDto;
 import com.rabbitforever.generateJavaMVC.models.eos.MetaDataField;
 
-public class ServiceGenerateMgr {
+public class OrmServiceGenerateMgr {
 	private final Logger logger = Logger.getLogger(getClassName());
 	private String tableName;
 	private String serviceClassName;
@@ -37,7 +37,7 @@ public class ServiceGenerateMgr {
 			throw e;
 		}
 	}
-	public ServiceGenerateMgr(String _tableName)throws Exception {
+	public OrmServiceGenerateMgr(String _tableName)throws Exception {
 
 		try {
 			tableName = _tableName;
@@ -67,13 +67,13 @@ public class ServiceGenerateMgr {
 		String eosDirName = null;
 		String daoDirName = null;
 		String systemRootDir = null;
-		String daoSuffix = "JdbcDao";
+		String daoSuffix = "OrmDao";
 		String eoSuffix = "Eo";
 		String daoClassName = null;
 		String daoObjectName = null;
 		String servicesDirName = null;
 		String serviceObjectName = null;
-		String classServiceSuffix="JdbcMgr";
+		String classServiceSuffix="OrmMgr";
 		FileWriter fstream = null;
 		BufferedWriter out = null;
 		PrintWriter pw = null;
@@ -155,18 +155,18 @@ public class ServiceGenerateMgr {
 			sb.append("\t} // end constructor\n");
 			
 			
-			sb.append("\tpublic " + serviceClassName +  classServiceSuffix +"(Connection connection) throws Exception{\n");
+			sb.append("\tpublic " + serviceClassName +  classServiceSuffix +"(Session session) throws Exception{\n");
 			sb.append("\t\ttry{\n");
-			sb.append("\t\t\tinit(connection, false, null);\n");
+			sb.append("\t\t\tinit(session, false, null);\n");
 			sb.append("\t\t} catch (Exception e){\n");
 			sb.append("\t\t\tlogger.error(getClassName() + \"." + serviceClassName +  classServiceSuffix +"()\", e);\n");
 			sb.append("\t\t\tthrow e;\n");
 			sb.append("\t\t}\n");
 			sb.append("\t} // end constructor\n");
 			
-			sb.append("\tpublic " + serviceClassName +  classServiceSuffix +"(Connection connection, String connectionType) throws Exception{\n");
+			sb.append("\tpublic " + serviceClassName +  classServiceSuffix +"(Session session, String connectionType) throws Exception{\n");
 			sb.append("\t\ttry{\n");
-			sb.append("\t\t\tinit(connection, false, connectionType);\n");
+			sb.append("\t\t\tinit(session, false, connectionType);\n");
 			sb.append("\t\t} catch (Exception e){\n");
 			sb.append("\t\t\tlogger.error(getClassName() + \"." + serviceClassName +  classServiceSuffix +"() - connectionType=\" + connectionType, e);\n");
 			sb.append("\t\t\tthrow e;\n");
@@ -174,9 +174,9 @@ public class ServiceGenerateMgr {
 			sb.append("\t} // end constructor\n");
 			
 			
-			sb.append("\tpublic " + serviceClassName +  classServiceSuffix +"(Connection connection, Boolean closeConnectionFinally,  String connectionType) throws Exception{\n");
+			sb.append("\tpublic " + serviceClassName +  classServiceSuffix +"(Session session, Boolean closeConnectionFinally,  String connectionType) throws Exception{\n");
 			sb.append("\t\ttry{\n");
-			sb.append("\t\t\tinit(connection, closeConnectionFinally, connectionType);\n");
+			sb.append("\t\t\tinit(session, closeConnectionFinally, connectionType);\n");
 			sb.append("\t\t} catch (Exception e){\n");
 			sb.append("\t\t\tlogger.error(getClassName() + \"." + serviceClassName +  classServiceSuffix +"() - closeConnectionFinally=\" + closeConnectionFinally + \",connectionType=\" + connectionType, e);\n");
 			sb.append("\t\t\tthrow e;\n");
@@ -184,14 +184,14 @@ public class ServiceGenerateMgr {
 			sb.append("\t} // end constructor\n");
 			
 			// init
-			sb.append("\tpublic void init(Connection connection, Boolean closeConnectionFinally,  String connectionType) throws Exception{\n");
+			sb.append("\tpublic void init(Session session, Boolean closeConnectionFinally,  String connectionType) throws Exception{\n");
 			sb.append("\t\ttry{\n");
 			sb.append("\t\t\tif(connectionType == null){\n");
 			sb.append("\t\t\t\tconnectionType = dbProperties.getConnectionType();\n");
 			sb.append("\t\t\t}\n");
 			
-			sb.append("\t\t\tthis.connection = connection;\n");
-			sb.append("\t\t\tdao = new " + serviceClassName + "Dao(connection, closeConnectionFinally, connectionType);\n");
+			sb.append("\t\t\tthis.session = session;\n");
+			sb.append("\t\t\tdao = new " + serviceClassName + "Dao(session, closeConnectionFinally, connectionType);\n");
 			sb.append("\t\t} catch (Exception e){\n");
 			sb.append("\t\t\tlogger.error(getClassName() + \"init() - closeConnectionFinally=\" + closeConnectionFinally + \",connectionType=\" + connectionType, e);\n");
 			sb.append("\t\t\tthrow e;\n");
