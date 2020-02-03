@@ -107,8 +107,8 @@ public class OrmServiceGenerateMgr {
 			sb.append("package " + packageName + "." + servicesDirName + ";\n");
 			
 			// --- import
-			sb.append("import org.slf4j.Logger;\n");
-			sb.append("import org.slf4j.LoggerFactory;\n");
+			sb.append("import org.apache.log4j.LogManager;\n");
+			sb.append("import org.apache.log4j.Logger;\n");
 			
 			// --- class
 			sb.append("public class " + serviceClassName + classServiceSuffix +" extends ServiceBase");
@@ -191,7 +191,7 @@ public class OrmServiceGenerateMgr {
 			sb.append("\t\t\t}\n");
 			
 			sb.append("\t\t\tthis.session = session;\n");
-			sb.append("\t\t\tdao = new " + serviceClassName + "Dao(session, closeConnectionFinally, connectionType);\n");
+			sb.append("\t\t\tdao = new " + serviceClassName + daoSuffix + "(session, closeConnectionFinally, connectionType);\n");
 			sb.append("\t\t} catch (Exception e){\n");
 			sb.append("\t\t\tlogger.error(getClassName() + \"init() - closeConnectionFinally=\" + closeConnectionFinally + \",connectionType=\" + connectionType, e);\n");
 			sb.append("\t\t\tthrow e;\n");
@@ -202,8 +202,8 @@ public class OrmServiceGenerateMgr {
 			// ###############################
 			// count Mgr
 			// ###############################
-			sb.append("\tpublic Integer count(Object so) throws Exception{\n");
-			sb.append("\t\tInteger count = null;\n");
+			sb.append("\tpublic Long count(Object so) throws Exception{\n");
+			sb.append("\t\tLong count = null;\n");
 			sb.append("\t\ttry{\n");
 			sb.append("\t\t\tcount = dao.count(so);\n");
 			sb.append("\t\t}\n");
@@ -227,52 +227,52 @@ public class OrmServiceGenerateMgr {
 			sb.append("\t\t\tthrow e;\n");
 			sb.append("\t\t} // end try ... catch\n");
 			sb.append("\t\treturn " + objClassName + "EoList;\n");
-			sb.append("\t} // end select function\n");
+			sb.append("\t} // end read function\n");
 
 			// ###############################
 			// create Mgr
 			// ###############################
-			sb.append("\tpublic Integer " + "create(" + serviceClassName + "Eo " +  "eo) throws Exception{\n");
-			sb.append("\t\tInteger noOfAffectedRow = null;\n");
+			sb.append("\tpublic void " + "create(" + serviceClassName + "Eo " +  "eo) throws Exception{\n");
+//			sb.append("\t\tInteger noOfAffectedRow = null;\n");
 			sb.append("\t\ttry{\n");
-			sb.append("\t\t\tnoOfAffectedRow = dao.create(eo);\n");
+			sb.append("\t\t\tdao.create(eo);\n");
 			sb.append("\t\t}\n");
 			sb.append("\t\tcatch (Exception e){\n");
 			sb.append("\t\t\tlogger.error(getClassName() + \".create() - eo=\" + eo, e);\n");
 			sb.append("\t\t\tthrow e;\n");
 			sb.append("\t\t} // end try ... catch\n");
-			sb.append("\t\treturn noOfAffectedRow;\n");
+//			sb.append("\t\treturn noOfAffectedRow;\n");
 			sb.append("\t} // end create function\n");
 
 			// ###############################
 			// update Mgr
 			// ###############################
-			sb.append("\tpublic Integer " + "update(" + serviceClassName + "Eo " +  "eo) throws Exception{\n");
-			sb.append("\t\tInteger noOfAffectedRow = null;\n");
+			sb.append("\tpublic void " + "update(" + serviceClassName + "Eo " +  "eo) throws Exception{\n");
+//			sb.append("\t\tInteger noOfAffectedRow = null;\n");
 			sb.append("\t\ttry{\n");
-			sb.append("\t\t\tnoOfAffectedRow = dao.update(eo);\n");
+			sb.append("\t\t\tdao.update(eo);\n");
 			sb.append("\t\t}\n");
 			sb.append("\t\tcatch (Exception e){\n");
 			sb.append("\t\t\tlogger.error(getClassName() + \".update() - eo=\" + eo, e);\n");
 			sb.append("\t\t\tthrow e;\n");
 			sb.append("\t\t} // end try ... catch\n");
-			sb.append("\t\treturn noOfAffectedRow;\n");
-			sb.append("\t} // end create function\n");
+//			sb.append("\t\treturn noOfAffectedRow;\n");
+			sb.append("\t} // end update function\n");
 
 			// ###############################
 			// delete statement
 			// ###############################
-			sb.append("\tpublic Integer " + "delete(" + serviceClassName + "Eo " +  "eo) throws Exception{\n");
-			sb.append("\t\tInteger noOfAffectedRow = null;\n");
+			sb.append("\tpublic void " + "delete(" + serviceClassName + "Eo " +  "eo) throws Exception{\n");
+//			sb.append("\t\tInteger noOfAffectedRow = null;\n");
 			sb.append("\t\ttry{\n");
-			sb.append("\t\t\tnoOfAffectedRow = dao.delete(eo);\n");
+			sb.append("\t\t\tdao.delete(eo);\n");
 			sb.append("\t\t}\n");
 			sb.append("\t\tcatch (Exception e){\n");
 			sb.append("\t\t\tlogger.error(getClassName() + \".delete() - eo=\" + eo, e);\n");
 			sb.append("\t\t\tthrow e;\n");
 			sb.append("\t\t} // end try ... catch\n");
-			sb.append("\t\treturn noOfAffectedRow;\n");
-			sb.append("\t} // end create function\n");
+//			sb.append("\t\treturn noOfAffectedRow;\n");
+			sb.append("\t} // end delete function\n");
 
 			// ########## end class ##############################
 			sb.append("} //end class\n");

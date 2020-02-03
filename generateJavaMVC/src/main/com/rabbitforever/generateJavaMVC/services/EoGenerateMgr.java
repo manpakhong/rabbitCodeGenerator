@@ -196,7 +196,7 @@ public class EoGenerateMgr {
 				sb.append("\t}\n");
 				
 				// setter
-				sb.append("\tpublic " + typeString + " set" + upperPropertiesFormat +
+				sb.append("\tpublic void set" + upperPropertiesFormat +
 						"(" + typeString + " " +  javaPropertiesFormat + "){\n");
 				
 				sb.append("\t\tthis." + javaPropertiesFormat + " = " + javaPropertiesFormat + ";\n");
