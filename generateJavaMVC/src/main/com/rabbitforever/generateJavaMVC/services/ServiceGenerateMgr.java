@@ -107,8 +107,8 @@ public class ServiceGenerateMgr {
 			sb.append("package " + packageName + "." + servicesDirName + ";\n");
 			
 			// --- import
-			sb.append("import org.slf4j.Logger;\n");
-			sb.append("import org.slf4j.LoggerFactory;\n");
+			sb.append("import org.apache.log4j.Logger;\n");
+
 			
 			// --- class
 			sb.append("public class " + serviceClassName + classServiceSuffix +" extends ServiceBase");
@@ -126,7 +126,7 @@ public class ServiceGenerateMgr {
 			metaDataFieldList = dbMgr.getMetaDataList(tableName);
 
 			// properties
-			sb.append("\tprivate final Logger logger = LogManager.getLogger(getClassName());\n");
+			sb.append("\tprivate final Logger logger = Logger.getLogger(getClassName());\n");
 			sb.append("\tprivate " + serviceClassName + daoSuffix + " dao;\n");
 
 			// getClassName()
@@ -191,7 +191,7 @@ public class ServiceGenerateMgr {
 			sb.append("\t\t\t}\n");
 			
 			sb.append("\t\t\tthis.connection = connection;\n");
-			sb.append("\t\t\tdao = new " + serviceClassName + "Dao(connection, closeConnectionFinally, connectionType);\n");
+			sb.append("\t\t\tdao = new " + serviceClassName + "JdbcDao(connection, closeConnectionFinally, connectionType);\n");
 			sb.append("\t\t} catch (Exception e){\n");
 			sb.append("\t\t\tlogger.error(getClassName() + \"init() - closeConnectionFinally=\" + closeConnectionFinally + \",connectionType=\" + connectionType, e);\n");
 			sb.append("\t\t\tthrow e;\n");

@@ -15,6 +15,7 @@ import com.rabbitforever.generateJavaMVC.factories.PropertiesFactory;
 import com.rabbitforever.generateJavaMVC.models.dtos.CompressFileDto;
 import com.rabbitforever.generateJavaMVC.models.eos.MetaDataField;
 
+
 public class OrmDaoGenerateMgr {
 	private final Logger logger = Logger.getLogger(getClassName());
 	private TypeMappingMgr typeMappingMgr;
@@ -118,8 +119,8 @@ public class OrmDaoGenerateMgr {
 			sb.append("import org.hibernate.SessionFactory;\n");
 			sb.append("import org.hibernate.Transaction;\n");
 			sb.append("import org.hibernate.query.Query;\n");
-			sb.append("import org.slf4j.Logger;\n");
-			sb.append("import org.slf4j.LoggerFactory;\n");
+			sb.append("import javax.persistence.criteria.Order;\n");
+			sb.append("import org.apache.log4j.Logger;\n");
 			sb.append("import org.springframework.beans.factory.annotation.Autowired;\n");
 			sb.append("import org.springframework.stereotype.Repository;\n");
 			sb.append("import hk.org.hkbh.cms.outpatient.core.daos.orm.interceptors.AuditInterceptor;\n");
@@ -127,7 +128,7 @@ public class OrmDaoGenerateMgr {
 
 			
 			// --- class
-			sb.append("public class " + daoClassName + daoSuffix + " extends DaoBase" + "<" + daoClassName + eoSuffix + ">");
+			sb.append("public class " + daoClassName + daoSuffix + " extends OrmDaoBase" + "<" + daoClassName + eoSuffix + ">");
 			sb.append("{\n");
 
 			String database = this.sysProperties.getDatabase();
@@ -142,14 +143,14 @@ public class OrmDaoGenerateMgr {
 			metaDataFieldList = dbMgr.getMetaDataList(tableName);
 
 			// properties
-			sb.append("\tprivate final Logger logger = LogManager.getLogger(getClassName());\n");
+			sb.append("\tprivate final Logger logger = Logger.getLogger(getClassName());\n");
 //			sb.append("\tprivate static DbUtils mySqlDbUtils;\n");
 //			sb.append("\tprivate static DbUtilsFactory dbUtilsFactory;\n");
 			
 			sb.append("\tprivate final String SELECT_COUNT_SQL =\n");
-			sb.append("\t\tselect \n");
-			sb.append("\t\tcount(0) as count_result \n"); 
-			sb.append("\t\tfrom "+ tableName +" " + daoObjectName +" \n");
+			sb.append("\t\t\"select \" +\n");
+			sb.append("\t\t\"count(0) as count_result \" +\n"); 
+			sb.append("\t\t\"from "+ daoClassName + "Eo " + daoObjectName +" \";\n");
 			
 			// getClassName()
 			sb.append("\tprivate String getClassName(){\n");
@@ -173,10 +174,15 @@ public class OrmDaoGenerateMgr {
 			sb.append("\t\tsuper(session, connectionType);\n");
 			sb.append("\t}\n");
 			
+			
+			sb.append("\tpublic " + daoClassName + daoSuffix + "(Session session, Boolean closeConnectionFinally, String connectionType) throws Exception {\n");
+			sb.append("\t\tsuper(session, closeConnectionFinally, connectionType);\n");
+			sb.append("\t}\n");
+
 			// ###############################
 			// generateReadWhereStatement()
 			// ###############################
-			sb.append("\tpublic String generateReadWhereStatement(" + daoClassName + " " + daoObjectName + ") throws Exception {\n");
+			sb.append("\tpublic String generateReadWhereStatement(" + daoClassName + "So " + daoObjectName + "So) throws Exception {\n");
 			sb.append("\t\tStringBuilder whereSql = new StringBuilder();\n");
 			sb.append("\t\ttry {\n");
 			sb.append("\t\t\tint wcount = 0;\n");
@@ -252,7 +258,7 @@ public class OrmDaoGenerateMgr {
 			// ###############################
 			// generateQuery()
 			// ###############################
-			sb.append("\tpublic Query<" +  daoClassName + "Eo> generateQuery(" + daoClassName + " " + daoObjectName + ") throws Exception {\n");
+			sb.append("\tpublic Query<" +  daoClassName + "Eo> generateQuery(" + daoClassName + "So " + daoObjectName + "So) throws Exception {\n");
 			sb.append("\t\tList<Predicate> predicateList = null;\n");
 			sb.append("\t\tCriteriaBuilder builder = null;\n");
 			sb.append("\t\tCriteriaQuery<" + daoClassName + "Eo> query = null;\n");
@@ -260,8 +266,8 @@ public class OrmDaoGenerateMgr {
 			sb.append("\t\tRoot<" + daoClassName + "Eo> root = null;\n");
 			sb.append("\t\ttry {\n");
 			sb.append("\t\t\tbuilder = session.getCriteriaBuilder();\n");
-			sb.append("\t\t\tquery = builder.createQuery(" + daoClassName + ".class);\n");
-			sb.append("\t\t\troot = query.from(" + daoClassName + ".class);\n");
+			sb.append("\t\t\tquery = builder.createQuery(" + daoClassName + "Eo.class);\n");
+			sb.append("\t\t\troot = query.from(" + daoClassName + "Eo.class);\n");
 			
 			
 			sb.append("\t\t\tif(" + daoObjectName + "So != null) {\n");
@@ -296,8 +302,8 @@ public class OrmDaoGenerateMgr {
 				sb.append("\t\t\t\t\tif(predicateList == null) {\n");
 				sb.append("\t\t\t\t\t\tpredicateList = new ArrayList<Predicate>();\n");
 				sb.append("\t\t\t\t\t}\n");
-				sb.append("\t\t\t\t\tPredicate predicate = builder.equal(root.get(\"" + javaPropertiesFormat + "\"), "+ javaPropertiesFormat +"So.get" + upperPropertiesFormat + "());\n");
-				sb.append("\t\t\t\t\tpredicate.add(predicate);\n");
+				sb.append("\t\t\t\t\tPredicate predicate = builder.equal(root.get(\"" + javaPropertiesFormat + "\"), "+ daoObjectName +"So.get" + upperPropertiesFormat + "());\n");
+				sb.append("\t\t\t\t\tpredicateList.add(predicate);\n");
 				sb.append("\t\t\t\t}\n");
 			}
 			
@@ -309,28 +315,28 @@ public class OrmDaoGenerateMgr {
 			sb.append("\t\t\t\tquery.select(root);\n");
 			sb.append("\t\t\t}\n");
 			
-			sb.append("\t\t\tList<OrderedBy> orderedByList = " +daoObjectName + ".get" + daoObjectName + "So.getOrderedByList();\n");
+			sb.append("\t\t\tList<OrderedBy> orderedByList = " +daoObjectName + "So.getOrderedByList();\n");
 			sb.append("\t\t\tList<Order> orderList = null;\n");
 			
 			// ordered by
 			sb.append("\t\t\tif(" + daoObjectName + "So.getOrderedByList() != null){\n");
-			sb.append("\t\t\t\t\tList<OrderedBy> orderedByList = " + daoObjectName + "So.getOrderedByList();\n");
-			sb.append("\t\t\t\t\tif (orderedByList.size() > 0) {\n");
-			sb.append("\t\t\t\t\t\twhereSql.append(\"order by \");\n");
-			sb.append("\t\t\t\t\t\tfor (int i=0; i < orderedByList.size(); i++) {\n");
-			sb.append("\t\t\t\t\t\t\tif (i > 1) {\n");
-			sb.append("\t\t\t\t\t\t\t\twhereSql.append(\", \");\n");
-			sb.append("\t\t\t\t\t\t\t}\n");
-			sb.append("\t\t\t\t\t\t\tOrderedBy orderedBy = orderedByList.get(i);\n");
-			sb.append("\t\t\t\t\t\t\twhereSql.append(\""+ daoObjectName +".\" + orderedBy.getDataField() + \" \");\n");
-			sb.append("\t\t\t\t\t\t\tif (orderedBy.getIsAsc()){\n");
-			sb.append("\t\t\t\t\t\t\t\twhereSql.append(\"asc \");\n");
-			sb.append("\t\t\t\t\t\t\t} else {\n");
-			sb.append("\t\t\t\t\t\t\t\twhereSql.append(\"desc \");\n");
-			sb.append("\t\t\t\t\t\t\t}\n");
-			sb.append("\t\t\t\t\t\t} //endfor\n");
-			sb.append("\t\t\t\t\t}\n");
+			sb.append("\t\t\t\torderList = new ArrayList<Order>();\n");
+			sb.append("\t\t\t\tif (orderedByList.size() > 0) {\n");
+			sb.append("\t\t\t\t\tfor (OrderedBy orderedBy: orderedByList) {\n");
+			sb.append("\t\t\t\t\t\tString dataField = orderedBy.getDataField();\n");
+			sb.append("\t\t\t\t\t\tif (orderedBy.getIsAsc()) {\n");
+			sb.append("\t\t\t\t\t\t\torderList.add(builder.asc(root.get(dataField)));\n");
+			sb.append("\t\t\t\t\t\t} else {\n");
+			sb.append("\t\t\t\t\t\t\torderList.add(builder.desc(root.get(dataField)));\n");
+			sb.append("\t\t\t\t\t\t}\n");
+			sb.append("\t\t\t\t\t} //endfor\n");
+			sb.append("\t\t\t\t}\n");
 			sb.append("\t\t\t}\n");
+			
+			sb.append("\t\t\tif (orderList != null) {\n");
+			sb.append("\t\t\t\tquery.orderBy(orderList);\n");
+			sb.append("\t\t\t}\n");
+			sb.append("\t\t\tq = session.createQuery(query);\n");
 			
 			sb.append("\t\t} catch (Exception e) {\n");
 			sb.append("\t\t\tlogger.error(getClassName() + \".generateReadWhereStatement() - " + daoObjectName
@@ -344,10 +350,10 @@ public class OrmDaoGenerateMgr {
 			// count function
 			// ###############################
 			sb.append("\t@Override\n");
-			sb.append("\tpublic Integer count(Object so) throws Exception{\n");
+			sb.append("\tpublic Long count(Object so) throws Exception{\n");
 			sb.append("\t\tQuery<Long> query = null;\n");
 			sb.append("\t\tString whereSql = null;\n");
-			sb.append("\t\tPreparedStatement preparedStatement = null;\n");
+			sb.append("\t\tLong count = null;\n");
 			sb.append("\t\ttry{\n");
 			sb.append("\t\t\tif (so instanceof " + daoClassName + "So == false) {\n");
 			sb.append("\t\t\t\tthrow new Exception(\"so is not an instanceof " + daoClassName + "So\");\n");
@@ -359,7 +365,7 @@ public class OrmDaoGenerateMgr {
 
 			// pcount
 			sb.append("\t\t\tint pcount = 1;\n");
-			sb.append("\t\t\tpreparedStatement = getConnection().prepareStatement(SELECT_COUNT_SQL + whereSql);\n");
+			sb.append("\t\t\tquery = session.createQuery(SELECT_COUNT_SQL + whereSql);\n");
 
 			// loop pcount field name
 			for (int i = 0; i < metaDataFieldList.size(); i++) {
@@ -389,7 +395,7 @@ public class OrmDaoGenerateMgr {
 				sb.append("\t\t\tif(" + daoObjectName + "So.get" + upperPropertiesFormat);
 				sb.append("() != null){\n");
 
-				sb.append("\t\t\t\tquery.setParameter(\"" + javaPropertiesFormat + "\", " + daoObjectName + "So.get" + upperPropertiesFormat + "()));\n");
+				sb.append("\t\t\t\tquery.setParameter(\"" + javaPropertiesFormat + "\", " + daoObjectName + "So.get" + upperPropertiesFormat + "());\n");
 
 //				sb.append("());\n");
 //				sb.append("\t\t\t\tpcount++;\n");
@@ -397,15 +403,26 @@ public class OrmDaoGenerateMgr {
 			}
 			sb.append("\t\t\tObject value = query.uniqueResult();\n");
 			sb.append("\t\t\tcount = (Long) value;\n");
-
+			
+			sb.append("\t\t\tif (!this.closeSessionFinally){\n");
+			sb.append("\t\t\t\tif (this.transaction != null){\n");
+			sb.append("\t\t\t\t\ttransaction.commit();\n");
+			sb.append("\t\t\t\t}\n");
+			sb.append("\t\t\t}\n");
 
 			sb.append("\t\t}\n");
 			sb.append("\t\tcatch (Exception e){\n");
+			sb.append("\t\t\tif (this.transaction != null){\n");
+			sb.append("\t\t\t\tthis.transaction.rollback();\n");
+			sb.append("\t\t\t}\n");
 			sb.append("\t\t\tlogger.error(getClassName() + \".count() - so=\" + so, e);\n");
 			sb.append("\t\t\tthrow e;\n");
 			sb.append("\t\t} // end try ... catch\n");
 			sb.append("\t\tfinally {\n");
-			sb.append("\t\t\treturnConnection(connection);\n");
+
+			
+			sb.append("\t\t\treturnSession(session);\n");
+			
 			sb.append("\t\t}\n");
 			sb.append("\t\treturn count;\n");
 			sb.append("\t} // end select count function\n");
@@ -422,18 +439,27 @@ public class OrmDaoGenerateMgr {
 			sb.append("\t\t\tif (so instanceof " + daoClassName + "So == false) {\n");
 			sb.append("\t\t\t\tthrow new Exception(\"so is not instance of " + daoClassName + "So\");\n");
 			sb.append("\t\t\t} else {\n");
-			sb.append("\t\t\t\t" + daoObjectName +"So = (" + daoClassName + ") so;\n");
+			sb.append("\t\t\t\t" + daoObjectName +"So = (" + daoClassName + "So) so;\n");
 			sb.append("\t\t\t}\n");
 			
 			sb.append("\t\t\tQuery<" + daoClassName + "Eo> q = " + "generateQuery(" + daoObjectName + "So);\n");
 			sb.append("\t\t\t" + daoObjectName + "EoList = " + "q.getResultList();\n");
 			
+			sb.append("\t\t\tif (!this.closeSessionFinally){\n");
+			sb.append("\t\t\t\tif (this.transaction != null){\n");
+			sb.append("\t\t\t\t\ttransaction.commit();\n");
+			sb.append("\t\t\t\t}\n");
+			sb.append("\t\t\t}\n");
+			
 			sb.append("\t\t}catch (Exception e){\n");
+			sb.append("\t\t\tif (this.transaction != null){\n");
+			sb.append("\t\t\t\tthis.transaction.rollback();\n");
+			sb.append("\t\t\t}\n");
 			sb.append("\t\t\tlogger.error(getClassName() + \".read() - so=\" + so, e);\n");
 			sb.append("\t\t\tthrow e;\n");
 			sb.append("\t\t} // end try ... catch\n");			
 			sb.append("\t\tfinally {\n");
-			sb.append("\t\t\treturnConnection(connection);\n");
+			sb.append("\t\t\treturnSession(session);\n");
 			sb.append("\t\t}\n");
 			sb.append("\t\treturn " + daoObjectName + eoSuffix + "List;\n");
 			sb.append("\t} // end select function\n");
@@ -442,30 +468,32 @@ public class OrmDaoGenerateMgr {
 			// create function
 			// ###############################
 			sb.append("\t@Override\n");
-			sb.append("\tpublic Integer " + "create(" + daoClassName +  eoSuffix + " eo) throws Exception{\n");
-			sb.append("\t\tTransaction trans = null;\n");
+			sb.append("\tpublic void " + "create(" + daoClassName +  eoSuffix + " eo) throws Exception{\n");
+
 
 			sb.append("\t\ttry{\n");
 
-			sb.append("\t\t\ttrans = session.getTransaction();\n");
-			sb.append("\t\t\ttrans.begin();\n");
 
 			sb.append("\t\t\tsession.save(eo);\n");
-			sb.append("\t\t\ttrans.commit();\n");
+			
+			sb.append("\t\t\tif (!this.closeSessionFinally){\n");
+			sb.append("\t\t\t\tif (this.transaction != null){\n");
+			sb.append("\t\t\t\t\ttransaction.commit();\n");
+			sb.append("\t\t\t\t}\n");
+			sb.append("\t\t\t}\n");
 			
 			sb.append("\t\t}catch (Exception e){\n");
 			sb.append("\t\t\tlogger.error(getClassName() + \".create() - eo=\" + eo, e);\n");
-			sb.append("\t\t\ttrans.rollback();\n");
+			sb.append("\t\t\tthis.transaction.rollback();\n");
 			sb.append("\t\t\tthrow e;\n");
 			sb.append("\t\t} // end try ... catch\n");			
 			sb.append("\t\tfinally {\n");
-			sb.append("\t\t\tif (trans != null) {\n");
-			sb.append("\t\t\t\ttrans = null;\n");
+			sb.append("\t\t\tif (this.transaction != null) {\n");
+			sb.append("\t\t\t\tthis.transaction = null;\n");
 
 			sb.append("\t\t\t}\n");
-			sb.append("\t\t\treturnConnection(connection);\n");
+			sb.append("\t\t\treturnSession(session);\n");
 			sb.append("\t\t}\n");
-			sb.append("\t\treturn id;\n");
 			sb.append("\t} // end create function\n");
 			
 			// ###############################
@@ -473,27 +501,33 @@ public class OrmDaoGenerateMgr {
 			// ###############################
 			sb.append("\t@Override\n");
 			sb.append("\tpublic void " + "update(" + daoClassName +  eoSuffix + " eo) throws Exception{\n");
-			sb.append("\t\tTransaction trans = null;\n");
+
 
 			sb.append("\t\ttry{\n");
 
-			sb.append("\t\t\ttrans = session.getTransaction();\n");
-			sb.append("\t\t\ttrans.begin();\n");
+
 
 			sb.append("\t\t\tsession.update(eo);\n");
-			sb.append("\t\t\ttrans.commit();\n");
+			
+			sb.append("\t\t\tif (!this.closeSessionFinally){\n");
+			sb.append("\t\t\t\tif (this.transaction != null){\n");
+			sb.append("\t\t\t\t\ttransaction.commit();\n");
+			sb.append("\t\t\t\t}\n");
+			sb.append("\t\t\t}\n");
 			
 			sb.append("\t\t}catch (Exception e){\n");
+			sb.append("\t\t\tif (this.transaction != null){\n");
+			sb.append("\t\t\t\tthis.transaction.rollback();\n");
+			sb.append("\t\t\t}\n");
 			sb.append("\t\t\tlogger.error(getClassName() + \".update() - eo=\" + eo, e);\n");
-			sb.append("\t\t\ttrans.rollback();\n");
 			sb.append("\t\t\tthrow e;\n");
 			sb.append("\t\t} // end try ... catch\n");			
 			sb.append("\t\tfinally {\n");
-			sb.append("\t\t\tif (trans != null) {\n");
-			sb.append("\t\t\t\ttrans = null;\n");
+			sb.append("\t\t\tif (this.transaction != null) {\n");
+			sb.append("\t\t\t\tthis.transaction = null;\n");
 
 			sb.append("\t\t\t}\n");
-			sb.append("\t\t\treturnConnection(connection);\n");
+			sb.append("\t\t\treturnSession(session);\n");
 			sb.append("\t\t}\n");
 
 			sb.append("\t} // end update function\n");
@@ -504,29 +538,34 @@ public class OrmDaoGenerateMgr {
 			// ###############################
 			sb.append("\t@Override\n");
 			sb.append("\tpublic void " + "delete(" + daoClassName +  eoSuffix + " eo) throws Exception{\n");
-			sb.append("\t\tTransaction trans = null;\n");
+
 
 			sb.append("\t\ttry{\n");
 
-			sb.append("\t\t\ttrans = session.getTransaction();\n");
-			sb.append("\t\t\ttrans.begin();\n");
 
 			sb.append("\t\t\tsession.delete(eo);\n");
-			sb.append("\t\t\ttrans.commit();\n");
+			
+			sb.append("\t\t\tif (!this.closeSessionFinally){\n");
+			sb.append("\t\t\t\tif (this.transaction != null){\n");
+			sb.append("\t\t\t\t\ttransaction.commit();\n");
+			sb.append("\t\t\t\t}\n");
+			sb.append("\t\t\t}\n");
 			
 			sb.append("\t\t}catch (Exception e){\n");
+			sb.append("\t\t\tif (this.transaction != null){\n");
+			sb.append("\t\t\t\tthis.transaction.rollback();\n");
+			sb.append("\t\t\t}\n");
 			sb.append("\t\t\tlogger.error(getClassName() + \".delete() - eo=\" + eo, e);\n");
-			sb.append("\t\t\ttrans.rollback();\n");
 			sb.append("\t\t\tthrow e;\n");
 			sb.append("\t\t} // end try ... catch\n");			
 			sb.append("\t\tfinally {\n");
-			sb.append("\t\t\tif (trans != null) {\n");
-			sb.append("\t\t\t\ttrans = null;\n");
+			sb.append("\t\t\tif (this.transaction != null) {\n");
+			sb.append("\t\t\t\tthis.transaction = null;\n");
 
 			sb.append("\t\t\t}\n");
-			sb.append("\t\t\treturnConnection(connection);\n");
+			sb.append("\t\t\treturnSession(session);\n");
 			sb.append("\t\t}\n");
-			sb.append("\t\treturn id;\n");
+
 			sb.append("\t} // end delete function\n");
 			
 			// ########## end class ##############################

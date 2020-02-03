@@ -108,12 +108,11 @@ public class DaoGenerateMgr {
 			sb.append("import java.sql.ResultSet;\n");
 			sb.append("import java.util.ArrayList;\n");
 			sb.append("import java.util.List;\n");
-			sb.append("import org.slf4j.Logger;\n");
-			sb.append("import org.slf4j.LoggerFactory;\n");
+			sb.append("import org.apache.log4j.Logger;\n");
 			sb.append("import java.sql.Connection;\n");
 
 			// --- class
-			sb.append("public class " + daoClassName +  daoSuffix + " extends DaoBase" + "<" + daoClassName + eoSuffix
+			sb.append("public class " + daoClassName +  daoSuffix + " extends JdbcDaoBase" + "<" + daoClassName + eoSuffix
 					+ ">");
 			sb.append("{\n");
 
@@ -130,7 +129,7 @@ public class DaoGenerateMgr {
 			metaDataFieldList = dbMgr.getMetaDataList(tableName);
 
 			// properties
-			sb.append("\tprivate final Logger logger = LogManager.getLogger(getClassName());\n");
+			sb.append("\tprivate final Logger logger = Logger.getLogger(getClassName());\n");
 //			sb.append("\tprivate static DbUtils mySqlDbUtils;\n");
 //			sb.append("\tprivate static DbUtilsFactory dbUtilsFactory;\n");
 
@@ -491,7 +490,7 @@ public class DaoGenerateMgr {
 							+ upperPropertiesFormat + "()));\n");
 				} else {
 					sb.append("\t\t\t\tpreparedStatement.set" + typeString + "(pcount, " + daoObjectName + "So.get"
-							+ upperPropertiesFormat + "()));\n");
+							+ upperPropertiesFormat + "());\n");
 				}
 				
 //				sb.append("());\n");
@@ -572,7 +571,7 @@ public class DaoGenerateMgr {
 							+ upperPropertiesFormat + "()));\n");
 				} else {
 					sb.append("\t\t\t\tpreparedStatement.set" + typeString + "(pcount, " + daoObjectName + "So.get"
-							+ upperPropertiesFormat + "()));\n");
+							+ upperPropertiesFormat + "());\n");
 				}
 				
 //				sb.append("());\n");
@@ -621,7 +620,7 @@ public class DaoGenerateMgr {
 				if (!typeString.contains("String") && !typeString.contains("Date")) {
 					sb.append("\t\t\t\tif(rs.wasNull()){\n");
 					sb.append("\t\t\t\t\t" + javaPropertiesFormat + " = null;\n");
-					sb.append("\t\t\t\t);\n");
+					sb.append("\t\t\t\t}\n");
 				} 
 				
 				sb.append("\t\t\t\teo.set" + upperPropertiesFormat);
@@ -687,7 +686,7 @@ public class DaoGenerateMgr {
 				}
 				
 				if (javaPropertiesFormat.equals("id")) {
-					sb.append("\t\t\t" + typeString + " = this.retrieveNextSeq();\n");
+					sb.append("\t\t\t" + typeString + " id = this.retrieveNextSeq();\n");
 				}
 				
 //				sb.append("\t\t\tif(eo.get"
@@ -768,9 +767,9 @@ public class DaoGenerateMgr {
 //										.getColumnName())
 //						));
 //				sb.append("() != null){\n");
-				if (javaPropertiesFormat.equals("id")) {
-					sb.append("\t\t\t" + typeString + " = this.retrieveNextSeq();\n");
-				}
+//				if (javaPropertiesFormat.equals("id")) {
+//					sb.append("\t\t\t" + typeString + " = this.retrieveNextSeq();\n");
+//				}
 				
 //				sb.append("\t\t\tif(eo.get"
 //						+ Misc.upperStringFirstChar(Misc
@@ -819,8 +818,8 @@ public class DaoGenerateMgr {
 			sb.append("\t\t\tint pcount = 1;\n");
 			sb.append("\t\t\tpreparedStatement = getConnection().prepareStatement(DELETE_SQL);\n");
 
-			sb.append("\t\t\tif(eo.getXXX_key_XXX() != null){\n");
-			sb.append("\t\t\t\tpreparedStatement.setInt(pcount, eo.getXXX_key_XXX());\n");
+			sb.append("\t\t\tif(eo.getId() != null){\n");
+			sb.append("\t\t\t\tpreparedStatement.setLong(pcount, eo.getId());\n");
 			sb.append("\t\t\t\tpcount++;\n");
 			sb.append("\t\t\t}\n");
 
