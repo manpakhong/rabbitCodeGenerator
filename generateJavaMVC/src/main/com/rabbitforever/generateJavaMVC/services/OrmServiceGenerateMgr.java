@@ -215,6 +215,34 @@ public class OrmServiceGenerateMgr {
 			sb.append("\t} // end count function\n");
 			
 			// ###############################
+			// get by id
+			// ###############################
+			sb.append("\tpublic " + serviceClassName + "Eo " + "getById(Long id) throws Exception{\n");
+			sb.append("\t\tList<" + serviceClassName + "Eo> " + objClassName + "EoList = null;\n");
+			sb.append("\t\t" + serviceClassName + "Eo " + objClassName + "Eo = null;\n");
+			sb.append("\t\t" + serviceClassName + "So " + objClassName + "So = null;\n");
+			sb.append("\t\ttry{\n");
+			
+			sb.append("\t\t\t"+ objClassName +"So = new " + serviceClassName + "So();\n");
+			sb.append("\t\t\t"+ objClassName + "So.setId(id);\n");
+			sb.append("\t\t\t" + objClassName + "EoList = dao.read(" + objClassName + "So);\n");
+			
+			sb.append("\t\t\tif(" + objClassName + "EoList != null && " + objClassName + "EoList.size() > 0){\n");
+			sb.append("\t\t\t\t" + objClassName + "Eo = " + objClassName + "EoList.get(0);\n");
+			sb.append("\t\t\t}\n");
+			
+			sb.append("\t\t}\n");
+			sb.append("\t\tcatch (Exception e){\n");
+			sb.append("\t\t\tlogger.error(getClassName() + \".getById() - id=\" + id, e);\n");
+			sb.append("\t\t\tthrow e;\n");
+			sb.append("\t\t} // end try ... catch\n");
+			sb.append("\t\tfinally{\n");
+			sb.append("\t\t\t" + objClassName + "So = null;\n");
+			sb.append("\t\t}\n");
+			sb.append("\t\treturn " + objClassName + "Eo;\n");
+			sb.append("\t} // end getById function\n");
+			
+			// ###############################
 			// read Mgr
 			// ###############################
 			sb.append("\tpublic List<" + serviceClassName + "Eo> " + "read(Object so) throws Exception{\n");

@@ -151,10 +151,17 @@ public class EoGenerateMgr {
 						.convertTableFieldsFormat2JavaPropertiesFormat(metaDataField
 								.getColumnName()));
 				
-				if (nullable == 1) {
-					isNullable = false;
-				} else {
+				if (nullable.equals(1)) {
 					isNullable = true;
+				} else {
+					isNullable = false;
+				}
+				
+				if (columnName.equals("ID")) {
+					if (!isNullable) {
+						sb.append("\t@Id\n");
+						sb.append("\t@GeneratedValue(strategy = GenerationType.IDENTITY)\n");
+					}
 				}
 				
 				// for debug
@@ -181,10 +188,15 @@ public class EoGenerateMgr {
 				}
 				
 				
+				
 				if (isNullable) {
-					sb.append("nullable = false)");
-				} else {
 					sb.append("nullable = true)");
+
+				} else {
+					if (columnName.equals("ID")) {
+						sb.append("columnDefinition = \"NUMBER\", ");
+					}
+					sb.append("nullable = false)");
 				}
 				
 				sb.append("\n");
