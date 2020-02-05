@@ -9,6 +9,24 @@
 	<build>
 		<finalName>generateJavaMVC</finalName>
 		<sourceDirectory>src/main</sourceDirectory>
+		<!-- without properties files compiled in jar -->
+		<resources>
+			<resource>
+				<directory>log4j-properties-charges</directory>
+				<excludes>
+					<exclude>**/*.properties</exclude>
+				</excludes>
+				<filtering>false</filtering>
+			</resource>
+			<resource>
+				<directory>properties</directory>
+				<excludes>
+					<exclude>**/*.*</exclude>
+				</excludes>
+				<filtering>false</filtering>
+			</resource>
+		</resources>
+
 		<plugins>
 <!-- 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
