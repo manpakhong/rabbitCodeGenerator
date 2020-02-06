@@ -8,6 +8,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 import com.rabbitforever.generateJavaMVC.bundles.DbProperties;
 import com.rabbitforever.generateJavaMVC.commons.RConnection;
 import com.rabbitforever.generateJavaMVC.factories.DbUtilsFactory;
@@ -16,10 +19,14 @@ import com.rabbitforever.generateJavaMVC.models.eos.MetaDataField;
 import com.rabbitforever.generateJavaMVC.utils.DbUtils;
 
 public class OracleDbDao {
+	private final Logger logger = LogManager.getLogger(getClassName());
 	private DbUtilsFactory dbUtilsFactory;
 	private DbUtils dbUtils;
 	private PropertiesFactory propertiesFactory;
 	private DbProperties dbProperties;
+	private String getClassName() {
+		return this.getClass().getName();
+	}
 	public OracleDbDao() throws Exception
 	{
 		try {
@@ -33,7 +40,7 @@ public class OracleDbDao {
 		}
 	}
 
-	public List<MetaDataField> getMetaDataList(String _database)
+	public List<MetaDataField> getMetaDataList(String _database) throws Exception
 	{
 		Connection conn = null;
 		List<MetaDataField> metaDataFieldList = new ArrayList<MetaDataField>();
@@ -80,15 +87,40 @@ public class OracleDbDao {
 					conn = null;
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				logger.error(getClassName() + ".getMetaDataList() ", e);
+				throw e;
 			}
 		}
 		
 		
 		return metaDataFieldList;
 	}
-	
-	public void getColumnName(String _database)
+	public List<String> getTableNameList() throws Exception {
+		Connection conn = null;
+		List <String> tableNameList = null;
+		try {
+			String user = dbProperties.getUsername();
+			String schema = dbProperties.getSchema();
+			conn = dbUtils.getConnection();
+			DatabaseMetaData md = conn.getMetaData();
+
+			ResultSet rs = md.getTables(null, null, "%", new String[]{"TABLE","VIEW"});
+			while (rs.next()) {
+				if (tableNameList == null) {
+					tableNameList = new ArrayList<String>();
+				}
+				String tableName = rs.getString("TABLE_NAME");
+				if (!tableName.contains("$")) {
+					tableNameList.add(tableName);
+				}
+			}
+		} catch (Exception e) {
+			logger.error(getClassName() + ".getTableNameList() ", e);
+			throw e;
+		}
+		return tableNameList;
+	}
+	public void getColumnName(String _database) throws Exception
 	{
 		Connection conn = null;
 		try
@@ -127,12 +159,13 @@ public class OracleDbDao {
 				conn = null;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(getClassName() + ".getMetaDataList() ", e);
+			throw e;
 		}
 	}
 	
 	}
-	public void testConnection(){
+	public void testConnection() throws Exception {
 		Statement stmt = null;
 		ResultSet rs = null;
 		Connection conn = null;
@@ -173,6 +206,8 @@ public class OracleDbDao {
 		    System.out.println("SQLException: " + ex.getMessage());
 		    System.out.println("SQLState: " + ex.getSQLState());
 		    System.out.println("VendorError: " + ex.getErrorCode());
+			logger.error(getClassName() + ".getMetaDataList() ", ex);
+			throw ex;
 		}
 		finally {
 		    // it is a good idea to release
