@@ -182,12 +182,12 @@ public class EoGenerateMgr {
 					sb.append("columnDefinition = \"DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP\", ");
 				}
 				
+				if (typeString != null) {
+					if (typeString.contains("String")) {
+						sb.append("length = " + columnSize + ",");
+					}
 				
-				if (typeString.contains("String")) {
-					sb.append("length = " + columnSize + ",");
 				}
-				
-				
 				
 				if (isNullable) {
 					sb.append("nullable = true)");

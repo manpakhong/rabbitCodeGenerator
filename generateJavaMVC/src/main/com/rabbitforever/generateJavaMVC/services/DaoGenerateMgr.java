@@ -617,12 +617,16 @@ public class DaoGenerateMgr {
 						+ javaPropertiesFormat);
 				sb.append(" = rs.get" + typeString + "(\"" + metaDataField.getColumnName() + "\");");
 				sb.append("\n");
-				if (!typeString.contains("String") && !typeString.contains("Date")) {
-					sb.append("\t\t\t\tif(rs.wasNull()){\n");
-					sb.append("\t\t\t\t\t" + javaPropertiesFormat + " = null;\n");
-					sb.append("\t\t\t\t}\n");
-				} 
 				
+				if (typeString != null) {
+					if (!typeString.contains("String") && !typeString.contains("Date")) {
+						sb.append("\t\t\t\tif(rs.wasNull()){\n");
+						sb.append("\t\t\t\t\t" + javaPropertiesFormat + " = null;\n");
+						sb.append("\t\t\t\t}\n");
+					} 
+					
+				}
+
 				sb.append("\t\t\t\teo.set" + upperPropertiesFormat);
 				sb.append("(");
 				sb.append(javaPropertiesFormat);

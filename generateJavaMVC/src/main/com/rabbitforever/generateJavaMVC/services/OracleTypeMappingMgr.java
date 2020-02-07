@@ -39,6 +39,8 @@ public class OracleTypeMappingMgr extends TypeMappingMgr {
 			typeConversionMap.put("VARCHAR", "String");
 			typeConversionMap.put("TIMESTAMP(6)", "Date");
 			typeConversionMap.put("TIMESTAMP", "Date");
+			typeConversionMap.put("DATE", "Date");
+			typeConversionMap.put("CLOB", "String");
 //			typeConversionMap.put("NUMBER", "Long");
 //			typeConversionMap.put("NUMBER", "Long");
 //			typeConversionMap.put("NUMBER", "Long");

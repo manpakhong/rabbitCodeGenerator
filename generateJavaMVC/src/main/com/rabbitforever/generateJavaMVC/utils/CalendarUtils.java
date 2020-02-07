@@ -94,7 +94,20 @@ public class CalendarUtils {
 		Calendar newCal = convertCalendar2TimeZoneCalendar(calendar, toTimeZone);
 		return newCal.getTime();
 	}
-	
+	public static String getDateTimeString() throws Exception {
+		String dateTimeString = null;
+		DateFormat formatter = null;
+		Date date = null;
+		try {
+			formatter = new SimpleDateFormat("yyyyMMdd_HHmmss_SSS");
+			date = new Date();
+			dateTimeString = formatter.format(date);
+		} catch (Exception e) {
+			log.error("CalendarUtils.getDateTimeString()", e);
+			throw e;
+		}
+		return dateTimeString;
+	}
 	public static Calendar convertCalendar2TimeZoneCalendar(Calendar cal,TimeZone toTimeZone){
 		Calendar newCal = null;
 		try	{
