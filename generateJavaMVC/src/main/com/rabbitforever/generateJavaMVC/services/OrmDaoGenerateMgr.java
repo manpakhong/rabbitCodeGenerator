@@ -363,6 +363,16 @@ public class OrmDaoGenerateMgr {
 
 			sb.append("\t\t\twhereSql = generateReadWhereStatement(" + daoObjectName + "So);\n");
 
+			
+			sb.append("\t\t\tgetSession();\n");
+			
+			
+			sb.append("\t\t\tif (this.transaction == null) {\n");
+			sb.append("\t\t\t\tthis.transaction = this.session.getTransaction();\n");
+			sb.append("\t\t\t\tTransactionStatus transactionStatus = transaction.getStatus();\n");
+			sb.append("\t\t\t\tthis.transaction.begin();\n");
+			sb.append("\t\t\t}\n");
+			
 			// pcount
 			sb.append("\t\t\tint pcount = 1;\n");
 			sb.append("\t\t\tquery = session.createQuery(SELECT_COUNT_SQL + whereSql);\n");
@@ -435,12 +445,23 @@ public class OrmDaoGenerateMgr {
 			sb.append("\t\tList<" + daoClassName + eoSuffix + "> " + daoObjectName + eoSuffix + "List = null;\n");
 			sb.append("\t\t" + daoClassName + "So " + daoObjectName + "So = null;\n");
 
+			
 			sb.append("\t\ttry{\n");
 			sb.append("\t\t\tif (so instanceof " + daoClassName + "So == false) {\n");
 			sb.append("\t\t\t\tthrow new Exception(\"so is not instance of " + daoClassName + "So\");\n");
 			sb.append("\t\t\t} else {\n");
 			sb.append("\t\t\t\t" + daoObjectName +"So = (" + daoClassName + "So) so;\n");
 			sb.append("\t\t\t}\n");
+			
+			sb.append("\t\t\tgetSession();\n");
+			
+			
+			sb.append("\t\t\tif (this.transaction == null) {\n");
+			sb.append("\t\t\t\tthis.transaction = this.session.getTransaction();\n");
+			sb.append("\t\t\t\tTransactionStatus transactionStatus = transaction.getStatus();\n");
+			sb.append("\t\t\t\tthis.transaction.begin();\n");
+			sb.append("\t\t\t}\n");
+			
 			
 			sb.append("\t\t\tQuery<" + daoClassName + "Eo> q = " + "generateQuery(" + daoObjectName + "So);\n");
 			sb.append("\t\t\t" + daoObjectName + "EoList = " + "q.getResultList();\n");
@@ -473,7 +494,15 @@ public class OrmDaoGenerateMgr {
 
 			sb.append("\t\ttry{\n");
 
-
+			sb.append("\t\t\tgetSession();\n");
+			
+			
+			sb.append("\t\t\tif (this.transaction == null) {\n");
+			sb.append("\t\t\t\tthis.transaction = this.session.getTransaction();\n");
+			sb.append("\t\t\t\tTransactionStatus transactionStatus = transaction.getStatus();\n");
+			sb.append("\t\t\t\tthis.transaction.begin();\n");
+			sb.append("\t\t\t}\n");
+			
 			sb.append("\t\t\tsession.save(eo);\n");
 			
 			sb.append("\t\t\tif (!this.closeSessionFinally){\n");
@@ -505,7 +534,14 @@ public class OrmDaoGenerateMgr {
 
 			sb.append("\t\ttry{\n");
 
-
+			sb.append("\t\t\tgetSession();\n");
+			
+			
+			sb.append("\t\t\tif (this.transaction == null) {\n");
+			sb.append("\t\t\t\tthis.transaction = this.session.getTransaction();\n");
+			sb.append("\t\t\t\tTransactionStatus transactionStatus = transaction.getStatus();\n");
+			sb.append("\t\t\t\tthis.transaction.begin();\n");
+			sb.append("\t\t\t}\n");
 
 			sb.append("\t\t\tsession.update(eo);\n");
 			
@@ -542,7 +578,14 @@ public class OrmDaoGenerateMgr {
 
 			sb.append("\t\ttry{\n");
 
-
+			sb.append("\t\t\tgetSession();\n");
+			
+			
+			sb.append("\t\t\tif (this.transaction == null) {\n");
+			sb.append("\t\t\t\tthis.transaction = this.session.getTransaction();\n");
+			sb.append("\t\t\t\tTransactionStatus transactionStatus = transaction.getStatus();\n");
+			sb.append("\t\t\t\tthis.transaction.begin();\n");
+			sb.append("\t\t\t}\n");
 			sb.append("\t\t\tsession.delete(eo);\n");
 			
 			sb.append("\t\t\tif (!this.closeSessionFinally){\n");
