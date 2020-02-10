@@ -366,13 +366,13 @@ public class OrmDaoGenerateMgr {
 			
 			sb.append("\t\t\tgetSession();\n");
 			
-			
-			sb.append("\t\t\tif (this.transaction == null) {\n");
-			sb.append("\t\t\t\tthis.transaction = this.session.getTransaction();\n");
-			sb.append("\t\t\t\tTransactionStatus transactionStatus = transaction.getStatus();\n");
-			sb.append("\t\t\t\tthis.transaction.begin();\n");
+			sb.append("\t\t\tif (!this.closeSessionFinally) {\n");
+			sb.append("\t\t\t\tif (this.transaction == null) {\n");
+			sb.append("\t\t\t\t\tthis.transaction = this.session.getTransaction();\n");
+			sb.append("\t\t\t\t\tTransactionStatus transactionStatus = transaction.getStatus();\n");
+			sb.append("\t\t\t\t\tthis.transaction.begin();\n");
+			sb.append("\t\t\t\t}\n");
 			sb.append("\t\t\t}\n");
-			
 			// pcount
 			sb.append("\t\t\tint pcount = 1;\n");
 			sb.append("\t\t\tquery = session.createQuery(SELECT_COUNT_SQL + whereSql);\n");
@@ -456,10 +456,12 @@ public class OrmDaoGenerateMgr {
 			sb.append("\t\t\tgetSession();\n");
 			
 			
-			sb.append("\t\t\tif (this.transaction == null) {\n");
-			sb.append("\t\t\t\tthis.transaction = this.session.getTransaction();\n");
-			sb.append("\t\t\t\tTransactionStatus transactionStatus = transaction.getStatus();\n");
-			sb.append("\t\t\t\tthis.transaction.begin();\n");
+			sb.append("\t\t\tif (!this.closeSessionFinally) {\n");
+			sb.append("\t\t\t\tif (this.transaction == null) {\n");
+			sb.append("\t\t\t\t\tthis.transaction = this.session.getTransaction();\n");
+			sb.append("\t\t\t\t\tTransactionStatus transactionStatus = transaction.getStatus();\n");
+			sb.append("\t\t\t\t\tthis.transaction.begin();\n");
+			sb.append("\t\t\t\t}\n");
 			sb.append("\t\t\t}\n");
 			
 			
@@ -497,10 +499,12 @@ public class OrmDaoGenerateMgr {
 			sb.append("\t\t\tgetSession();\n");
 			
 			
-			sb.append("\t\t\tif (this.transaction == null) {\n");
-			sb.append("\t\t\t\tthis.transaction = this.session.getTransaction();\n");
-			sb.append("\t\t\t\tTransactionStatus transactionStatus = transaction.getStatus();\n");
-			sb.append("\t\t\t\tthis.transaction.begin();\n");
+			sb.append("\t\t\tif (!this.closeSessionFinally) {\n");
+			sb.append("\t\t\t\tif (this.transaction == null) {\n");
+			sb.append("\t\t\t\t\tthis.transaction = this.session.getTransaction();\n");
+			sb.append("\t\t\t\t\tTransactionStatus transactionStatus = transaction.getStatus();\n");
+			sb.append("\t\t\t\t\tthis.transaction.begin();\n");
+			sb.append("\t\t\t\t}\n");
 			sb.append("\t\t\t}\n");
 			
 			sb.append("\t\t\tsession.save(eo);\n");
@@ -537,10 +541,12 @@ public class OrmDaoGenerateMgr {
 			sb.append("\t\t\tgetSession();\n");
 			
 			
-			sb.append("\t\t\tif (this.transaction == null) {\n");
-			sb.append("\t\t\t\tthis.transaction = this.session.getTransaction();\n");
-			sb.append("\t\t\t\tTransactionStatus transactionStatus = transaction.getStatus();\n");
-			sb.append("\t\t\t\tthis.transaction.begin();\n");
+			sb.append("\t\t\tif (!this.closeSessionFinally) {\n");
+			sb.append("\t\t\t\tif (this.transaction == null) {\n");
+			sb.append("\t\t\t\t\tthis.transaction = this.session.getTransaction();\n");
+			sb.append("\t\t\t\t\tTransactionStatus transactionStatus = transaction.getStatus();\n");
+			sb.append("\t\t\t\t\tthis.transaction.begin();\n");
+			sb.append("\t\t\t\t}\n");
 			sb.append("\t\t\t}\n");
 
 			sb.append("\t\t\tsession.update(eo);\n");
@@ -581,11 +587,14 @@ public class OrmDaoGenerateMgr {
 			sb.append("\t\t\tgetSession();\n");
 			
 			
-			sb.append("\t\t\tif (this.transaction == null) {\n");
-			sb.append("\t\t\t\tthis.transaction = this.session.getTransaction();\n");
-			sb.append("\t\t\t\tTransactionStatus transactionStatus = transaction.getStatus();\n");
-			sb.append("\t\t\t\tthis.transaction.begin();\n");
+			sb.append("\t\t\tif (!this.closeSessionFinally) {\n");
+			sb.append("\t\t\t\tif (this.transaction == null) {\n");
+			sb.append("\t\t\t\t\tthis.transaction = this.session.getTransaction();\n");
+			sb.append("\t\t\t\t\tTransactionStatus transactionStatus = transaction.getStatus();\n");
+			sb.append("\t\t\t\t\tthis.transaction.begin();\n");
+			sb.append("\t\t\t\t}\n");
 			sb.append("\t\t\t}\n");
+			
 			sb.append("\t\t\tsession.delete(eo);\n");
 			
 			sb.append("\t\t\tif (!this.closeSessionFinally){\n");
