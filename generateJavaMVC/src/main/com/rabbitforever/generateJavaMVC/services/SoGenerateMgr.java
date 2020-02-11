@@ -104,6 +104,8 @@ public class SoGenerateMgr {
 			sb.append("\tprotected Date createDateTimeTo;\n");
 			sb.append("\tprotected Date updateDateTimeFrom;\n");
 			sb.append("\tprotected Date updateDateTimeTo;\n");
+			sb.append("\tprotected Integer firstResult;\n");
+			sb.append("\tprotected Integer lastResult;\n");
 			sb.append("\tprotected List<OrderedBy> orderedByList;\n");
 
 			sb.append("\t@Override\n");
@@ -124,6 +126,16 @@ public class SoGenerateMgr {
 			sb.append("\t@Override\n");
 			sb.append("\tpublic void setUpdateDateTimeTo(Date updateDateTimeTo){\n");
 			sb.append("\t\tthis.updateDateTimeTo = updateDateTimeTo;\n");
+			sb.append("\t}\n");
+			
+			sb.append("\t@Override\n");
+			sb.append("\tpublic void setFirstResult(Integer firstResult){\n");
+			sb.append("\t\tthis.firstResult = firstResult;\n");
+			sb.append("\t}\n");
+			
+			sb.append("\t@Override\n");
+			sb.append("\tpublic void setLastResult(Integer lastResult){\n");
+			sb.append("\t\tthis.lastResult = lastResult;\n");
 			sb.append("\t}\n");
 			
 			sb.append("\t@Override\n");
@@ -157,6 +169,16 @@ public class SoGenerateMgr {
 			sb.append("\t@Override\n");
 			sb.append("\tpublic Date getUpdateDateTimeTo(){\n");
 			sb.append("\t\treturn this.updateDateTimeTo;\n");
+			sb.append("\t}\n");
+			
+			sb.append("\t@Override\n");
+			sb.append("\tpublic Integer getFirstResult(){\n");
+			sb.append("\t\treturn this.firstResult;\n");
+			sb.append("\t}\n");
+			
+			sb.append("\t@Override\n");
+			sb.append("\tpublic Integer getLastResult(){\n");
+			sb.append("\t\treturn this.lastResult;\n");
 			sb.append("\t}\n");
 			
 			sb.append("\t@Override\n");

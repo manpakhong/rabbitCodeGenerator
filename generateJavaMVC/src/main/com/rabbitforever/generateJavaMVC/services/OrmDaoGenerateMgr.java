@@ -258,12 +258,13 @@ public class OrmDaoGenerateMgr {
 			// ###############################
 			// generateQuery()
 			// ###############################
-			sb.append("\tpublic Query<" +  daoClassName + "Eo> generateQuery(" + daoClassName + "So " + daoObjectName + "So) throws Exception {\n");
+			sb.append("\tpublic TypedQuery<" +  daoClassName + "Eo> generateQuery(" + daoClassName + "So " + daoObjectName + "So) throws Exception {\n");
 			sb.append("\t\tList<Predicate> predicateList = null;\n");
 			sb.append("\t\tCriteriaBuilder builder = null;\n");
 			sb.append("\t\tCriteriaQuery<" + daoClassName + "Eo> query = null;\n");
 			sb.append("\t\tQuery<" + daoClassName + "Eo> q = null;\n");
 			sb.append("\t\tRoot<" + daoClassName + "Eo> root = null;\n");
+			sb.append("\t\tTypedQuery<" + daoClassName + "Eo> typedQuery = null;\n");
 			sb.append("\t\ttry {\n");
 			sb.append("\t\t\tbuilder = session.getCriteriaBuilder();\n");
 			sb.append("\t\t\tquery = builder.createQuery(" + daoClassName + "Eo.class);\n");
@@ -336,14 +337,25 @@ public class OrmDaoGenerateMgr {
 			sb.append("\t\t\tif (orderList != null) {\n");
 			sb.append("\t\t\t\tquery.orderBy(orderList);\n");
 			sb.append("\t\t\t}\n");
-			sb.append("\t\t\tq = session.createQuery(query);\n");
+			
+			sb.append("\t\t\tEntityManager entityManager  =session.getEntityManagerFactory().createEntityManager();\n");
+			sb.append("\t\t\ttypedQuery = entityManager.createQuery(query);\n");
+			
+			sb.append("\t\t\tif (" +daoObjectName+ "So.getFirstResult() != null) {\n");
+			sb.append("\t\t\t\ttypedQuery.setFirstResult("+ daoObjectName+"So.getFirstResult()) != null){\n");
+			sb.append("\t\t\t}\n");
+			
+			sb.append("\t\t\tif (" +daoObjectName+ "So.getLastResult() != null) {\n");
+			sb.append("\t\t\t\ttypedQuery.setMaxResult("+ daoObjectName+"So.getLastResult()) != null){\n");
+			sb.append("\t\t\t}\n");
+			
 			
 			sb.append("\t\t} catch (Exception e) {\n");
 			sb.append("\t\t\tlogger.error(getClassName() + \".generateReadWhereStatement() - " + daoObjectName
 					+ "So=\" + " + daoObjectName + "So, e);\n");
 			sb.append("\t\t\tthrow e;\n");
 			sb.append("\t\t}\n");
-			sb.append("\t\treturn q;\n");
+			sb.append("\t\treturn typedQuery;\n");
 			sb.append("\t}// end generateReadWhereStatement\n");
 			
 			// ###############################
@@ -465,7 +477,7 @@ public class OrmDaoGenerateMgr {
 			sb.append("\t\t\t}\n");
 			
 			
-			sb.append("\t\t\tQuery<" + daoClassName + "Eo> q = " + "generateQuery(" + daoObjectName + "So);\n");
+			sb.append("\t\t\tTypedQuery<" + daoClassName + "Eo> q = " + "generateQuery(" + daoObjectName + "So);\n");
 			sb.append("\t\t\t" + daoObjectName + "EoList = " + "q.getResultList();\n");
 			
 			sb.append("\t\t\tif (!this.closeSessionFinally){\n");
