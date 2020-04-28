@@ -186,6 +186,8 @@ public class SoGenerateMgr {
 			sb.append("\t\treturn this.orderedByList;\n");
 			sb.append("\t}\n");
 			
+
+			
 			sb.append("}\n");
 			if (compressFileDto != null) {
 				

@@ -342,11 +342,11 @@ public class OrmDaoGenerateMgr {
 			sb.append("\t\t\ttypedQuery = entityManager.createQuery(query);\n");
 			
 			sb.append("\t\t\tif (" +daoObjectName+ "So.getFirstResult() != null) {\n");
-			sb.append("\t\t\t\ttypedQuery.setFirstResult("+ daoObjectName+"So.getFirstResult()) != null){\n");
+			sb.append("\t\t\t\ttypedQuery.setFirstResult("+ daoObjectName+"So.getFirstResult());\n");
 			sb.append("\t\t\t}\n");
 			
 			sb.append("\t\t\tif (" +daoObjectName+ "So.getLastResult() != null) {\n");
-			sb.append("\t\t\t\ttypedQuery.setMaxResult("+ daoObjectName+"So.getLastResult()) != null){\n");
+			sb.append("\t\t\t\ttypedQuery.setMaxResult("+ daoObjectName+"So.getLastResult());\n");
 			sb.append("\t\t\t}\n");
 			
 			
