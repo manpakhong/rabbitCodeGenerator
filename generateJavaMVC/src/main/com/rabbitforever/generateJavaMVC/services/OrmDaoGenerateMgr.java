@@ -346,7 +346,7 @@ public class OrmDaoGenerateMgr {
 			sb.append("\t\t\t}\n");
 			
 			sb.append("\t\t\tif (" +daoObjectName+ "So.getLastResult() != null) {\n");
-			sb.append("\t\t\t\ttypedQuery.setMaxResult("+ daoObjectName+"So.getLastResult());\n");
+			sb.append("\t\t\t\ttypedQuery.setMaxResults("+ daoObjectName+"So.getLastResult());\n");
 			sb.append("\t\t\t}\n");
 			
 			
@@ -468,7 +468,7 @@ public class OrmDaoGenerateMgr {
 			sb.append("\t\t\tgetSession();\n");
 			
 			
-			sb.append("\t\t\tif (!this.closeSessionFinally) {\n");
+			sb.append("\t\t\tif (this.closeSessionFinally) {\n");
 			sb.append("\t\t\t\tif (this.transaction == null) {\n");
 			sb.append("\t\t\t\t\tthis.transaction = this.session.getTransaction();\n");
 			sb.append("\t\t\t\t\tTransactionStatus transactionStatus = transaction.getStatus();\n");
@@ -480,7 +480,7 @@ public class OrmDaoGenerateMgr {
 			sb.append("\t\t\tTypedQuery<" + daoClassName + "Eo> q = " + "generateQuery(" + daoObjectName + "So);\n");
 			sb.append("\t\t\t" + daoObjectName + "EoList = " + "q.getResultList();\n");
 			
-			sb.append("\t\t\tif (!this.closeSessionFinally){\n");
+			sb.append("\t\t\tif (this.closeSessionFinally){\n");
 			sb.append("\t\t\t\tif (this.transaction != null){\n");
 			sb.append("\t\t\t\t\ttransaction.commit();\n");
 			sb.append("\t\t\t\t}\n");
@@ -511,7 +511,7 @@ public class OrmDaoGenerateMgr {
 			sb.append("\t\t\tgetSession();\n");
 			
 			
-			sb.append("\t\t\tif (!this.closeSessionFinally) {\n");
+			sb.append("\t\t\tif (this.closeSessionFinally) {\n");
 			sb.append("\t\t\t\tif (this.transaction == null) {\n");
 			sb.append("\t\t\t\t\tthis.transaction = this.session.getTransaction();\n");
 			sb.append("\t\t\t\t\tTransactionStatus transactionStatus = transaction.getStatus();\n");
@@ -521,7 +521,7 @@ public class OrmDaoGenerateMgr {
 			
 			sb.append("\t\t\tsession.save(eo);\n");
 			
-			sb.append("\t\t\tif (!this.closeSessionFinally){\n");
+			sb.append("\t\t\tif (this.closeSessionFinally){\n");
 			sb.append("\t\t\t\tif (this.transaction != null){\n");
 			sb.append("\t\t\t\t\ttransaction.commit();\n");
 			sb.append("\t\t\t\t}\n");
@@ -553,7 +553,7 @@ public class OrmDaoGenerateMgr {
 			sb.append("\t\t\tgetSession();\n");
 			
 			
-			sb.append("\t\t\tif (!this.closeSessionFinally) {\n");
+			sb.append("\t\t\tif (this.closeSessionFinally) {\n");
 			sb.append("\t\t\t\tif (this.transaction == null) {\n");
 			sb.append("\t\t\t\t\tthis.transaction = this.session.getTransaction();\n");
 			sb.append("\t\t\t\t\tTransactionStatus transactionStatus = transaction.getStatus();\n");
@@ -563,7 +563,7 @@ public class OrmDaoGenerateMgr {
 
 			sb.append("\t\t\tsession.update(eo);\n");
 			
-			sb.append("\t\t\tif (!this.closeSessionFinally){\n");
+			sb.append("\t\t\tif (this.closeSessionFinally){\n");
 			sb.append("\t\t\t\tif (this.transaction != null){\n");
 			sb.append("\t\t\t\t\ttransaction.commit();\n");
 			sb.append("\t\t\t\t}\n");
@@ -599,7 +599,7 @@ public class OrmDaoGenerateMgr {
 			sb.append("\t\t\tgetSession();\n");
 			
 			
-			sb.append("\t\t\tif (!this.closeSessionFinally) {\n");
+			sb.append("\t\t\tif (this.closeSessionFinally) {\n");
 			sb.append("\t\t\t\tif (this.transaction == null) {\n");
 			sb.append("\t\t\t\t\tthis.transaction = this.session.getTransaction();\n");
 			sb.append("\t\t\t\t\tTransactionStatus transactionStatus = transaction.getStatus();\n");
@@ -609,7 +609,7 @@ public class OrmDaoGenerateMgr {
 			
 			sb.append("\t\t\tsession.delete(eo);\n");
 			
-			sb.append("\t\t\tif (!this.closeSessionFinally){\n");
+			sb.append("\t\t\tif (this.closeSessionFinally){\n");
 			sb.append("\t\t\t\tif (this.transaction != null){\n");
 			sb.append("\t\t\t\t\ttransaction.commit();\n");
 			sb.append("\t\t\t\t}\n");
