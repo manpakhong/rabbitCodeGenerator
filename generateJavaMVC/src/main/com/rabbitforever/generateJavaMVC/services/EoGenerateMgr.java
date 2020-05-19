@@ -96,6 +96,16 @@ public class EoGenerateMgr {
 
 			sb.append("package " + packageName + "." +  modelsDirName + ".eos;\n");
 			
+			sb.append("import java.util.Date;\n");
+			sb.append("import javax.persistence.Column;\n");
+			sb.append("import javax.persistence.Entity;\n");
+			sb.append("import javax.persistence.GeneratedValue;\n");
+			sb.append("import javax.persistence.GenerationType;\n");
+			sb.append("import javax.persistence.Id;\n");
+			sb.append("import javax.persistence.Table;\n");
+			sb.append("import javax.persistence.Temporal;\n");
+			sb.append("import javax.persistence.TemporalType;\n");
+			
 			// --- class
 			sb.append("@Entity\n");
 			sb.append("@Table(name = \"" + tableName + "\")\n");

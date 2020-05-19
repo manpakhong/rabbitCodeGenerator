@@ -85,6 +85,10 @@ public class SoGenerateMgr {
 
 			sb.append("package " + packageName + "." +  modelsDirName + ".sos;\n");
 			
+			sb.append("import java.util.ArrayList;\n");
+			sb.append("import java.util.Date;\n");
+			sb.append("import java.util.List;\n");
+			
 			// --- class
 			sb.append("public class " + soClassName + soSuffix +  " extends " + soClassName + eoSuffix + " implements So\n");
 			sb.append("{\n");

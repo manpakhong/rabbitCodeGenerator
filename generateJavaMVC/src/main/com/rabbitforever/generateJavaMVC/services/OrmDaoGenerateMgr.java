@@ -119,6 +119,7 @@ public class OrmDaoGenerateMgr {
 			sb.append("import org.hibernate.SessionFactory;\n");
 			sb.append("import org.hibernate.Transaction;\n");
 			sb.append("import org.hibernate.query.Query;\n");
+			sb.append("import org.hibernate.resource.transaction.spi.TransactionStatus;\n");
 			sb.append("import javax.persistence.criteria.Order;\n");
 			sb.append("import org.apache.log4j.Logger;\n");
 			sb.append("import org.springframework.beans.factory.annotation.Autowired;\n");

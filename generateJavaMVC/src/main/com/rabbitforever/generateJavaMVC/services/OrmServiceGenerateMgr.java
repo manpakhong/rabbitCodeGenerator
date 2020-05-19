@@ -109,6 +109,9 @@ public class OrmServiceGenerateMgr {
 			// --- import
 			sb.append("import org.apache.log4j.LogManager;\n");
 			sb.append("import org.apache.log4j.Logger;\n");
+			sb.append("import java.util.ArrayList;\n");
+			sb.append("import java.util.List;\n");
+
 			
 			// --- class
 			sb.append("public class " + serviceClassName + classServiceSuffix +" extends ServiceBase");
