@@ -212,7 +212,6 @@ public class OrmDaoGenerateMgr {
 					isNullable = true;
 				}
 				
-				
 				sb.append("\t\t\tif(" + daoObjectName + "So.get" + upperPropertiesFormat);
 				sb.append("() != null){\n");
 				sb.append("\t\t\t\tif (wcount == 0) {\n");
@@ -224,6 +223,69 @@ public class OrmDaoGenerateMgr {
 				sb.append("\t\t\t\twhereSql.append(\"" + daoObjectName + "." + javaPropertiesFormat + " = :" + javaPropertiesFormat +" \");\n");
 				sb.append("\t\t\t\twcount++;\n");
 				sb.append("\t\t\t}\n");
+				
+				
+				if (columnName.equals("ID")) {
+					sb.append("\t\t\tif(" + daoObjectName + "So.get" + upperPropertiesFormat + "List");
+					sb.append("() != null){\n");
+					sb.append("\t\t\t\tString inString = \"\";\n");
+					sb.append("\t\t\t\tif (wcount == 0) {\n");
+					sb.append("\t\t\t\t\twhereSql.append(\"where \");\n");
+					sb.append("\t\t\t\t}\n");
+					sb.append("\t\t\t\t else if (wcount > 0) {\n");
+					sb.append("\t\t\t\t\twhereSql.append(\"and \");\n");
+					sb.append("\t\t\t\t}\n");
+					
+					sb.append("\t\t\t\tint listCount = 0;\n");
+					sb.append("\t\t\t\tfor (Long id: cdSiteSo.get" + upperPropertiesFormat + "List()){\n");
+					sb.append("\t\t\t\t\tif(listCount > 0){\n");
+					sb.append("\t\t\t\t\t\tinString += \", \";\n");
+					sb.append("\t\t\t\t\t}\n");
+					sb.append("\t\t\t\t\tinString += " + javaPropertiesFormat + ";\n");
+					sb.append("\t\t\t\t\tlistCount++;\n");
+					
+					sb.append("\t\t\t\t}\n");
+					
+					sb.append("\t\t\t\twhereSql.append(\"" + daoObjectName + "." + javaPropertiesFormat + " in (\" + inString + \")\");\n");
+					sb.append("\t\t\t\twcount++;\n");
+					sb.append("\t\t\t}\n");
+				}
+				
+				if (typeString.equals("Date")) {
+					sb.append("\t\t\tif(" + daoObjectName + "So.get" + upperPropertiesFormat + "From() != null");
+					sb.append(" && ");
+					sb.append(daoObjectName + "So.get" + upperPropertiesFormat + "To() != null");
+					sb.append("){\n");
+					
+					sb.append("\t\t\t\tDate " + javaPropertiesFormat + "From = " + daoObjectName + "So.get" + upperPropertiesFormat +"From();\n");
+					sb.append("\t\t\t\tDate " + javaPropertiesFormat + "To = " + daoObjectName + "So.get" + upperPropertiesFormat +"To();\n");
+					
+					
+					sb.append("\t\t\t\tif (wcount == 0) {\n");
+					sb.append("\t\t\t\t\twhereSql.append(\"where \");\n");
+					sb.append("\t\t\t\t}\n");
+					sb.append("\t\t\t\t else if (wcount > 0) {\n");
+					sb.append("\t\t\t\t\twhereSql.append(\"and \");\n");
+					sb.append("\t\t\t\t}\n");
+					sb.append("\t\t\t\twhereSql.append(\"" + daoObjectName + "." + javaPropertiesFormat + " \");\n");
+					sb.append("\t\t\t\twhereSql.append(\"between \");\n");
+					
+					sb.append("\t\t\t\twhereSql.append(\"" +  
+							"to_date('\" + cmsDateUtils.convertDate2SqlDateString("+ javaPropertiesFormat + "From) + \"', 'YYYY-MM-DD HH24:MI:SS') "
+							+ "\");\n");
+					
+					sb.append("\t\t\t\twhereSql.append(\"and \");\n");
+					
+					sb.append("\t\t\t\twhereSql.append(\"" +  
+							"to_date('\" + cmsDateUtils.convertDate2SqlDateString("+ javaPropertiesFormat + "To) + \"', 'YYYY-MM-DD HH24:MI:SS') "
+							+ "\");\n");
+					
+					
+					sb.append("\t\t\t\twcount++;\n");
+					sb.append("\t\t\t}\n");
+				}
+				
+				
 			}
 			
 			
@@ -307,6 +369,30 @@ public class OrmDaoGenerateMgr {
 				sb.append("\t\t\t\t\tPredicate predicate = builder.equal(root.get(\"" + javaPropertiesFormat + "\"), "+ daoObjectName +"So.get" + upperPropertiesFormat + "());\n");
 				sb.append("\t\t\t\t\tpredicateList.add(predicate);\n");
 				sb.append("\t\t\t\t}\n");
+				
+				
+				if (typeString.equals("Date")) {
+					sb.append("\t\t\t\tif(" + daoObjectName + "So.get" + upperPropertiesFormat + "From");
+					sb.append("() != null && " +  daoObjectName + "So.get" + upperPropertiesFormat + "To() != null" + "){\n");
+					sb.append("\t\t\t\t\tif(predicateList == null) {\n");
+					sb.append("\t\t\t\t\t\tpredicateList = new ArrayList<Predicate>();\n");
+					sb.append("\t\t\t\t\t}\n");
+					sb.append("\t\t\t\t\tPredicate predicate = builder.between(root.get(\"" + javaPropertiesFormat + "\"), " + daoObjectName +"So.get" + upperPropertiesFormat + "From(), " + daoObjectName +"So.get" + upperPropertiesFormat + "To() " + ");\n");
+					sb.append("\t\t\t\t\tpredicateList.add(predicate);\n");
+					sb.append("\t\t\t\t}\n");
+				}
+				
+				if (columnName.equals("ID")) {
+					sb.append("\t\t\t\tif(" + daoObjectName + "So.getIdList");
+					sb.append("() != null){\n");
+					sb.append("\t\t\t\t\tif(predicateList == null) {\n");
+					sb.append("\t\t\t\t\t\tpredicateList = new ArrayList<Predicate>();\n");
+					sb.append("\t\t\t\t\t}\n");
+					sb.append("\t\t\t\t\tPredicate predicate = root.get(\"" + javaPropertiesFormat + "\").in(" + daoObjectName + "So" + ".get" + upperPropertiesFormat  + "List());\n");
+					sb.append("\t\t\t\t\tpredicateList.add(predicate);\n");
+					sb.append("\t\t\t\t}\n");
+				}
+				
 			}
 			
 			sb.append("\t\t\t}\n");
