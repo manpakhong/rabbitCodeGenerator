@@ -403,7 +403,7 @@ public class OrmDaoGenerateMgr {
 					
 					
 					if (columnName.contains("EFFECTIVE_DATE_TO") ) {
-						sb.append("\t\t\t\tif(" + daoObjectName + "So.getEffectiveDateBetween() ");
+						sb.append("\t\t\t\tif(" + daoObjectName + "So.getEffectiveDateBetween ");
 						sb.append("() != null" +  "){\n");
 						sb.append("\t\t\t\t\tif(predicateList == null) {\n");
 						sb.append("\t\t\t\t\t\tpredicateList = new ArrayList<Predicate>();\n");

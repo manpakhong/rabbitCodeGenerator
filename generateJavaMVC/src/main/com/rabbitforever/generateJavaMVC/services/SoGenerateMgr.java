@@ -232,7 +232,7 @@ public class SoGenerateMgr {
 					sb.append("\tprotected Date " + javaPropertiesFormat + "From;\n");
 					sb.append("\tprotected Date " + javaPropertiesFormat + "To;\n");
 					
-					sb.append("\tpublic void set" + upperPropertiesFormat +"(Date "  + javaPropertiesFormat + "From){\n");
+					sb.append("\tpublic void set" + upperPropertiesFormat +"From(Date "  + javaPropertiesFormat + "From){\n");
 					sb.append("\t\tthis." + javaPropertiesFormat + "From = " + javaPropertiesFormat + "From;\n");
 					sb.append("\t}\n");
 					
@@ -242,7 +242,7 @@ public class SoGenerateMgr {
 					sb.append("\t}\n");
 					
 					
-					sb.append("\tpublic void set" + upperPropertiesFormat +"(Date "  + javaPropertiesFormat + "To){\n");
+					sb.append("\tpublic void set" + upperPropertiesFormat +"To(Date "  + javaPropertiesFormat + "To){\n");
 					sb.append("\t\tthis." + javaPropertiesFormat + "To = " + javaPropertiesFormat + "To;\n");
 					sb.append("\t}\n");
 					
@@ -261,7 +261,7 @@ public class SoGenerateMgr {
 						
 						
 						sb.append("\tpublic Date getEffectiveDateBetween(){\n");
-						sb.append("\t\treturn this.EffectiveDateBetween;\n");
+						sb.append("\t\treturn this.effectiveDateBetween;\n");
 						sb.append("\t}\n");
 						
 					}
