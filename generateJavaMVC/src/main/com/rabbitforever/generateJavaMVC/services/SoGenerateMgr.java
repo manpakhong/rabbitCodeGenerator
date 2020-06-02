@@ -14,10 +14,11 @@ import com.rabbitforever.generateJavaMVC.models.dtos.CompressFileDto;
 import com.rabbitforever.generateJavaMVC.models.eos.MetaDataField;
 
 public class SoGenerateMgr {
-
+	private TypeMappingMgr typeMappingMgr;
 	private String tableName;
 	private String soClassName;
 	private String objClassName;
+
 	private PropertiesFactory propertiesFactory;
 	private SysProperties sysProperties;
 	public SoGenerateMgr(String _tableName) {
@@ -29,7 +30,7 @@ public class SoGenerateMgr {
 			sysProperties = propertiesFactory.getInstanceOfSysProperties();
 			objClassName = Misc
 					.convertTableFieldsFormat2JavaPropertiesFormat(tableName);
-			
+			typeMappingMgr = new OracleTypeMappingMgr();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -61,8 +62,14 @@ public class SoGenerateMgr {
 			String systemRootDir = null;
 			String eoSuffix = "Eo";
 			String soSuffix = "So";
-			soClassName =
-			Misc.convertTableNameFormat2ClassNameFormat(tableName);
+			
+			String daoObjectName = null;
+			String daoClassName = null;
+			
+			
+			daoClassName = 	Misc.convertTableNameFormat2ClassNameFormat(tableName);
+			daoObjectName = Misc.lowerStringFirstChar(daoClassName);
+			soClassName = Misc.convertTableNameFormat2ClassNameFormat(tableName);
 			outputRootDirectory = sysProperties.getOutputRootDirectory();
 			modelsDirName = sysProperties.getModelsDirName();
 			eosDirName = sysProperties.getEosDirName();
@@ -174,6 +181,97 @@ public class SoGenerateMgr {
 			sb.append("\tpublic Date getUpdateDatetimeTo(){\n");
 			sb.append("\t\treturn this.updateDatetimeTo;\n");
 			sb.append("\t}\n");
+			
+			
+			// loop pcount field name
+			for (int i = 0; i < metaDataFieldList.size(); i++) {
+				MetaDataField metaDataField = new MetaDataField();
+				metaDataField = metaDataFieldList.get(i);
+				String columnName = metaDataField.getColumnName();
+				String databaseFieldTypeName = metaDataField.getTypeName();
+				String typeString = typeMappingMgr.mappingTo(databaseFieldTypeName);
+				Integer columnSize = metaDataField.getColumnSize();
+				Integer nullable = metaDataField.getNullable();
+				Boolean isNullable = null;
+				
+				String javaPropertiesFormat = Misc.lowerStringFirstChar(Misc
+						.convertTableFieldsFormat2JavaPropertiesFormat(metaDataField
+								.getColumnName()));
+				String upperPropertiesFormat = Misc.upperStringFirstChar(Misc
+						.convertTableFieldsFormat2JavaPropertiesFormat(metaDataField
+								.getColumnName()));
+				
+				if (nullable == 1) {
+					isNullable = false;
+				} else {
+					isNullable = true;
+				}
+								
+				if (columnName.equals("ID") 
+						) {
+					
+					sb.append("\tprotected List<Long> idList;\n");
+					
+					sb.append("\tpublic void setIdList(List<Long> idList){\n");
+					sb.append("\t\tthis.idList = idList;\n");
+					sb.append("\t}\n");
+					
+					
+					sb.append("\tpublic Date getIdList(){\n");
+					sb.append("\t\treturn this.IdList;\n");
+					sb.append("\t}\n");
+
+				}
+				
+				if (typeString.equals("Date")
+						&& 
+						(!columnName.contains("CREATE_DATE") &&
+						 !columnName.contains("UPDATE_DATE")
+						)
+						) {
+					sb.append("\tprotected Date " + javaPropertiesFormat + "From;\n");
+					sb.append("\tprotected Date " + javaPropertiesFormat + "To;\n");
+					
+					sb.append("\tpublic void set" + upperPropertiesFormat +"(Date "  + javaPropertiesFormat + "From){\n");
+					sb.append("\t\tthis." + javaPropertiesFormat + "From = " + javaPropertiesFormat + "From;\n");
+					sb.append("\t}\n");
+					
+					
+					sb.append("\tpublic Date get" + upperPropertiesFormat + "From(){\n");
+					sb.append("\t\treturn this."  +  javaPropertiesFormat + "From;\n");
+					sb.append("\t}\n");
+					
+					
+					sb.append("\tpublic void set" + upperPropertiesFormat +"(Date "  + javaPropertiesFormat + "To){\n");
+					sb.append("\t\tthis." + javaPropertiesFormat + "To = " + javaPropertiesFormat + "To;\n");
+					sb.append("\t}\n");
+					
+					
+					sb.append("\tpublic Date get" + upperPropertiesFormat + "To(){\n");
+					sb.append("\t\treturn this."  +  javaPropertiesFormat + "To;\n");
+					sb.append("\t}\n");
+					
+					
+					if (columnName.contains("EFFECTIVE_DATE_TO") ) {
+						sb.append("\tprotected Date effectiveDateBetween;\n");
+						
+						sb.append("\tpublic void setEffectiveDateBetween(Date effectiveDateBetween){\n");
+						sb.append("\t\tthis.effectiveDateBetween = effectiveDateBetween;\n");
+						sb.append("\t}\n");
+						
+						
+						sb.append("\tpublic Date getEffectiveDateBetween(){\n");
+						sb.append("\t\treturn this.EffectiveDateBetween;\n");
+						sb.append("\t}\n");
+						
+					}
+					
+				}
+			}
+			
+			
+			
+			
 			
 			sb.append("\t@Override\n");
 			sb.append("\tpublic Integer getFirstResult(){\n");

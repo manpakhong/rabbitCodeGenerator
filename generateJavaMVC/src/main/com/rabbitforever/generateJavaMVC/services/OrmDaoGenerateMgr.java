@@ -283,6 +283,26 @@ public class OrmDaoGenerateMgr {
 					
 					sb.append("\t\t\t\twcount++;\n");
 					sb.append("\t\t\t}\n");
+					
+					
+					if (columnName.contains("EFFECTIVE_DATE_TO") ) {
+						sb.append("\t\t\tif(" + daoObjectName + "So.getEffectiveDateBetween() != null");
+						sb.append("){\n");
+		
+						sb.append("\t\t\t\tif (wcount == 0) {\n");
+						sb.append("\t\t\t\t\twhereSql.append(\"where \");\n");
+						sb.append("\t\t\t\t}\n");
+						sb.append("\t\t\t\t else if (wcount > 0) {\n");
+						sb.append("\t\t\t\t\twhereSql.append(\"and \");\n");
+						sb.append("\t\t\t\t}\n");
+						sb.append("\t\t\t\twhereSql.append(\"" + daoObjectName + ".effectiveDateFrom <= :effectiveDateBetween \");\n");
+						sb.append("\t\t\t\twhereSql.append(\"and (" + daoObjectName + ".effectiveDateTo IS NULL OR " + daoObjectName + ".effectiveDateTo >= :effectiveDateBetween) " + " \");\n");
+						
+						sb.append("\t\t\t\twcount++;\n");
+						sb.append("\t\t\t}\n");
+						
+					}
+					
 				}
 				
 				
@@ -380,6 +400,24 @@ public class OrmDaoGenerateMgr {
 					sb.append("\t\t\t\t\tPredicate predicate = builder.between(root.get(\"" + javaPropertiesFormat + "\"), " + daoObjectName +"So.get" + upperPropertiesFormat + "From(), " + daoObjectName +"So.get" + upperPropertiesFormat + "To() " + ");\n");
 					sb.append("\t\t\t\t\tpredicateList.add(predicate);\n");
 					sb.append("\t\t\t\t}\n");
+					
+					
+					if (columnName.contains("EFFECTIVE_DATE_TO") ) {
+						sb.append("\t\t\t\tif(" + daoObjectName + "So.getEffectiveDateBetween() ");
+						sb.append("() != null" +  "){\n");
+						sb.append("\t\t\t\t\tif(predicateList == null) {\n");
+						sb.append("\t\t\t\t\t\tpredicateList = new ArrayList<Predicate>();\n");
+						sb.append("\t\t\t\t\t}\n");
+						
+						
+						sb.append("\t\t\t\t\tPredicate predicate = builder.lessThanOrEqualTo(root.get(\"effectiveDateFrom\"), " + daoObjectName +"So.getEffectiveDateBetween() " + ");\n");
+						sb.append("\t\t\t\t\tPredicate predicateA = builder.isNull(root.get(\"effectiveDateTo\"));\n");
+						sb.append("\t\t\t\t\tPredicate predicateB = builder.greaterThanOrEqualTo(root.get(\"effectiveDateTo\"), " + daoObjectName +"So.getEffectiveDateBetween() " + ");\n");
+						sb.append("\t\t\t\t\tPredicate predicate2 = builder.or(predicateA, predicateB);\n");
+						sb.append("\t\t\t\t\tpredicateList.add(predicate);\n");
+						sb.append("\t\t\t\t\tpredicateList.add(predicate2);\n");
+						sb.append("\t\t\t\t}\n");
+					}
 				}
 				
 				if (columnName.equals("ID")) {
