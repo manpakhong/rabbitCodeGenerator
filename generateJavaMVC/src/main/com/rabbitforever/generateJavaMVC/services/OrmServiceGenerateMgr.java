@@ -261,6 +261,32 @@ public class OrmServiceGenerateMgr {
 			sb.append("\t} // end read function\n");
 
 			// ###############################
+			// read Map Mgr
+			// ###############################
+			sb.append("\t// do necessary adjustment if the key is not Id, or delete the method\n");
+			sb.append("\tpublic Map<Long," + serviceClassName + "Eo> " + "readMap(Object so) throws Exception{\n");
+			sb.append("\t\tMap<Long, " + serviceClassName + "Eo> " + objClassName + "EoMap = null;\n");
+			sb.append("\t\ttry{\n");
+			sb.append("\t\t\tList<" + serviceClassName + "Eo> " + objClassName + "EoList = dao.read(so);\n");
+			
+			sb.append("\t\t\t\tif ( " + objClassName + "EoList != null){\n");
+			sb.append("\t\t\t\t\t" + objClassName + "EoMap = new HashMap<Long, " + serviceClassName + "Eo>();\n");
+			sb.append("\t\t\t\t\tfor (" + serviceClassName + "Eo " + objClassName +"Eo : " + objClassName + "EoList ){\n");
+			sb.append("\t\t\t\t\t\tLong id = " + objClassName + "Eo.getId();\n");
+			sb.append("\t\t\t\t\t\t" + objClassName + "EoMap.put(id, " + objClassName + "Eo);\n");
+			sb.append("\t\t\t\t\t} // end for\n");
+			sb.append("\t\t\t\t}\n");
+			
+			sb.append("\t\t}\n");
+			sb.append("\t\tcatch (Exception e){\n");
+			sb.append("\t\t\tlogger.error(getClassName() + \".readMap() - so=\" + so, e);\n");
+			sb.append("\t\t\tthrow e;\n");
+			sb.append("\t\t} // end try ... catch\n");
+			sb.append("\t\treturn " + objClassName + "EoMap;\n");
+			sb.append("\t} // end readMap function\n");
+			
+			
+			// ###############################
 			// create Mgr
 			// ###############################
 			sb.append("\tpublic void " + "create(" + serviceClassName + "Eo " +  "eo) throws Exception{\n");

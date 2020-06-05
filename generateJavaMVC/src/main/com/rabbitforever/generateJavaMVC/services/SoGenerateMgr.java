@@ -111,33 +111,33 @@ public class SoGenerateMgr {
 			List<MetaDataField> metaDataFieldList = new ArrayList<MetaDataField>();
 			metaDataFieldList = dbMgr.getMetaDataList(tableName);
 
-			sb.append("\tprotected Date createDatetimeFrom;\n");
-			sb.append("\tprotected Date createDatetimeTo;\n");
-			sb.append("\tprotected Date updateDatetimeFrom;\n");
-			sb.append("\tprotected Date updateDatetimeTo;\n");
+//			sb.append("\tprotected Date createDatetimeFrom;\n");
+//			sb.append("\tprotected Date createDatetimeTo;\n");
+//			sb.append("\tprotected Date updateDatetimeFrom;\n");
+//			sb.append("\tprotected Date updateDatetimeTo;\n");
 			sb.append("\tprotected Integer firstResult;\n");
 			sb.append("\tprotected Integer lastResult;\n");
 			sb.append("\tprotected List<OrderedBy> orderedByList;\n");
 
-			sb.append("\t@Override\n");
-			sb.append("\tpublic void setCreateDatetimeFrom(Date createDatetimeFrom){\n");
-			sb.append("\t\tthis.createDatetimeFrom = createDatetimeFrom;\n");
-			sb.append("\t}\n");
-			
-			sb.append("\t@Override\n");
-			sb.append("\tpublic void setCreateDatetimeTo(Date createDatetimeTo){\n");
-			sb.append("\t\tthis.createDatetimeTo = createDatetimeTo;\n");
-			sb.append("\t}\n");
-			
-			sb.append("\t@Override\n");
-			sb.append("\tpublic void setUpdateDatetimeFrom(Date updateDatetimeFrom){\n");
-			sb.append("\t\tthis.updateDatetimeFrom = updateDatetimeFrom;\n");
-			sb.append("\t}\n");
-			
-			sb.append("\t@Override\n");
-			sb.append("\tpublic void setUpdateDatetimeTo(Date updateDatetimeTo){\n");
-			sb.append("\t\tthis.updateDatetimeTo = updateDatetimeTo;\n");
-			sb.append("\t}\n");
+//			sb.append("\t@Override\n");
+//			sb.append("\tpublic void setCreateDatetimeFrom(Date createDatetimeFrom){\n");
+//			sb.append("\t\tthis.createDatetimeFrom = createDatetimeFrom;\n");
+//			sb.append("\t}\n");
+//			
+//			sb.append("\t@Override\n");
+//			sb.append("\tpublic void setCreateDatetimeTo(Date createDatetimeTo){\n");
+//			sb.append("\t\tthis.createDatetimeTo = createDatetimeTo;\n");
+//			sb.append("\t}\n");
+//			
+//			sb.append("\t@Override\n");
+//			sb.append("\tpublic void setUpdateDatetimeFrom(Date updateDatetimeFrom){\n");
+//			sb.append("\t\tthis.updateDatetimeFrom = updateDatetimeFrom;\n");
+//			sb.append("\t}\n");
+//			
+//			sb.append("\t@Override\n");
+//			sb.append("\tpublic void setUpdateDatetimeTo(Date updateDatetimeTo){\n");
+//			sb.append("\t\tthis.updateDatetimeTo = updateDatetimeTo;\n");
+//			sb.append("\t}\n");
 			
 			sb.append("\t@Override\n");
 			sb.append("\tpublic void setFirstResult(Integer firstResult){\n");
@@ -162,25 +162,25 @@ public class SoGenerateMgr {
 			sb.append("\t\tthis.orderedByList.add(orderedBy);\n");
 			sb.append("\t}\n");	
 			
-			sb.append("\t@Override\n");
-			sb.append("\tpublic Date getCreateDatetimeFrom(){\n");
-			sb.append("\t\treturn this.createDatetimeFrom;\n");
-			sb.append("\t}\n");
-			
-			sb.append("\t@Override\n");
-			sb.append("\tpublic Date getCreateDatetimeTo(){\n");
-			sb.append("\t\treturn this.createDatetimeTo;\n");
-			sb.append("\t}\n");
-			
-			sb.append("\t@Override\n");
-			sb.append("\tpublic Date getUpdateDatetimeFrom(){\n");
-			sb.append("\t\treturn this.updateDatetimeFrom;\n");
-			sb.append("\t}\n");
-			
-			sb.append("\t@Override\n");
-			sb.append("\tpublic Date getUpdateDatetimeTo(){\n");
-			sb.append("\t\treturn this.updateDatetimeTo;\n");
-			sb.append("\t}\n");
+//			sb.append("\t@Override\n");
+//			sb.append("\tpublic Date getCreateDatetimeFrom(){\n");
+//			sb.append("\t\treturn this.createDatetimeFrom;\n");
+//			sb.append("\t}\n");
+//			
+//			sb.append("\t@Override\n");
+//			sb.append("\tpublic Date getCreateDatetimeTo(){\n");
+//			sb.append("\t\treturn this.createDatetimeTo;\n");
+//			sb.append("\t}\n");
+//			
+//			sb.append("\t@Override\n");
+//			sb.append("\tpublic Date getUpdateDatetimeFrom(){\n");
+//			sb.append("\t\treturn this.updateDatetimeFrom;\n");
+//			sb.append("\t}\n");
+//			
+//			sb.append("\t@Override\n");
+//			sb.append("\tpublic Date getUpdateDatetimeTo(){\n");
+//			sb.append("\t\treturn this.updateDatetimeTo;\n");
+//			sb.append("\t}\n");
 			
 			
 			// loop pcount field name
@@ -217,17 +217,17 @@ public class SoGenerateMgr {
 					sb.append("\t}\n");
 					
 					
-					sb.append("\tpublic Date getIdList(){\n");
-					sb.append("\t\treturn this.IdList;\n");
+					sb.append("\tpublic List<Long> getIdList(){\n");
+					sb.append("\t\treturn this.idList;\n");
 					sb.append("\t}\n");
 
 				}
 				
 				if (typeString.equals("Date")
-						&& 
-						(!columnName.contains("CREATE_DATE") &&
-						 !columnName.contains("UPDATE_DATE")
-						)
+//						&& 
+//						(!columnName.contains("CREATE_DATE") &&
+//						 !columnName.contains("UPDATE_DATE")
+//						)
 						) {
 					sb.append("\tprotected Date " + javaPropertiesFormat + "From;\n");
 					sb.append("\tprotected Date " + javaPropertiesFormat + "To;\n");
@@ -287,8 +287,6 @@ public class SoGenerateMgr {
 			sb.append("\tpublic List<OrderedBy> getOrderedByList(){\n");
 			sb.append("\t\treturn this.orderedByList;\n");
 			sb.append("\t}\n");
-			
-
 			
 			sb.append("}\n");
 			if (compressFileDto != null) {

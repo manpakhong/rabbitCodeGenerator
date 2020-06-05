@@ -237,7 +237,7 @@ public class OrmDaoGenerateMgr {
 					sb.append("\t\t\t\t}\n");
 					
 					sb.append("\t\t\t\tint listCount = 0;\n");
-					sb.append("\t\t\t\tfor (Long id: cdSiteSo.get" + upperPropertiesFormat + "List()){\n");
+					sb.append("\t\t\t\tfor (Long id: " + daoObjectName + "So.get" + upperPropertiesFormat + "List()){\n");
 					sb.append("\t\t\t\t\tif(listCount > 0){\n");
 					sb.append("\t\t\t\t\t\tinString += \", \";\n");
 					sb.append("\t\t\t\t\t}\n");
