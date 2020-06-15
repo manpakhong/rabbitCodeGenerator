@@ -503,7 +503,7 @@ public class OrmDaoGenerateMgr {
 			
 			sb.append("\t\t\tgetSession();\n");
 			
-			sb.append("\t\t\tif (!this.closeSessionFinally) {\n");
+			sb.append("\t\t\tif (this.closeSessionFinally) {\n");
 			sb.append("\t\t\t\tif (this.transaction == null) {\n");
 			sb.append("\t\t\t\t\tthis.transaction = this.session.getTransaction();\n");
 			sb.append("\t\t\t\t\tTransactionStatus transactionStatus = transaction.getStatus();\n");
@@ -551,7 +551,7 @@ public class OrmDaoGenerateMgr {
 			sb.append("\t\t\tObject value = query.uniqueResult();\n");
 			sb.append("\t\t\tcount = (Long) value;\n");
 			
-			sb.append("\t\t\tif (!this.closeSessionFinally){\n");
+			sb.append("\t\t\tif (this.closeSessionFinally){\n");
 			sb.append("\t\t\t\tif (this.transaction != null){\n");
 			sb.append("\t\t\t\t\ttransaction.commit();\n");
 			sb.append("\t\t\t\t}\n");
