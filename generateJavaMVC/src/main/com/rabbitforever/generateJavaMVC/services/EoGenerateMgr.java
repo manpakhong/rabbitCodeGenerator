@@ -102,6 +102,7 @@ public class EoGenerateMgr {
 			sb.append("import javax.persistence.GeneratedValue;\n");
 			sb.append("import javax.persistence.GenerationType;\n");
 			sb.append("import javax.persistence.Id;\n");
+			sb.append("import javax.persistence.SequenceGenerator;\n");
 			sb.append("import javax.persistence.Table;\n");
 			sb.append("import javax.persistence.Temporal;\n");
 			sb.append("import javax.persistence.TemporalType;\n");
@@ -170,7 +171,8 @@ public class EoGenerateMgr {
 				if (columnName.equals("ID")) {
 					if (!isNullable) {
 						sb.append("\t@Id\n");
-						sb.append("\t@GeneratedValue(strategy = GenerationType.IDENTITY)\n");
+						sb.append("\t@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = \"" + tableName + "_ID_SEQ" +  "\")\n");
+						sb.append("\t@SequenceGenerator(sequenceName = \"" + tableName + "_ID_SEQ\", allocationSize = 1, name=\"" + tableName + "_ID_SEQ" + "\")\n");
 					}
 				}
 				
