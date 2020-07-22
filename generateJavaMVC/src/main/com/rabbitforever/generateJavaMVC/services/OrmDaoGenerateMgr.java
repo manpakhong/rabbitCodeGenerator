@@ -295,7 +295,7 @@ public class OrmDaoGenerateMgr {
 						sb.append("\t\t\t\t else if (wcount > 0) {\n");
 						sb.append("\t\t\t\t\twhereSql.append(\"and \");\n");
 						sb.append("\t\t\t\t}\n");
-						sb.append("\t\t\t\twhereSql.append((\"" +  daoObjectName + ".effectiveDateFrom" + " IS NULL OR " + daoObjectName + ".effectiveDateFrom <= :effectiveDateBetween) \");\n");
+						sb.append("\t\t\t\twhereSql.append(\"(" +  daoObjectName + ".effectiveDateFrom" + " IS NULL OR " + daoObjectName + ".effectiveDateFrom <= :effectiveDateBetween) \");\n");
 						sb.append("\t\t\t\twhereSql.append(\"and (" + daoObjectName + ".effectiveDateTo IS NULL OR " + daoObjectName + ".effectiveDateTo >= :effectiveDateBetween) " + " \");\n");
 						
 						sb.append("\t\t\t\twcount++;\n");
