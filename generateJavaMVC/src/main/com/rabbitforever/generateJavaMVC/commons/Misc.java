@@ -132,11 +132,14 @@ public class Misc {
 						splitClassName = tempClassName.split("_");
 					}
 
+					if (splitClassName != null) {
+						for (int i = 0; i < splitClassName.length; i++) {
+							voClassName += Misc.upperStringFirstChar(splitClassName[i]);
+						} // end for
+					} else {
+						voClassName = Misc.upperStringFirstChar(tempClassName);
+					}
 
-
-					for (int i = 0; i < splitClassName.length; i++) {
-						voClassName += Misc.upperStringFirstChar(splitClassName[i]);
-					} // end for
 				} // end if (idxOfTablePrefix != -1)
 			} // end if (null != databaseName)
 		} catch (Exception e) {

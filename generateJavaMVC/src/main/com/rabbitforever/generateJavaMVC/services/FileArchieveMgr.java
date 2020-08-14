@@ -31,6 +31,7 @@ public class FileArchieveMgr {
 			String sosDirName = sysProperties.getSosDirName();
 			String daosDirName = sysProperties.getDaosDirName();
 			String servicesDirName = sysProperties.getServicesDirName();
+			String servicesHelpersDirName = sysProperties.getServicesHelpersDirName();
 			String javaDirName = sysProperties.getJavaDirName();
 			String systemRootDirName = sysProperties.getSystemRootDirectory();
 			String factoriesDirName = sysProperties.getFactoriesDirName();
@@ -118,6 +119,16 @@ public class FileArchieveMgr {
 				System.out.println("creating directory: " + servicesDirPath);
 				servicesDir.mkdir();
 			}			
+			
+			
+			// service helper
+			String servicesHelpersDirPath = outputRootDirectory + "\\" + javaDirName + "\\" + systemRootDirName +"\\" + servicesDirName + "\\" + servicesHelpersDirName;
+			File serviceHelpersDir = new File(servicesHelpersDirPath);
+			if (!serviceHelpersDir.exists())
+			{
+				System.out.println("creating directory: " + servicesHelpersDirPath);
+				serviceHelpersDir.mkdir();
+			}	
 			
 //			// dao Interface
 //			String daosIDirPath = outputRootDirectory + "\\" + javaDirName + "\\" + systemRootDirName +"\\" + SystemParams.DAO_I_DIR_NAME;

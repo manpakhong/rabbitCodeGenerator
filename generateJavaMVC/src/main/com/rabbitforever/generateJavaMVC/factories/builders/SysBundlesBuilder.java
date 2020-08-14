@@ -39,6 +39,10 @@ public class SysBundlesBuilder extends BundlesBuilder<SysProperties>{
 			sysProperties.setUtilsDirName(utilsDirName);
 			String servicesDirName = getPropValues("services_dir_name");
 			sysProperties.setServicesDirName(servicesDirName);
+			
+			String servicesHelpersDirName = getPropValues("services_helpers_dir_name");
+			sysProperties.setServicesHelpersDirName(servicesHelpersDirName);
+			
 			String daosDirName = getPropValues("daos_dir_name");
 			sysProperties.setDaosDirName(daosDirName);
 			String tablePrefix = getPropValues("table_prefix");

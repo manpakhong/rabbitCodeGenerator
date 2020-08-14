@@ -24,6 +24,12 @@ public class JavaOracle {
 			case "NUMBER":
 				javaType = "int";
 				break;
+			case "FLOAT(126)":
+				javaType = "Double";
+				break;
+			case "FLOAT":
+				javaType = "Double";
+				break;
 		}
 		return javaType;
 	} // end mapMySqlType2JavaType

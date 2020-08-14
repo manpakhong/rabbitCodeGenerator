@@ -363,10 +363,10 @@ public class DaoGenerateMgr {
 			}
 
 			// createDateTime and updateDateTime from to, between statement
-			sb.append("\t\t\tif(" + daoObjectName + "So.getCreateDateTimeFrom() != null && " + daoObjectName
-					+ "So.getCreateDateTimeTo() != null){\n");
-			sb.append("\t\t\t\tDate createDateTimeFrom = " + daoObjectName + "So.getCreateDateTimeFrom();\n");
-			sb.append("\t\t\t\tDate createDateTimeTo = " + daoObjectName + "So.getCreateDateTimeTo();\n");
+			sb.append("\t\t\tif(" + daoObjectName + "So.getCreateDatetimeFrom() != null && " + daoObjectName
+					+ "So.getCreateDatetimeTo() != null){\n");
+			sb.append("\t\t\t\tDate createDateTimeFrom = " + daoObjectName + "So.getCreateDatetimeFrom();\n");
+			sb.append("\t\t\t\tDate createDateTimeTo = " + daoObjectName + "So.getCreateDatetimeTo();\n");
 			sb.append("\t\t\t\tif (wcount == 0) {\n");
 			sb.append("\t\t\t\t\twhereSql.append(\"where \");\n");
 			sb.append("\t\t\t\t}\n");
@@ -385,10 +385,10 @@ public class DaoGenerateMgr {
 			sb.append("\t\t\t\twcount++;\n");
 			sb.append("\t\t\t}\n");
 
-			sb.append("\t\t\tif(" + daoObjectName + "So.getUpdateDateTimeFrom() != null && " + daoObjectName
-					+ "So.getUpdateDateTimeTo() != null){\n");
-			sb.append("\t\t\t\tDate updateDateTimeFrom = " + daoObjectName + "So.getUpdateDateTimeFrom();\n");
-			sb.append("\t\t\t\tDate updateDateTimeTo = " + daoObjectName + "So.getUpdateDateTimeTo();\n");
+			sb.append("\t\t\tif(" + daoObjectName + "So.getUpdateDatetimeFrom() != null && " + daoObjectName
+					+ "So.getUpdateDatetimeTo() != null){\n");
+			sb.append("\t\t\t\tDate updateDateTimeFrom = " + daoObjectName + "So.getUpdateDatetimeFrom();\n");
+			sb.append("\t\t\t\tDate updateDateTimeTo = " + daoObjectName + "So.getUpdateDatetimeTo();\n");
 			sb.append("\t\t\t\tif (wcount == 0) {\n");
 			sb.append("\t\t\t\t\twhereSql.append(\"where \");\n");
 			sb.append("\t\t\t\t}\n");

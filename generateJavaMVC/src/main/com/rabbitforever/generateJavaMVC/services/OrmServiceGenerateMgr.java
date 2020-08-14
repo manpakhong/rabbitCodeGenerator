@@ -68,6 +68,7 @@ public class OrmServiceGenerateMgr {
 		String daoDirName = null;
 		String systemRootDir = null;
 		String daoSuffix = "OrmDao";
+		String helperSuffix = "OrmHelper";
 		String eoSuffix = "Eo";
 		String daoClassName = null;
 		String daoObjectName = null;
@@ -131,7 +132,8 @@ public class OrmServiceGenerateMgr {
 			// properties
 			sb.append("\tprivate final Logger logger = LogManager.getLogger(getClassName());\n");
 			sb.append("\tprivate " + serviceClassName + daoSuffix + " dao;\n");
-
+			sb.append("\t//uncomment the line to use helper\n");
+			sb.append("\t//private " + serviceClassName + helperSuffix + " helper;\n");
 			// getClassName()
 			sb.append("\tprivate String getClassName(){\n");
 			sb.append("\t\treturn this.getClass().getName();\n");
@@ -195,6 +197,9 @@ public class OrmServiceGenerateMgr {
 			
 			sb.append("\t\t\tthis.session = session;\n");
 			sb.append("\t\t\tdao = new " + serviceClassName + daoSuffix + "(session, closeConnectionFinally, connectionType);\n");
+			sb.append("\t\t\t//uncomment the line to use helper\n");
+			sb.append("\t\t\t//helper = new " + serviceClassName + helperSuffix + "(session);\n");
+			
 			sb.append("\t\t} catch (Exception e){\n");
 			sb.append("\t\t\tlogger.error(getClassName() + \"init() - closeConnectionFinally=\" + closeConnectionFinally + \",connectionType=\" + connectionType, e);\n");
 			sb.append("\t\t\tthrow e;\n");

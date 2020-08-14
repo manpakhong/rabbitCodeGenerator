@@ -18,6 +18,7 @@ public class SysProperties extends PropertiesBase{
 	private String modelsDirName;
 	private String eosDirName;
 	private String servicesDirName;
+	private String servicesHelpersDirName;
 	private String daosDirName;
 	private String sosDirName;
 
@@ -118,4 +119,12 @@ public class SysProperties extends PropertiesBase{
 	public String getFactoriesBuilderDirName(){
 		return this.factoriesBuilderDirName;
 	}
+	public String getServicesHelpersDirName() {
+		return servicesHelpersDirName;
+	}
+	public void setServicesHelpersDirName(String servicesHelpersDirName) {
+		this.servicesHelpersDirName = servicesHelpersDirName;
+	}
+	
+	
 }

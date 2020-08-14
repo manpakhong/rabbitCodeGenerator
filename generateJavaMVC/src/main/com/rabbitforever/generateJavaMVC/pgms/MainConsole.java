@@ -5,6 +5,7 @@ import com.rabbitforever.generateJavaMVC.services.EoGenerateMgr;
 import com.rabbitforever.generateJavaMVC.services.FileArchieveMgr;
 import com.rabbitforever.generateJavaMVC.services.OrmDaoGenerateMgr;
 import com.rabbitforever.generateJavaMVC.services.OrmServiceGenerateMgr;
+import com.rabbitforever.generateJavaMVC.services.OrmServiceHelperGenerateMgr;
 import com.rabbitforever.generateJavaMVC.services.ServiceGenerateMgr;
 import com.rabbitforever.generateJavaMVC.services.SoGenerateMgr;
 
@@ -19,7 +20,7 @@ public class MainConsole {
 			String argTableName = "";
 			if (args.length < 1)
 			{
-				argTableName = "ORD_CONTRAST_TYPE_V";
+				argTableName = "ORD_FILM_REJECT_REASON_V";
 //				argTableName = "OR_ANAESTHESIA,OR_ANAEST_OPERATION,BIL_PAYMENT_METHOD,BIL_PATIENTPKG_USED,ADM_PACKAGE,ADM_PACKAGE_DETAILS,ARC_ITEMPRICE,ORD_ORDER_ITEM_CES,ARC_ITMMAST,PAC_BEDTYPE,ADM_PAYOR_DETAILS,PAC_ROOM,PAC_BED,BIL_CHARGE_REQUEST_ERR,BIL_EPISODE_BILLING_SUMMARY,BIL_PATIENT_CHARGES,DL_PREGDELBABY,PAC_TRANSFER_STATUS,BIL_CODE,BIL_CODE_DETAIL,CT_LOC,PAC_TRANSFER_REASON,ARC_BILLGRP,ARC_BILLSUB,OEC_ORDERSTATUS,ADM_EPISODE,ORD_ORDER_ITEM_CES,ORD_ORDER_CES,ARC_ITMMAST,ADM_TRANSACTION,BIL_PATIENT_PKG_USED,BIL_PATIENT_PKG_ORDSET_USED,BIL_CHARGE_REQUEST";
 			}
 			else
@@ -58,7 +59,10 @@ public class MainConsole {
 				OrmServiceGenerateMgr ormServiceGenerateMgr = new OrmServiceGenerateMgr(temp[i]);
 				ormServiceGenerateMgr.generateService();
 
-//				
+				OrmServiceHelperGenerateMgr ormServiceHelperGenerateMgr = new OrmServiceHelperGenerateMgr(temp[i]);
+				ormServiceHelperGenerateMgr.generateServiceHelper();
+				
+				
 //				IServiceGenerateMgr isvrGeneratorMgr = new IServiceGenerateMgr(temp[i]);
 //				isvrGeneratorMgr.generateService();
 			}
