@@ -68,7 +68,7 @@ public class OrmServiceGenerateMgr {
 		String daoDirName = null;
 		String systemRootDir = null;
 		String daoSuffix = "OrmDao";
-		String helperSuffix = "OrmHelper";
+		String helperSuffix = "OrmMgrHelper";
 		String eoSuffix = "Eo";
 		String daoClassName = null;
 		String daoObjectName = null;

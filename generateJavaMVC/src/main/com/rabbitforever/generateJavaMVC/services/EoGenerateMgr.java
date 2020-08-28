@@ -110,7 +110,7 @@ public class EoGenerateMgr {
 			// --- class
 			sb.append("@Entity\n");
 			sb.append("@Table(name = \"" + tableName + "\")\n");
-			sb.append("public class " + eoClassName + eoSuffix +  "\n");
+			sb.append("public class " + eoClassName + eoSuffix +  " extends BaseEo" +"\n");
 			sb.append("{\n");
 
 			String database = this.sysProperties.getDatabase();
