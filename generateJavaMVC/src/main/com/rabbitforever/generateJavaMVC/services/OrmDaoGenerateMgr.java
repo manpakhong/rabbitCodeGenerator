@@ -556,7 +556,7 @@ public class OrmDaoGenerateMgr {
 					if (columnName.contains("EFFECTIVE_DATE_TO") ) {
 						sb.append("\t\t\tif(" + daoObjectName + "So.getEffectiveDateBetween ");
 						sb.append("() != null" +  "){\n");
-						sb.append("\t\t\t\tquery.setParameter(\"getEffectiveDateBetween\", " + daoObjectName + "So.getEffectiveDateBetween());\n");
+						sb.append("\t\t\t\tquery.setParameter(\"effectiveDateBetween\", " + daoObjectName + "So.getEffectiveDateBetween());\n");
 
 						sb.append("\t\t\t}\n");
 					}
