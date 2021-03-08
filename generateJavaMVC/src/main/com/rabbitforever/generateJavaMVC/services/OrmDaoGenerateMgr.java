@@ -493,7 +493,13 @@ public class OrmDaoGenerateMgr {
 			sb.append("\t\tQuery<Long> query = null;\n");
 			sb.append("\t\tString whereSql = null;\n");
 			sb.append("\t\tLong count = null;\n");
+			
+			sb.append("\t\tDate executeBeginTime = null;\n");
+			sb.append("\t\tDate executeEndTime = null;\n");
+			sb.append("\t\tInteger secondsDiff = null;\n");
+			
 			sb.append("\t\ttry{\n");
+			sb.append("\t\t\texecuteBeginTime = new Date();\n");
 			sb.append("\t\t\tif (so instanceof " + daoClassName + "So == false) {\n");
 			sb.append("\t\t\t\tthrow new Exception(\"so is not an instanceof " + daoClassName + "So\");\n");
 			sb.append("\t\t\t}\n");
@@ -586,6 +592,10 @@ public class OrmDaoGenerateMgr {
 			
 			sb.append("\t\t\treturnSession(session);\n");
 			
+			sb.append("\t\t\texecuteEndTime = new Date();\n");
+			sb.append("\t\t\tsecondsDiff = cmsDateUtils.calculateNoOfSecondsDifferent(executeBeginTime, executeEndTime);\n");
+			sb.append("\t\t\tlogger.debug(getClassName() + \".count() - execution_time_of_sql_in_seconds=\" + secondsDiff);\n");
+			
 			sb.append("\t\t}\n");
 			sb.append("\t\treturn count;\n");
 			sb.append("\t} // end select count function\n");
@@ -597,9 +607,13 @@ public class OrmDaoGenerateMgr {
 			sb.append("\tpublic List<" + daoClassName + eoSuffix + "> " + "read(Object so) throws Exception{\n");
 			sb.append("\t\tList<" + daoClassName + eoSuffix + "> " + daoObjectName + eoSuffix + "List = null;\n");
 			sb.append("\t\t" + daoClassName + "So " + daoObjectName + "So = null;\n");
+			sb.append("\t\tDate executeBeginTime = null;\n");
+			sb.append("\t\tDate executeEndTime = null;\n");
+			sb.append("\t\tInteger secondsDiff = null;\n");			
 
 			
 			sb.append("\t\ttry{\n");
+			sb.append("\t\t\texecuteBeginTime = new Date();\n");			
 			sb.append("\t\t\tif (so instanceof " + daoClassName + "So == false) {\n");
 			sb.append("\t\t\t\tthrow new Exception(\"so is not instance of " + daoClassName + "So\");\n");
 			sb.append("\t\t\t} else {\n");
@@ -635,7 +649,13 @@ public class OrmDaoGenerateMgr {
 			sb.append("\t\t\tthrow e;\n");
 			sb.append("\t\t} // end try ... catch\n");			
 			sb.append("\t\tfinally {\n");
+			
 			sb.append("\t\t\treturnSession(session);\n");
+			
+			sb.append("\t\t\texecuteEndTime = new Date();\n");
+			sb.append("\t\t\tsecondsDiff = cmsDateUtils.calculateNoOfSecondsDifferent(executeBeginTime, executeEndTime);\n");
+			sb.append("\t\t\tlogger.debug(getClassName() + \".count() - execution_time_of_sql_in_seconds=\" + secondsDiff);\n");			
+			
 			sb.append("\t\t}\n");
 			sb.append("\t\treturn " + daoObjectName + eoSuffix + "List;\n");
 			sb.append("\t} // end select function\n");
@@ -645,10 +665,12 @@ public class OrmDaoGenerateMgr {
 			// ###############################
 			sb.append("\t@Override\n");
 			sb.append("\tpublic void " + "create(" + daoClassName +  eoSuffix + " eo) throws Exception{\n");
-
+			sb.append("\t\tDate executeBeginTime = null;\n");
+			sb.append("\t\tDate executeEndTime = null;\n");
+			sb.append("\t\tInteger secondsDiff = null;\n");
 
 			sb.append("\t\ttry{\n");
-
+			sb.append("\t\t\texecuteBeginTime = new Date();\n");
 			sb.append("\t\t\tgetSession();\n");
 			
 			
@@ -679,6 +701,11 @@ public class OrmDaoGenerateMgr {
 
 			sb.append("\t\t\t}\n");
 			sb.append("\t\t\treturnSession(session);\n");
+			
+			sb.append("\t\t\texecuteEndTime = new Date();\n");
+			sb.append("\t\t\tsecondsDiff = cmsDateUtils.calculateNoOfSecondsDifferent(executeBeginTime, executeEndTime);\n");
+			sb.append("\t\t\tlogger.debug(getClassName() + \".count() - execution_time_of_sql_in_seconds=\" + secondsDiff);\n");		
+			
 			sb.append("\t\t}\n");
 			sb.append("\t} // end create function\n");
 			
@@ -687,10 +714,12 @@ public class OrmDaoGenerateMgr {
 			// ###############################
 			sb.append("\t@Override\n");
 			sb.append("\tpublic void " + "update(" + daoClassName +  eoSuffix + " eo) throws Exception{\n");
-
+			sb.append("\t\tDate executeBeginTime = null;\n");
+			sb.append("\t\tDate executeEndTime = null;\n");
+			sb.append("\t\tInteger secondsDiff = null;\n");
 
 			sb.append("\t\ttry{\n");
-
+			sb.append("\t\t\texecuteBeginTime = new Date();\n");
 			sb.append("\t\t\tgetSession();\n");
 			
 			
@@ -722,7 +751,13 @@ public class OrmDaoGenerateMgr {
 			sb.append("\t\t\t\tthis.transaction = null;\n");
 
 			sb.append("\t\t\t}\n");
+			
 			sb.append("\t\t\treturnSession(session);\n");
+			
+			sb.append("\t\t\texecuteEndTime = new Date();\n");
+			sb.append("\t\t\tsecondsDiff = cmsDateUtils.calculateNoOfSecondsDifferent(executeBeginTime, executeEndTime);\n");
+			sb.append("\t\t\tlogger.debug(getClassName() + \".count() - execution_time_of_sql_in_seconds=\" + secondsDiff);\n");	
+			
 			sb.append("\t\t}\n");
 
 			sb.append("\t} // end update function\n");
@@ -733,10 +768,12 @@ public class OrmDaoGenerateMgr {
 			// ###############################
 			sb.append("\t@Override\n");
 			sb.append("\tpublic void " + "delete(" + daoClassName +  eoSuffix + " eo) throws Exception{\n");
-
+			sb.append("\t\tDate executeBeginTime = null;\n");
+			sb.append("\t\tDate executeEndTime = null;\n");
+			sb.append("\t\tInteger secondsDiff = null;\n");
 
 			sb.append("\t\ttry{\n");
-
+			sb.append("\t\t\texecuteBeginTime = new Date();\n");
 			sb.append("\t\t\tgetSession();\n");
 			
 			
@@ -769,6 +806,11 @@ public class OrmDaoGenerateMgr {
 
 			sb.append("\t\t\t}\n");
 			sb.append("\t\t\treturnSession(session);\n");
+			
+			sb.append("\t\t\texecuteEndTime = new Date();\n");
+			sb.append("\t\t\tsecondsDiff = cmsDateUtils.calculateNoOfSecondsDifferent(executeBeginTime, executeEndTime);\n");
+			sb.append("\t\t\tlogger.debug(getClassName() + \".count() - execution_time_of_sql_in_seconds=\" + secondsDiff);\n");	
+			
 			sb.append("\t\t}\n");
 
 			sb.append("\t} // end delete function\n");

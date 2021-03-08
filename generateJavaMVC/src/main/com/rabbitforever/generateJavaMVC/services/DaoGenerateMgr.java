@@ -365,8 +365,8 @@ public class DaoGenerateMgr {
 			// createDateTime and updateDateTime from to, between statement
 			sb.append("\t\t\tif(" + daoObjectName + "So.getCreateDatetimeFrom() != null && " + daoObjectName
 					+ "So.getCreateDatetimeTo() != null){\n");
-			sb.append("\t\t\t\tDate createDateTimeFrom = " + daoObjectName + "So.getCreateDatetimeFrom();\n");
-			sb.append("\t\t\t\tDate createDateTimeTo = " + daoObjectName + "So.getCreateDatetimeTo();\n");
+			sb.append("\t\t\t\tDate createDatetimeFrom = " + daoObjectName + "So.getCreateDatetimeFrom();\n");
+			sb.append("\t\t\t\tDate createDatetimeTo = " + daoObjectName + "So.getCreateDatetimeTo();\n");
 			sb.append("\t\t\t\tif (wcount == 0) {\n");
 			sb.append("\t\t\t\t\twhereSql.append(\"where \");\n");
 			sb.append("\t\t\t\t}\n");
@@ -376,19 +376,19 @@ public class DaoGenerateMgr {
 			sb.append("\t\t\t\twhereSql.append(\"create_datetime \");\n");
 			sb.append("\t\t\t\twhereSql.append(\"between \");\n");
 			sb.append("\t\t\t\twhereSql.append(\"to_date('\" + "
-					+ "dateUtils.convertDate2SqlDateString(createDateTimeFrom) + \"', 'YYYY-MM-DD HH24:MI:SS')"
+					+ "dateUtils.convertDate2SqlDateString(createDatetimeFrom) + \"', 'YYYY-MM-DD HH24:MI:SS')"
 					+ " \");\n");
 			sb.append("\t\t\t\twhereSql.append(\"and \");\n");
 			sb.append("\t\t\t\twhereSql.append(\"to_date('\" + "
-					+ "dateUtils.convertDate2SqlDateString(createDateTimeTo) + \"', 'YYYY-MM-DD HH24:MI:SS')"
+					+ "dateUtils.convertDate2SqlDateString(createDatetimeTo) + \"', 'YYYY-MM-DD HH24:MI:SS')"
 					+ " \");\n");
 			sb.append("\t\t\t\twcount++;\n");
 			sb.append("\t\t\t}\n");
 
 			sb.append("\t\t\tif(" + daoObjectName + "So.getUpdateDatetimeFrom() != null && " + daoObjectName
 					+ "So.getUpdateDatetimeTo() != null){\n");
-			sb.append("\t\t\t\tDate updateDateTimeFrom = " + daoObjectName + "So.getUpdateDatetimeFrom();\n");
-			sb.append("\t\t\t\tDate updateDateTimeTo = " + daoObjectName + "So.getUpdateDatetimeTo();\n");
+			sb.append("\t\t\t\tDate updateDatetimeFrom = " + daoObjectName + "So.getUpdateDatetimeFrom();\n");
+			sb.append("\t\t\t\tDate updateDatetimeTo = " + daoObjectName + "So.getUpdateDatetimeTo();\n");
 			sb.append("\t\t\t\tif (wcount == 0) {\n");
 			sb.append("\t\t\t\t\twhereSql.append(\"where \");\n");
 			sb.append("\t\t\t\t}\n");
@@ -398,11 +398,11 @@ public class DaoGenerateMgr {
 			sb.append("\t\t\t\twhereSql.append(\"update_datetime \");\n");
 			sb.append("\t\t\t\twhereSql.append(\"between \");\n");
 			sb.append("\t\t\t\twhereSql.append(\"to_date('\" + "
-					+ "dateUtils.convertDate2SqlDateString(updateDateTimeFrom) + \"', 'YYYY-MM-DD HH24:MI:SS')"
+					+ "dateUtils.convertDate2SqlDateString(updateDatetimeFrom) + \"', 'YYYY-MM-DD HH24:MI:SS')"
 					+ " \");\n");
 			sb.append("\t\t\t\twhereSql.append(\"and \");\n");
 			sb.append("\t\t\t\twhereSql.append(\"to_date('\" + "
-					+ "dateUtils.convertDate2SqlDateString(updateDateTimeTo) + \"', 'YYYY-MM-DD HH24:MI:SS')"
+					+ "dateUtils.convertDate2SqlDateString(updateDatetimeTo) + \"', 'YYYY-MM-DD HH24:MI:SS')"
 					+ " \");\n");
 			sb.append("\t\t\t\twcount++;\n");
 			sb.append("\t\t\t}\n");
