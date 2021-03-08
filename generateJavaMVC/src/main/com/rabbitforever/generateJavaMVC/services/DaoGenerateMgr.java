@@ -444,7 +444,15 @@ public class DaoGenerateMgr {
 			sb.append("\t\tInteger count = null;\n");
 			sb.append("\t\tString whereSql = null;\n");
 			sb.append("\t\tPreparedStatement preparedStatement = null;\n");
+			
+			sb.append("\t\tDate executeBeginTime = null;\n");
+			sb.append("\t\tDate executeEndTime = null;\n");
+			sb.append("\t\tInteger secondsDiff = null;\n");
+			
 			sb.append("\t\ttry{\n");
+			
+			sb.append("\t\t\texecuteBeginTime = new Date();\n");
+			
 			sb.append("\t\t\tif (so instanceof " + daoClassName + "So == false) {\n");
 			sb.append("\t\t\t\tthrow new Exception(\"so is not an instanceof " + daoClassName + "So\");\n");
 			sb.append("\t\t\t}\n");
@@ -513,6 +521,11 @@ public class DaoGenerateMgr {
 			sb.append("\t\t\t\tpreparedStatement = null;\n");
 			sb.append("\t\t\t}\n");
 			sb.append("\t\t\treturnConnection(connection);\n");
+			
+			sb.append("\t\t\texecuteEndTime = new Date();\n");
+			sb.append("\t\t\tsecondsDiff = cmsDateUtils.calculateNoOfSecondsDifferent(executeBeginTime, executeEndTime);\n");
+			sb.append("\t\t\tlogger.debug(getClassName() + \".count() - execution_time_of_sql_in_seconds=\" + secondsDiff);\n");	
+			
 			sb.append("\t\t}\n");
 			sb.append("\t\treturn count;\n");
 			sb.append("\t} // end select count function\n");
@@ -525,7 +538,16 @@ public class DaoGenerateMgr {
 			sb.append("\t\tList<" + daoClassName + eoSuffix + "> " + daoObjectName + eoSuffix + "List = null;\n");
 			sb.append("\t\tString whereSql = null;\n");
 			sb.append("\t\tPreparedStatement preparedStatement = null;\n");
+			
+			sb.append("\t\tDate executeBeginTime = null;\n");
+			sb.append("\t\tDate executeEndTime = null;\n");
+			sb.append("\t\tInteger secondsDiff = null;\n");
+			
+			
 			sb.append("\t\ttry{\n");
+			
+			sb.append("\t\t\texecuteBeginTime = new Date();\n");
+			
 			sb.append("\t\t\tif (so instanceof " + daoClassName + "So == false) {\n");
 			sb.append("\t\t\t\tthrow new Exception(\"so is not an instanceof " + daoClassName + "So\");\n");
 			sb.append("\t\t\t}\n");
@@ -648,9 +670,14 @@ public class DaoGenerateMgr {
 			sb.append("\t\t\t\tpreparedStatement = null;\n");
 			sb.append("\t\t\t}\n");
 			sb.append("\t\t\treturnConnection(connection);\n");
+			
+			sb.append("\t\t\texecuteEndTime = new Date();\n");
+			sb.append("\t\t\tsecondsDiff = cmsDateUtils.calculateNoOfSecondsDifferent(executeBeginTime, executeEndTime);\n");
+			sb.append("\t\t\tlogger.debug(getClassName() + \".read() - execution_time_of_sql_in_seconds=\" + secondsDiff);\n");	
+			
 			sb.append("\t\t}\n");
 			sb.append("\t\treturn " + daoObjectName + eoSuffix + "List;\n");
-			sb.append("\t} // end select function\n");
+			sb.append("\t} // end read function\n");
 
 			// ###############################
 			// create function
@@ -659,8 +686,13 @@ public class DaoGenerateMgr {
 			sb.append("\tpublic Integer " + "create(" + daoClassName + eoSuffix + " eo) throws Exception{\n");
 			sb.append("\t\tPreparedStatement preparedStatement = null;\n");
 			sb.append("\t\tInteger noOfAffectedRow = null;\n");
+			
+			sb.append("\t\tDate executeBeginTime = null;\n");
+			sb.append("\t\tDate executeEndTime = null;\n");
+			sb.append("\t\tInteger secondsDiff = null;\n");
+			
 			sb.append("\t\ttry{\n");
-
+			sb.append("\t\t\texecuteBeginTime = new Date();\n");
 			// pcount
 			sb.append("\t\t\tint pcount = 1;\n");
 			sb.append("\t\t\tpreparedStatement = getConnection().prepareStatement(INSERT_SQL);\n");
@@ -723,6 +755,11 @@ public class DaoGenerateMgr {
 			sb.append("\t\t\t\tpreparedStatement = null;\n");
 			sb.append("\t\t\t}\n");
 			sb.append("\t\t\treturnConnection(connection);\n");
+			
+			sb.append("\t\t\texecuteEndTime = new Date();\n");
+			sb.append("\t\t\tsecondsDiff = cmsDateUtils.calculateNoOfSecondsDifferent(executeBeginTime, executeEndTime);\n");
+			sb.append("\t\t\tlogger.debug(getClassName() + \".create() - execution_time_of_sql_in_seconds=\" + secondsDiff);\n");	
+			
 			sb.append("\t\t}\n");
 			sb.append("\t\treturn noOfAffectedRow;\n");
 			sb.append("\t} // end create function\n");
@@ -734,8 +771,15 @@ public class DaoGenerateMgr {
 			sb.append("\tpublic Integer " + "update(" + daoClassName + eoSuffix + " eo) throws Exception{\n");
 			sb.append("\t\tPreparedStatement preparedStatement = null;\n");
 			sb.append("\t\tInteger noOfAffectedRow = null;\n");
+			
+			sb.append("\t\tDate executeBeginTime = null;\n");
+			sb.append("\t\tDate executeEndTime = null;\n");
+			sb.append("\t\tInteger secondsDiff = null;\n");
+			
 			sb.append("\t\ttry{\n");
 
+			sb.append("\t\t\texecuteBeginTime = new Date();\n");
+			
 			// pcount
 			sb.append("\t\t\tint pcount = 1;\n");
 			sb.append("\t\t\tpreparedStatement = getConnection().prepareStatement(UPDATE_SQL);\n");
@@ -805,6 +849,12 @@ public class DaoGenerateMgr {
 			sb.append("\t\t\t\tpreparedStatement = null;\n");
 			sb.append("\t\t\t}\n");
 			sb.append("\t\t\treturnConnection(connection);\n");
+			
+			
+			sb.append("\t\t\texecuteEndTime = new Date();\n");
+			sb.append("\t\t\tsecondsDiff = cmsDateUtils.calculateNoOfSecondsDifferent(executeBeginTime, executeEndTime);\n");
+			sb.append("\t\t\tlogger.debug(getClassName() + \".update() - execution_time_of_sql_in_seconds=\" + secondsDiff);\n");
+			
 			sb.append("\t\t}\n");
 			sb.append("\t\treturn noOfAffectedRow;\n");
 			sb.append("\t} // end update function\n");
@@ -816,8 +866,15 @@ public class DaoGenerateMgr {
 			sb.append("\tpublic Integer " + "delete(" + daoClassName + eoSuffix + " eo) throws Exception{\n");
 			sb.append("\t\tPreparedStatement preparedStatement = null;\n");
 			sb.append("\t\tInteger noOfAffectedRow = null;\n");
+			
+			sb.append("\t\tDate executeBeginTime = null;\n");
+			sb.append("\t\tDate executeEndTime = null;\n");
+			sb.append("\t\tInteger secondsDiff = null;\n");
+			
 			sb.append("\t\ttry{\n");
-
+			
+			sb.append("\t\t\texecuteBeginTime = new Date();\n");
+			
 			// pcount
 			sb.append("\t\t\tint pcount = 1;\n");
 			sb.append("\t\t\tpreparedStatement = getConnection().prepareStatement(DELETE_SQL);\n");
@@ -843,6 +900,12 @@ public class DaoGenerateMgr {
 			sb.append("\t\t\t\tpreparedStatement = null;\n");
 			sb.append("\t\t\t}\n");
 			sb.append("\t\t\treturnConnection(connection);\n");
+			
+			sb.append("\t\t\texecuteEndTime = new Date();\n");
+			sb.append("\t\t\tsecondsDiff = cmsDateUtils.calculateNoOfSecondsDifferent(executeBeginTime, executeEndTime);\n");
+			sb.append("\t\t\tlogger.debug(getClassName() + \".delete() - execution_time_of_sql_in_seconds=\" + secondsDiff);\n");		
+			
+			
 			sb.append("\t\t}\n");
 			sb.append("\t\treturn noOfAffectedRow;\n");
 			sb.append("\t} // end delete function\n");

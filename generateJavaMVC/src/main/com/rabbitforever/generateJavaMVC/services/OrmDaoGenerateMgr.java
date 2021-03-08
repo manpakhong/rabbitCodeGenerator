@@ -598,7 +598,7 @@ public class OrmDaoGenerateMgr {
 			
 			sb.append("\t\t}\n");
 			sb.append("\t\treturn count;\n");
-			sb.append("\t} // end select count function\n");
+			sb.append("\t} // end count function\n");
 			
 			// ###############################
 			// read function
@@ -654,11 +654,11 @@ public class OrmDaoGenerateMgr {
 			
 			sb.append("\t\t\texecuteEndTime = new Date();\n");
 			sb.append("\t\t\tsecondsDiff = cmsDateUtils.calculateNoOfSecondsDifferent(executeBeginTime, executeEndTime);\n");
-			sb.append("\t\t\tlogger.debug(getClassName() + \".count() - execution_time_of_sql_in_seconds=\" + secondsDiff);\n");			
+			sb.append("\t\t\tlogger.debug(getClassName() + \".read() - execution_time_of_sql_in_seconds=\" + secondsDiff);\n");			
 			
 			sb.append("\t\t}\n");
 			sb.append("\t\treturn " + daoObjectName + eoSuffix + "List;\n");
-			sb.append("\t} // end select function\n");
+			sb.append("\t} // end read function\n");
 				
 			// ###############################
 			// create function
@@ -704,7 +704,7 @@ public class OrmDaoGenerateMgr {
 			
 			sb.append("\t\t\texecuteEndTime = new Date();\n");
 			sb.append("\t\t\tsecondsDiff = cmsDateUtils.calculateNoOfSecondsDifferent(executeBeginTime, executeEndTime);\n");
-			sb.append("\t\t\tlogger.debug(getClassName() + \".count() - execution_time_of_sql_in_seconds=\" + secondsDiff);\n");		
+			sb.append("\t\t\tlogger.debug(getClassName() + \".create() - execution_time_of_sql_in_seconds=\" + secondsDiff);\n");		
 			
 			sb.append("\t\t}\n");
 			sb.append("\t} // end create function\n");
@@ -756,7 +756,7 @@ public class OrmDaoGenerateMgr {
 			
 			sb.append("\t\t\texecuteEndTime = new Date();\n");
 			sb.append("\t\t\tsecondsDiff = cmsDateUtils.calculateNoOfSecondsDifferent(executeBeginTime, executeEndTime);\n");
-			sb.append("\t\t\tlogger.debug(getClassName() + \".count() - execution_time_of_sql_in_seconds=\" + secondsDiff);\n");	
+			sb.append("\t\t\tlogger.debug(getClassName() + \".update() - execution_time_of_sql_in_seconds=\" + secondsDiff);\n");	
 			
 			sb.append("\t\t}\n");
 
@@ -809,7 +809,7 @@ public class OrmDaoGenerateMgr {
 			
 			sb.append("\t\t\texecuteEndTime = new Date();\n");
 			sb.append("\t\t\tsecondsDiff = cmsDateUtils.calculateNoOfSecondsDifferent(executeBeginTime, executeEndTime);\n");
-			sb.append("\t\t\tlogger.debug(getClassName() + \".count() - execution_time_of_sql_in_seconds=\" + secondsDiff);\n");	
+			sb.append("\t\t\tlogger.debug(getClassName() + \".delete() - execution_time_of_sql_in_seconds=\" + secondsDiff);\n");	
 			
 			sb.append("\t\t}\n");
 
