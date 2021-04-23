@@ -109,6 +109,8 @@ public class OrmDaoGenerateMgr {
 			sb.append("import java.util.ArrayList;\n");
 			sb.append("import java.util.Date;\n");
 			sb.append("import java.util.List;\n");
+			sb.append("import java.math.BigDecimal;\n");
+			
 			
 			sb.append("import javax.persistence.criteria.CriteriaBuilder;\n");
 			sb.append("import javax.persistence.criteria.CriteriaQuery;\n");
@@ -152,6 +154,13 @@ public class OrmDaoGenerateMgr {
 			sb.append("\t\t\"select \" +\n");
 			sb.append("\t\t\"count(0) as count_result \" +\n"); 
 			sb.append("\t\t\"from "+ daoClassName + "Eo " + daoObjectName +" \";\n");
+			
+			sb.append("\tprivate final String SELECT_NEXTSEQ_SQL =\n");
+			sb.append("\t\t\"select \" +\n");
+			sb.append("\t\t\"" + tableName + "_ID_SEQ.NEXTVAL " + "\" +\n"); 
+			sb.append("\t\t\"from DUAL \";\n");
+			
+			
 			
 			// getClassName()
 			sb.append("\tprivate String getClassName(){\n");
@@ -484,6 +493,71 @@ public class OrmDaoGenerateMgr {
 			sb.append("\t\t}\n");
 			sb.append("\t\treturn typedQuery;\n");
 			sb.append("\t}// end generateReadWhereStatement\n");
+			
+			// ###############################
+			// next seq function
+			// ###############################
+			sb.append("\tpublic Long retrieveNextSeq() throws Exception{\n");
+			sb.append("\t\tQuery<Long> query = null;\n");
+			sb.append("\t\tString whereSql = null;\n");
+			sb.append("\t\tLong nextSeq  = null;\n");
+			
+			sb.append("\t\tDate executeBeginTime = null;\n");
+			sb.append("\t\tDate executeEndTime = null;\n");
+			sb.append("\t\tInteger secondsDiff = null;\n");
+			
+			sb.append("\t\ttry{\n");
+			sb.append("\t\t\texecuteBeginTime = new Date();\n");
+			
+			sb.append("\t\t\tgetSession();\n");
+			
+			sb.append("\t\t\tif (this.closeSessionFinally) {\n");
+			sb.append("\t\t\t\tif (this.transaction == null) {\n");
+			sb.append("\t\t\t\t\tthis.transaction = this.session.getTransaction();\n");
+			sb.append("\t\t\t\t\tTransactionStatus transactionStatus = transaction.getStatus();\n");
+			sb.append("\t\t\t\t\tthis.transaction.begin();\n");
+			sb.append("\t\t\t\t}\n");
+			sb.append("\t\t\t}\n");
+			// next seq
+			sb.append("\t\t\tint pcount = 1;\n");
+			sb.append("\t\t\tquery = session.createSQLQuery(SELECT_NEXTSEQ_SQL);\n");
+
+			
+			
+			
+			
+			sb.append("\t\t\tObject value = query.uniqueResult();\n");
+			sb.append("\t\t\tBigDecimal nextSeqBigDecimal = (BigDecimal) value;\n");
+			sb.append("\t\t\tnextSeq = nextSeqBigDecimal.longValue();\n");
+			
+			sb.append("\t\t\tif (this.closeSessionFinally){\n");
+			sb.append("\t\t\t\tif (this.transaction != null){\n");
+			sb.append("\t\t\t\t\ttransaction.commit();\n");
+			sb.append("\t\t\t\t}\n");
+			sb.append("\t\t\t}\n");
+
+			sb.append("\t\t}\n");
+			sb.append("\t\tcatch (Exception e){\n");
+			sb.append("\t\t\tif (this.transaction != null){\n");
+			sb.append("\t\t\t\tthis.transaction.rollback();\n");
+			sb.append("\t\t\t}\n");
+			sb.append("\t\t\tlogger.error(getClassName() + \".retrieveNextSeq()-\" + nextSeq, e);\n");
+			sb.append("\t\t\tthrow e;\n");
+			sb.append("\t\t} // end try ... catch\n");
+			sb.append("\t\tfinally {\n");
+
+			
+			sb.append("\t\t\treturnSession(session);\n");
+			
+			sb.append("\t\t\texecuteEndTime = new Date();\n");
+			sb.append("\t\t\tsecondsDiff = cmsDateUtils.calculateNoOfSecondsDifferent(executeBeginTime, executeEndTime);\n");
+			sb.append("\t\t\tlogger.debug(getClassName() + \".retrieveNextSeq() - execution_time_of_sql_in_seconds=\" + secondsDiff);\n");
+			
+			sb.append("\t\t}\n");
+			sb.append("\t\treturn nextSeq ;\n");
+			sb.append("\t} // end retrieveNextSeq function\n");
+			
+			
 			
 			// ###############################
 			// count function

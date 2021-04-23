@@ -223,6 +223,10 @@ public class SoGenerateMgr {
 
 				}
 				
+				if (typeString == null) {
+					boolean isDebug = true;
+				}
+				
 				if (typeString.equals("Date")
 //						&& 
 //						(!columnName.contains("CREATE_DATE") &&
