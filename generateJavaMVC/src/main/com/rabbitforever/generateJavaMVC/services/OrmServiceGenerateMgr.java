@@ -256,6 +256,11 @@ public class OrmServiceGenerateMgr {
 			sb.append("\tpublic List<" + serviceClassName + "Eo> " + "read(Object so) throws Exception{\n");
 			sb.append("\t\tList<" + serviceClassName + "Eo> " + objClassName + "EoList = null;\n");
 			sb.append("\t\ttry{\n");
+			
+			sb.append("\t\t\tif (miscUtils.isEmpty(so)) {\n");
+			sb.append("\t\t\t\tthrow new SoCannotBeEmptyException(CmsException.EXCEPTION_DEFAULT_MESSAGE_SO_CANNOT_BE_EMPTY);\n");
+			sb.append("\t\t\t}\n");
+			
 			sb.append("\t\t\t" + objClassName + "EoList = dao.read(so);\n");
 			sb.append("\t\t}\n");
 			sb.append("\t\tcatch (Exception e){\n");
