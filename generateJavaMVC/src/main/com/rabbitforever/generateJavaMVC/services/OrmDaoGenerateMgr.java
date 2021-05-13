@@ -341,6 +341,7 @@ public class OrmDaoGenerateMgr {
 			sb.append("\t\t} catch (Exception e) {\n");
 			sb.append("\t\t\tlogger.error(getClassName() + \".generateReadWhereStatement() - " + daoObjectName
 					+ "So=\" + " + daoObjectName + "So, e);\n");
+			sb.append("\t\t\tthrow e;\n");
 			sb.append("\t\t}\n");
 			sb.append("\t\treturn whereSql.toString();\n");
 			sb.append("\t}// end generateReadWhereStatement\n");
