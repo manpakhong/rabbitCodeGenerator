@@ -277,7 +277,14 @@ public class DaoGenerateMgr {
 			sb.append("\tpublic Long retrieveNextSeq() throws Exception{\n");
 			sb.append("\t\tLong nextSeq = null;\n");
 
+			sb.append("\t\tDate executeBeginTime = null;\n");
+			sb.append("\t\tDate executeEndTime = null;\n");
+			sb.append("\t\tInteger secondsDiff = null;\n");			
+			
 			sb.append("\t\ttry{\n");
+			
+			sb.append("\t\t\texecuteBeginTime = new Date();\n");
+			
 			sb.append("\t\t\tnextSeq = retrieveNextSeq(false);\n");
 
 			sb.append("\t\t}catch (Exception e){\n");
@@ -311,6 +318,12 @@ public class DaoGenerateMgr {
 			sb.append("\t\t\t}\n");
 			sb.append("\t\t\tif(returnConnection){\n");
 			sb.append("\t\t\t\treturnConnection(connection);\n");
+			
+			sb.append("\t\t\texecuteEndTime = new Date();\n");
+			sb.append("\t\t\tsecondsDiff = cmsDateUtils.calculateNoOfSecondsDifferent(executeBeginTime, executeEndTime);\n");
+			sb.append("\t\t\tlogger.debug(getClassName() + \".count() - execution_time_of_sql_in_seconds=\" + secondsDiff);\n");	
+			
+			
 			sb.append("\t\t\t}\n");
 			sb.append("\t\t}\n");
 			sb.append("\t\treturn nextSeq;\n");
